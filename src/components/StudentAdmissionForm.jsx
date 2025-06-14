@@ -7,7 +7,6 @@ const StudentAdmissionForm = () => {
         lastName: "",
         certificateName: "",
         courseName: "",
-        formNo: "",
         referredBy: "",
         joinedWhatsApp: false,
         admissionDate: "",
@@ -36,7 +35,6 @@ const StudentAdmissionForm = () => {
             name === "lastName" ||
             name === "certificateName" ||
             name === "courseName" ||
-            name === "formNo" ||
             name === "referredBy" ||
             name === "educationalQualification" ||
             name === "city" ||
@@ -479,24 +477,6 @@ const StudentAdmissionForm = () => {
                                         <option value="graphic-design">Graphic Design</option>
                                         <option value="other">Other</option>
                                     </select>
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="formNo"
-                                        className="block text-sm font-medium text-gray-700 mb-2"
-                                    >
-                                        Form No
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="formNo"
-                                        name="formNo"
-                                        value={formData.formNo}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
-                                        placeholder="Enter form number"
-                                    />
                                 </div>
                                 <div>
                                     <label
