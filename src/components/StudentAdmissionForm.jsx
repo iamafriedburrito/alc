@@ -23,8 +23,6 @@ const StudentAdmissionForm = () => {
         photo: null,
         signature: null,
         affirmation: false,
-        administratorName: "",
-        seniorFacultyName: "",
     });
 
     const handleChange = (e) => {
@@ -586,59 +584,11 @@ const StudentAdmissionForm = () => {
                             </div>
                         </div>
 
-                        {/* Administrator and Faculty Section */}
-                        <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
-                            <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-                                <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
-                                    6
-                                </span>
-                                Administrative Information
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label
-                                        htmlFor="administratorName"
-                                        className="block text-sm font-medium text-gray-700 mb-2"
-                                    >
-                                        Name of Administrator
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="administratorName"
-                                        name="administratorName"
-                                        value={formData.administratorName}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
-                                        placeholder="Enter administrator's name"
-                                    />
-                                </div>
-                                <div>
-                                    <label
-                                        htmlFor="seniorFacultyName"
-                                        className="block text-sm font-medium text-gray-700 mb-2"
-                                    >
-                                        Name of Senior Faculty
-                                    </label>
-                                    <input
-                                        type="text"
-                                        id="seniorFacultyName"
-                                        name="seniorFacultyName"
-                                        value={formData.seniorFacultyName}
-                                        onChange={handleChange}
-                                        required
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
-                                        placeholder="Enter senior faculty's name"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-
                         {/* Notes and Affirmation Section */}
                         <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
-                                    7
+                                    6
                                 </span>
                                 Terms and Affirmation
                             </h3>
