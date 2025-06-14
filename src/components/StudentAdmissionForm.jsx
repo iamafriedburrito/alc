@@ -92,42 +92,42 @@ const StudentAdmissionForm = () => {
     };
 
     const districts = [
-        "Ahmednagar",
-        "Akola",
-        "Amravati",
-        "Aurangabad",
-        "Beed",
-        "Bhandara",
-        "Buldhana",
-        "Chandrapur",
-        "Dhule",
-        "Gadchiroli",
-        "Gondia",
-        "Hingoli",
-        "Jalgaon",
-        "Jalna",
-        "Kolhapur",
-        "Latur",
-        "Mumbai City",
-        "Mumbai Suburban",
-        "Nagpur",
-        "Nanded",
-        "Nandurbar",
-        "Nashik",
-        "Osmanabad",
-        "Palghar",
-        "Parbhani",
-        "Pune",
-        "Raigad",
-        "Ratnagiri",
-        "Sangli",
-        "Satara",
-        "Sindhudurg",
-        "Solapur",
-        "Thane",
-        "Wardha",
-        "Washim",
-        "Yavatmal",
+        "AHMEDNAGAR",
+        "AKOLA",
+        "AMRAVATI",
+        "AURANGABAD",
+        "BEED",
+        "BHANDARA",
+        "BULDHANA",
+        "CHANDRAPUR",
+        "DHULE",
+        "GADCHIROLI",
+        "GONDIA",
+        "HINGOLI",
+        "JALGAON",
+        "JALNA",
+        "KOLHAPUR",
+        "LATUR",
+        "MUMBAI CITY",
+        "MUMBAI SUBURBAN",
+        "NAGPUR",
+        "NANDED",
+        "NANDURBAR",
+        "NASHIK",
+        "OSMANABAD",
+        "PALGHAR",
+        "PARBHANI",
+        "PUNE",
+        "RAIGAD",
+        "RATNAGIRI",
+        "SANGLI",
+        "SATARA",
+        "SINDHUDURG",
+        "SOLAPUR",
+        "THANE",
+        "WARDHA",
+        "WASHIM",
+        "YAVATMAL",
     ];
 
     return (
@@ -511,13 +511,12 @@ const StudentAdmissionForm = () => {
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
                                     >
                                         <option value="">Select qualification</option>
+                                        <option value="school">School Student</option>
                                         <option value="10th">10th Standard</option>
                                         <option value="12th">12th Standard</option>
                                         <option value="diploma">Diploma</option>
                                         <option value="bachelors">Bachelor's Degree</option>
                                         <option value="masters">Master's Degree</option>
-                                        <option value="phd">PhD</option>
-                                        <option value="other">Other</option>
                                     </select>
                                 </div>
                             </div>
