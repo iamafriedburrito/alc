@@ -27,9 +27,30 @@ const StudentAdmissionForm = () => {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
+
+        const isTextField =
+            type === "text" ||
+            type === "textarea" ||
+            name === "firstName" ||
+            name === "middleName" ||
+            name === "lastName" ||
+            name === "certificateName" ||
+            name === "courseName" ||
+            name === "formNo" ||
+            name === "referredBy" ||
+            name === "educationalQualification" ||
+            name === "city" ||
+            name === "district" ||
+            name === "correspondenceAddress";
+
         setFormData((prevState) => ({
             ...prevState,
-            [name]: type === "checkbox" ? checked : value,
+            [name]:
+                type === "checkbox"
+                    ? checked
+                    : isTextField
+                        ? value.toUpperCase()
+                        : value,
         }));
     };
 
