@@ -2,6 +2,7 @@ import React from 'react'
 import StudentEnquiryForm from './components/StudentEnquiryForm'
 import StudentAdmissionForm from './components/StudentAdmissionForm'
 import FeeReceipt from './components/FeeReceipt'
+import StudentEnquiriesList from './components/StudentEnquiriesList'
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       <StudentEnquiryForm />
       <StudentAdmissionForm />
       <FeeReceipt />
-
+      <StudentEnquiriesList />
     </div>
   )
 }
