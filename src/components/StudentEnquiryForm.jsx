@@ -56,31 +56,108 @@ const StudentEnquiryForm = () => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+    try {
         // Combine aadhar digits into a single number
         const aadharNumber = formData.aadharDigits.join("");
+        
+        // Prepare the data to match backend model
         const formDataToSubmit = {
-            ...formData,
-            aadharNumber,
+            firstName: formData.firstName,
+            middleName: formData.middleName || "", // Handle optional field
+            lastName: formData.lastName,
+            dateOfBirth: formData.dateOfBirth,
+            gender: formData.gender,
+            maritalStatus: formData.maritalStatus,
+            motherTongue: formData.motherTongue,
+            aadharNumber: aadharNumber,
+            correspondenceAddress: formData.correspondenceAddress,
+            city: formData.city,
+            state: formData.state,
+            district: formData.district,
+            mobileNumber: formData.mobileNumber,
+            alternateMobileNumber: formData.alternateMobileNumber || "", // Handle optional field
+            category: formData.category,
+            educationalQualification: formData.educationalQualification,
+            courseName: formData.courseName,
+            timing: formData.timing,
         };
-        // Handle form submission logic here
-        console.log("Form submitted:", formDataToSubmit);
+
+        // Send POST request to backend
+        const response = await fetch('http://localhost:8000/api/enquiry', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formDataToSubmit),
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        
+        // Handle success
+        console.log("Enquiry submitted successfully:", result);
+        alert(`Enquiry submitted successfully! Enquiry ID: ${result.enquiry_id}`);
+        
+        // Optional: Reset form or redirect user
+        // resetForm(); 
+        
+    } catch (error) {
+        console.error("Error submitting enquiry:", error);
+        
+        // Handle errors
+        if (error.message.includes('fetch')) {
+            alert("Network error: Please check if the server is running and try again.");
+        } else if (error.message.includes('HTTP error')) {
+            alert("Server error: Please try again later.");
+        } else {
+            alert("An unexpected error occurred. Please try again.");
+        }
+    }
+};
+
+    // Add form validation before submission
+    const validateForm = () => {
+        const requiredFields = [
+            'firstName', 'lastName', 'dateOfBirth', 'gender', 'maritalStatus',
+            'motherTongue', 'correspondenceAddress', 'city', 'state', 'district',
+            'mobileNumber', 'category', 'educationalQualification', 'courseName', 'timing'
+        ];
+        
+        for (const field of requiredFields) {
+            if (!formData[field] || formData[field].trim() === '') {
+                alert(`Please fill in the ${field} field.`);
+                return false;
+            }
+        }
+        
+        // Validate Aadhar number (should be 12 digits)
+        const aadharNumber = formData.aadharDigits.join("");
+        if (aadharNumber.length !== 12) {
+            alert("Please enter a valid 12-digit Aadhar number.");
+            return false;
+        }
+        
+        // Validate mobile number (basic validation)
+        if (formData.mobileNumber.length !== 10) {
+            alert("Please enter a valid 10-digit mobile number.");
+            return false;
+        }
+        
+        return true;
     };
 
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
+    // Enhanced handleSubmit with validation
+    const handleSubmitWithValidation = async () => {
+        if (!validateForm()) {
+            return;
+        }
+        
+        await handleSubmit();
+    };
 
     const districts = [
         "Ahmednagar",
@@ -634,7 +711,7 @@ const StudentEnquiryForm = () => {
 
                         <button
                             type="button"
-                            onClick={handleSubmit}
+                            onClick={handleSubmitWithValidation}
                             className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-xl"
                         >
                             Submit Enquiry
