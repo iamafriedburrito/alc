@@ -707,15 +707,20 @@ const StudentEnquiryForm = () => {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
                   >
                     <option value="">Select timing</option>
-                    <option value="morning">
-                      Morning (9:00 AM - 12:00 PM)
-                    </option>
-                    <option value="afternoon">
-                      Afternoon (12:00 PM - 3:00 PM)
-                    </option>
-                    <option value="evening">Evening (3:00 PM - 6:00 PM)</option>
-                    <option value="night">Night (6:00 PM - 9:00 PM)</option>
-                    <option value="weekend">Weekend</option>
+                    <option value="8AM-9AM">8AM to 9AM </option>
+                    <option value="9AM-10AM">9AM to 10AM </option>
+                    <option value="10AM-11AM">10AM to 11AM </option>
+                    <option value="11AM-12PM">11AM to 12PM </option>
+                    <option value="12PM-1PM">12PM to 1PM </option>
+                    <option value="1PM-2PM">1PM to 2PM </option>
+                    <option value="2PM-3PM">2PM to 3PM </option>
+                    <option value="3PM-4PM">3PM to 4PM </option>
+                    <option value="4PM-5PM">4PM to 5PM </option>
+                    <option value="5PM-6PM">5PM to 6PM </option>
+                    <option value="6PM-7PM">6PM to 7PM </option>
+                    <option value="7PM-8PM">7PM to 8PM </option>
+                    <option value="8PM-9PM">8PM to 9PM </option>
+                    <option value="9PM-10PM">9PM to 10PM </option>
                   </select>
                 </div>
               </div>
