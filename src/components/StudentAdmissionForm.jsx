@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 const StudentAdmissionForm = () => {
@@ -35,6 +35,28 @@ const StudentAdmissionForm = () => {
         },
         mode: "onBlur",
     });
+
+    useEffect(() => {
+        const subscription = watch((value, { name }) => {
+            // Only update certificate name if firstName, middleName, or lastName changes
+            if (name === 'firstName' || name === 'middleName' || name === 'lastName') {
+                const { firstName, middleName, lastName } = value;
+                
+                // Create certificate name by combining names with spaces
+                const certificateName = [firstName, middleName, lastName]
+                    .filter(name => name && name.trim()) // Remove empty/undefined names
+                    .join(' ')
+                    .toUpperCase();
+                
+                // Only update if there's actually a name to set
+                if (certificateName.trim()) {
+                    setValue('certificateName', certificateName);
+                }
+            }
+        });
+
+        return () => subscription.unsubscribe();
+    }, [watch, setValue]);
 
     const onSubmit = async (data) => {
         try {
