@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import { districts } from './districts';
+import { districts } from "./districts";
 
 const StudentEnquiryForm = () => {
   const {
@@ -8,7 +8,7 @@ const StudentEnquiryForm = () => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-    reset
+    reset,
   } = useForm({
     defaultValues: {
       firstName: "",
@@ -52,9 +52,11 @@ const StudentEnquiryForm = () => {
       reset(); // Reset form after successful submission
     } catch (error) {
       console.error("Error submitting enquiry:", error);
-      
+
       if (error.message.includes("fetch")) {
-        alert("Network error: Please check if the server is running and try again.");
+        alert(
+          "Network error: Please check if the server is running and try again.",
+        );
       } else if (error.message.includes("HTTP error")) {
         alert("Server error: Please try again later.");
       } else {
@@ -91,16 +93,29 @@ const StudentEnquiryForm = () => {
           }`}
         />
         {fieldState.error && (
-          <p className="mt-1 text-sm text-red-600">{fieldState.error.message}</p>
+          <p className="mt-1 text-sm text-red-600">
+            {fieldState.error.message}
+          </p>
         )}
       </div>
     );
   };
 
   // Reusable Input Component
-  const FormInput = ({ name, label, type = "text", placeholder, required = false, ...props }) => (
+  const FormInput = ({
+    name,
+    label,
+    type = "text",
+    placeholder,
+    required = false,
+    transform = true,
+    ...props
+  }) => (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-2">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-700 mb-2"
+      >
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <input
@@ -112,9 +127,14 @@ const StudentEnquiryForm = () => {
           ...(type === "tel" && {
             pattern: {
               value: /^[0-9]{10}$/,
-              message: "Please enter a valid 10-digit mobile number"
-            }
-          })
+              message: "Please enter a valid 10-digit mobile number",
+            },
+          }),
+          ...(transform && {
+            onChange: (e) => {
+              e.target.value = e.target.value.toUpperCase();
+            },
+          }),
         })}
         className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${
           errors[name]
@@ -130,9 +150,18 @@ const StudentEnquiryForm = () => {
   );
 
   // Reusable Select Component
-  const FormSelect = ({ name, label, options, required = false, placeholder = "Select..." }) => (
+  const FormSelect = ({
+    name,
+    label,
+    options,
+    required = false,
+    placeholder = "Select...",
+  }) => (
     <div>
-      <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-2">
+      <label
+        htmlFor={name}
+        className="block text-sm font-medium text-gray-700 mb-2"
+      >
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       <select
@@ -238,7 +267,7 @@ const StudentEnquiryForm = () => {
                   type="date"
                   required
                 />
-                
+
                 <FormSelect
                   name="gender"
                   label="Gender"
@@ -246,7 +275,7 @@ const StudentEnquiryForm = () => {
                   options={[
                     { value: "MALE", label: "MALE" },
                     { value: "FEMALE", label: "FEMALE" },
-                    { value: "TRANSGENDER", label: "TRANSGENDER" }
+                    { value: "TRANSGENDER", label: "TRANSGENDER" },
                   ]}
                   required
                 />
@@ -256,7 +285,7 @@ const StudentEnquiryForm = () => {
                   label="Marital Status"
                   options={[
                     { value: "married", label: "Married" },
-                    { value: "single", label: "Single" }
+                    { value: "single", label: "Single" },
                   ]}
                   required
                 />
@@ -282,7 +311,7 @@ const StudentEnquiryForm = () => {
                       { value: "MALAYALAM", label: "MALAYALAM" },
                       { value: "PUNJABI", label: "PUNJABI" },
                       { value: "URDU", label: "URDU" },
-                      { value: "OTHER", label: "OTHER" }
+                      { value: "OTHER", label: "OTHER" },
                     ]}
                   />
                 </div>
@@ -298,8 +327,8 @@ const StudentEnquiryForm = () => {
                       required: "Aadhaar number is required",
                       pattern: {
                         value: /^\d{12}$/,
-                        message: "Please enter a valid 12-digit Aadhaar number"
-                      }
+                        message: "Please enter a valid 12-digit Aadhaar number",
+                      },
                     }}
                     render={({ field, fieldState }) => (
                       <AadharInput field={field} fieldState={fieldState} />
@@ -325,7 +354,6 @@ const StudentEnquiryForm = () => {
                     label="Address"
                     placeholder="Enter complete address"
                     required
-                    transform
                   />
                 </div>
 
@@ -349,9 +377,9 @@ const StudentEnquiryForm = () => {
                     label="District"
                     placeholder="Select district"
                     required
-                    options={districts.map(district => ({
+                    options={districts.map((district) => ({
                       value: district,
-                      label: district
+                      label: district,
                     }))}
                   />
                 </div>
@@ -369,7 +397,10 @@ const StudentEnquiryForm = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="mobileNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="mobileNumber"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Mobile Number (Self) <span className="text-red-500">*</span>
                   </label>
                   <div className="flex">
@@ -385,8 +416,9 @@ const StudentEnquiryForm = () => {
                         required: "Mobile number is required",
                         pattern: {
                           value: /^[0-9]{10}$/,
-                          message: "Please enter a valid 10-digit mobile number"
-                        }
+                          message:
+                            "Please enter a valid 10-digit mobile number",
+                        },
                       })}
                       className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${
                         errors.mobileNumber
@@ -396,12 +428,17 @@ const StudentEnquiryForm = () => {
                     />
                   </div>
                   {errors.mobileNumber && (
-                    <p className="mt-1 text-sm text-red-600">{errors.mobileNumber.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.mobileNumber.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label htmlFor="alternateMobileNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="alternateMobileNumber"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Alternate Mobile Number
                   </label>
                   <div className="flex">
@@ -416,8 +453,9 @@ const StudentEnquiryForm = () => {
                       {...register("alternateMobileNumber", {
                         pattern: {
                           value: /^[0-9]{10}$/,
-                          message: "Please enter a valid 10-digit mobile number"
-                        }
+                          message:
+                            "Please enter a valid 10-digit mobile number",
+                        },
                       })}
                       className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${
                         errors.alternateMobileNumber
@@ -427,7 +465,9 @@ const StudentEnquiryForm = () => {
                     />
                   </div>
                   {errors.alternateMobileNumber && (
-                    <p className="mt-1 text-sm text-red-600">{errors.alternateMobileNumber.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.alternateMobileNumber.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -460,8 +500,14 @@ const StudentEnquiryForm = () => {
                     { value: "FARMER", label: "FARMER" },
                     { value: "GOVT EMPLOYEE", label: "GOVT EMPLOYEE" },
                     { value: "INDUSTRIAL WORKER", label: "INDUSTRIAL WORKER" },
-                    { value: "BUILDING CONSTRUCTION WORKER", label: "BUILDING CONSTRUCTION WORKER" },
-                    { value: "APPLICANT OF COMPETITIVE EXAMS (MPSC/UPSC)", label: "APPLICANT OF COMPETITIVE EXAMS (MPSC/UPSC)" },
+                    {
+                      value: "BUILDING CONSTRUCTION WORKER",
+                      label: "BUILDING CONSTRUCTION WORKER",
+                    },
+                    {
+                      value: "APPLICANT OF COMPETITIVE EXAMS (MPSC/UPSC)",
+                      label: "APPLICANT OF COMPETITIVE EXAMS (MPSC/UPSC)",
+                    },
                     { value: "SENIOR CITIZEN", label: "SENIOR CITIZEN" },
                     { value: "TRADER", label: "TRADER" },
                     { value: "OTHER", label: "OTHER" },
@@ -474,7 +520,7 @@ const StudentEnquiryForm = () => {
                   placeholder="Select qualification"
                   required
                   options={[
-                    { value: "1st-4th STD", label: "1st-4th STD."},
+                    { value: "1st-4th STD", label: "1st-4th STD." },
                     { value: "5th STD", label: "5th STD." },
                     { value: "6th STD", label: "6th STD." },
                     { value: "7th STD", label: "7th STD." },
@@ -500,10 +546,13 @@ const StudentEnquiryForm = () => {
                     { value: "web-development", label: "Web Development" },
                     { value: "data-science", label: "Data Science" },
                     { value: "machine-learning", label: "Machine Learning" },
-                    { value: "mobile-development", label: "Mobile Development" },
+                    {
+                      value: "mobile-development",
+                      label: "Mobile Development",
+                    },
                     { value: "digital-marketing", label: "Digital Marketing" },
                     { value: "graphic-design", label: "Graphic Design" },
-                    { value: "other", label: "Other" }
+                    { value: "other", label: "Other" },
                   ]}
                 />
 
@@ -526,7 +575,7 @@ const StudentEnquiryForm = () => {
                     { value: "6PM-7PM", label: "6PM to 7PM" },
                     { value: "7PM-8PM", label: "7PM to 8PM" },
                     { value: "8PM-9PM", label: "8PM to 9PM" },
-                    { value: "9PM-10PM", label: "9PM to 10PM" }
+                    { value: "9PM-10PM", label: "9PM to 10PM" },
                   ]}
                 />
               </div>
