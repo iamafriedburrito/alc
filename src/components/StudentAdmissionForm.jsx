@@ -578,12 +578,20 @@ const StudentAdmissionForm = () => {
                   placeholder="Select qualification"
                   required
                   options={[
-                    { value: "school", label: "School Student" },
-                    { value: "10th", label: "10th Standard" },
-                    { value: "12th", label: "12th Standard" },
-                    { value: "diploma", label: "Diploma" },
-                    { value: "bachelors", label: "Bachelor's Degree" },
-                    { value: "masters", label: "Master's Degree" },
+                    { value: "1st-4th STD", label: "1st-4th STD."},
+                    { value: "5th STD", label: "5th STD." },
+                    { value: "6th STD", label: "6th STD." },
+                    { value: "7th STD", label: "7th STD." },
+                    { value: "8th STD", label: "8th STD." },
+                    { value: "9th STD", label: "9th STD." },
+                    { value: "10th STD", label: "10th STD." },
+                    { value: "11th STD", label: "11th STD." },
+                    { value: "12th STD", label: "12th STD." },
+                    { value: "DIPLOMA", label: "DIPLOMA" },
+                    { value: "FY-TY", label: "FY to TY" },
+                    { value: "GRADUATE", label: "GRADUATE" },
+                    { value: "POST GRADUATE", label: "POST GRADUATE" },
+                    { value: "OTHER", label: "OTHER" },
                   ]}
                 />
               </div>
