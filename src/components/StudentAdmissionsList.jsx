@@ -15,8 +15,8 @@ const StudentAdmissionsList = () => {
     const fetchAdmissions = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8000/api/admissions');
-            
+            const response = await fetch("http://localhost:8000/api/admissions");
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -26,7 +26,9 @@ const StudentAdmissionsList = () => {
             setError(null);
         } catch (err) {
             console.error("Error fetching admissions:", err);
-            setError("Failed to fetch admissions. Please check if the server is running.");
+            setError(
+                "Failed to fetch admissions. Please check if the server is running.",
+            );
         } finally {
             setLoading(false);
         }
@@ -34,8 +36,10 @@ const StudentAdmissionsList = () => {
 
     const handleViewDetails = async (admissionId) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/admission/${admissionId}`);
-            
+            const response = await fetch(
+                `http://localhost:8000/api/admission/${admissionId}`,
+            );
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -49,30 +53,33 @@ const StudentAdmissionsList = () => {
     };
 
     const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-IN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+        return new Date(dateString).toLocaleDateString("en-IN", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
         });
     };
 
     const formatAadhar = (aadharNumber) => {
-        return aadharNumber.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3');
+        return aadharNumber.replace(/(\d{4})(\d{4})(\d{4})/, "$1 $2 $3");
     };
 
     // Filter admissions based on search term and course
-    const filteredAdmissions = admissions.filter(admission => {
-        const matchesSearch = 
+    const filteredAdmissions = admissions.filter((admission) => {
+        const matchesSearch =
             admission.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             admission.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             admission.mobileNumber.includes(searchTerm) ||
             admission.courseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            admission.certificateName.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        const matchesCourse = filterCourse === "" || admission.courseName === filterCourse;
-        
+            admission.certificateName
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase());
+
+        const matchesCourse =
+            filterCourse === "" || admission.courseName === filterCourse;
+
         return matchesSearch && matchesCourse;
     });
 
@@ -98,7 +105,9 @@ const StudentAdmissionsList = () => {
                     <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                         <div className="text-center">
                             <div className="text-red-500 text-6xl mb-4">⚠️</div>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Data</h2>
+                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                                Error Loading Data
+                            </h2>
                             <p className="text-gray-600 mb-4">{error}</p>
                             <button
                                 onClick={fetchAdmissions}
@@ -123,7 +132,8 @@ const StudentAdmissionsList = () => {
                             Student Admissions
                         </h2>
                         <p className="text-gray-600">
-                            Total admissions: {admissions.length} | Showing: {filteredAdmissions.length}
+                            Total admissions: {admissions.length} | Showing:{" "}
+                            {filteredAdmissions.length}
                         </p>
                     </div>
 
@@ -131,7 +141,10 @@ const StudentAdmissionsList = () => {
                     <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label
+                                    htmlFor="search"
+                                    className="block text-sm font-medium text-gray-700 mb-2"
+                                >
                                     Search Admissions
                                 </label>
                                 <input
@@ -144,7 +157,10 @@ const StudentAdmissionsList = () => {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="courseFilter" className="block text-sm font-medium text-gray-700 mb-2">
+                                <label
+                                    htmlFor="courseFilter"
+                                    className="block text-sm font-medium text-gray-700 mb-2"
+                                >
                                     Filter by Course
                                 </label>
                                 <select
@@ -154,8 +170,14 @@ const StudentAdmissionsList = () => {
                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
                                 >
                                     <option value="">All Courses</option>
-                                    {[...new Set(admissions.map(admission => admission.courseName))].map(course => (
-                                        <option key={course} value={course}>{course.replace('-', ' ')}</option>
+                                    {[
+                                        ...new Set(
+                                            admissions.map((admission) => admission.courseName),
+                                        ),
+                                    ].map((course) => (
+                                        <option key={course} value={course}>
+                                            {course.replace("-", " ")}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -166,15 +188,22 @@ const StudentAdmissionsList = () => {
                     {filteredAdmissions.length === 0 ? (
                         <div className="text-center py-12">
                             <div className="text-gray-400 text-6xl mb-4">📋</div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Admissions Found</h3>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                No Admissions Found
+                            </h3>
                             <p className="text-gray-600">
-                                {searchTerm || filterCourse ? "Try adjusting your search or filter criteria." : "No student admissions have been recorded yet."}
+                                {searchTerm || filterCourse
+                                    ? "Try adjusting your search or filter criteria."
+                                    : "No student admissions have been recorded yet."}
                             </p>
                         </div>
                     ) : (
                         <div className="space-y-6">
                             {filteredAdmissions.map((admission) => (
-                                <div key={admission.id} className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+                                <div
+                                    key={admission.id}
+                                    className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md"
+                                >
                                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                                         <div className="flex-1">
                                             <div className="flex items-center mb-2">
@@ -182,45 +211,54 @@ const StudentAdmissionsList = () => {
                                                     {admission.id}
                                                 </span>
                                                 <h3 className="text-xl font-semibold text-gray-900">
-                                                    {admission.firstName} {admission.middleName} {admission.lastName}
+                                                    {admission.firstName} {admission.middleName}{" "}
+                                                    {admission.lastName}
                                                 </h3>
                                             </div>
-                                            
+
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                                 <div>
                                                     <span className="text-sm text-gray-500">Course:</span>
                                                     <p className="font-medium text-gray-900 capitalize">
-                                                        {admission.courseName.replace('-', ' ')}
+                                                        {admission.courseName.replace("-", " ")}
                                                     </p>
                                                 </div>
                                                 <div>
                                                     <span className="text-sm text-gray-500">Mobile:</span>
-                                                    <p className="font-medium text-gray-900">+91 {admission.mobileNumber}</p>
+                                                    <p className="font-medium text-gray-900">
+                                                        +91 {admission.mobileNumber}
+                                                    </p>
                                                 </div>
                                                 <div>
-                                                    <span className="text-sm text-gray-500">Certificate:</span>
+                                                    <span className="text-sm text-gray-500">
+                                                        Certificate:
+                                                    </span>
                                                     <p className="font-medium text-gray-900 capitalize">
                                                         {admission.certificateName}
                                                     </p>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
-                                                    <span className="text-sm text-gray-500">Location:</span>
+                                                    <span className="text-sm text-gray-500">
+                                                        Location:
+                                                    </span>
                                                     <p className="font-medium text-gray-900">
                                                         {admission.city}, {admission.district}
                                                     </p>
                                                 </div>
                                                 <div>
-                                                    <span className="text-sm text-gray-500">Admission Date:</span>
+                                                    <span className="text-sm text-gray-500">
+                                                        Admission Date:
+                                                    </span>
                                                     <p className="font-medium text-gray-900">
                                                         {formatDate(admission.admissionDate)}
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div className="mt-4 md:mt-0 md:ml-6">
                                             <button
                                                 onClick={() => handleViewDetails(admission.id)}
@@ -274,18 +312,64 @@ const StudentAdmissionsList = () => {
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
-                                                <span className="text-sm text-gray-500">Full Name:</span>
+                                                <span className="text-sm text-gray-500">
+                                                    Full Name:
+                                                </span>
                                                 <p className="font-medium text-gray-900">
-                                                    {selectedAdmission.firstName} {selectedAdmission.middleName} {selectedAdmission.lastName}
+                                                    {selectedAdmission.firstName}{" "}
+                                                    {selectedAdmission.middleName}{" "}
+                                                    {selectedAdmission.lastName}
                                                 </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Date of Birth:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.dateOfBirth}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Date of Birth:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.dateOfBirth}
+                                                </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Aadhar Number:</span>
-                                                <p className="font-medium text-gray-900">{formatAadhar(selectedAdmission.aadharNumber)}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Aadhar Number:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {formatAadhar(selectedAdmission.aadharNumber)}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Uploaded Documents */}
+                                    <div className="bg-pink-50 p-6 rounded-2xl">
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                                            <span className="w-6 h-6 bg-pink-100 rounded-lg flex items-center justify-center mr-2 text-pink-600 text-sm">
+                                                2
+                                            </span>
+                                            Uploaded Documents
+                                        </h3>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <div>
+                                                <span className="text-sm text-gray-500">Photo:</span>
+                                                <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden w-40 h-40">
+                                                    <img
+                                                        src={`http://localhost:8000/uploads/${selectedAdmission.photoFilename}`}
+                                                        alt="Student Photo"
+                                                        className="object-cover w-full h-full"
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
+                                                    Signature:
+                                                </span>
+                                                <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden w-40 h-20">
+                                                    <img
+                                                        src={`http://localhost:8000/uploads/${selectedAdmission.signatureFilename}`}
+                                                        alt="Signature"
+                                                        className="object-contain w-full h-full"
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -294,26 +378,34 @@ const StudentAdmissionsList = () => {
                                     <div className="bg-green-50 p-6 rounded-2xl">
                                         <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                                             <span className="w-6 h-6 bg-green-100 rounded-lg flex items-center justify-center mr-2 text-green-600 text-sm">
-                                                2
+                                                3
                                             </span>
                                             Address Information
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div className="md:col-span-2">
                                                 <span className="text-sm text-gray-500">Address:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.correspondenceAddress}</p>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.correspondenceAddress}
+                                                </p>
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">City:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.city}</p>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.city}
+                                                </p>
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">District:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.district}</p>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.district}
+                                                </p>
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">State:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.state}</p>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.state}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -322,24 +414,36 @@ const StudentAdmissionsList = () => {
                                     <div className="bg-yellow-50 p-6 rounded-2xl">
                                         <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                                             <span className="w-6 h-6 bg-yellow-100 rounded-lg flex items-center justify-center mr-2 text-yellow-600 text-sm">
-                                                3
+                                                4
                                             </span>
                                             Contact Information
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
-                                                <span className="text-sm text-gray-500">Mobile Number:</span>
-                                                <p className="font-medium text-gray-900">+91 {selectedAdmission.mobileNumber}</p>
-                                            </div>
-                                            <div>
-                                                <span className="text-sm text-gray-500">Alternate Mobile:</span>
+                                                <span className="text-sm text-gray-500">
+                                                    Mobile Number:
+                                                </span>
                                                 <p className="font-medium text-gray-900">
-                                                    {selectedAdmission.alternateMobileNumber ? `+91 ${selectedAdmission.alternateMobileNumber}` : 'Not provided'}
+                                                    +91 {selectedAdmission.mobileNumber}
                                                 </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Joined WhatsApp:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.joinedWhatsApp ? 'Yes' : 'No'}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Alternate Mobile:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.alternateMobileNumber
+                                                        ? `+91 ${selectedAdmission.alternateMobileNumber}`
+                                                        : "Not provided"}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
+                                                    Joined WhatsApp:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.joinedWhatsApp ? "Yes" : "No"}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
@@ -348,41 +452,66 @@ const StudentAdmissionsList = () => {
                                     <div className="bg-purple-50 p-6 rounded-2xl">
                                         <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                                             <span className="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center mr-2 text-purple-600 text-sm">
-                                                4
+                                                5
                                             </span>
                                             Course & Admission Information
                                         </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
-                                                <span className="text-sm text-gray-500">Course Name:</span>
-                                                <p className="font-medium text-gray-900 capitalize">{selectedAdmission.courseName.replace('-', ' ')}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Course Name:
+                                                </span> <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.courseName.replace("-", " ")}
+                                                </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Certificate Name:</span>
-                                                <p className="font-medium text-gray-900 capitalize">{selectedAdmission.certificateName}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Certificate Name:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.certificateName}
+                                                </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Educational Qualification:</span>
-                                                <p className="font-medium text-gray-900 capitalize">{selectedAdmission.educationalQualification}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Educational Qualification:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.educationalQualification}
+                                                </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Referred By:</span>
-                                                <p className="font-medium text-gray-900">{selectedAdmission.referredBy || 'Not provided'}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Referred By:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {selectedAdmission.referredBy || "Not provided"}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
 
                                     {/* Submission Details */}
                                     <div className="bg-gray-50 p-6 rounded-2xl">
-                                        <h3 className="text-xl font-semibold text-gray-900 mb-4">Submission Details</h3>
+                                        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                                            Submission Details
+                                        </h3>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
-                                                <span className="text-sm text-gray-500">Admission Date:</span>
-                                                <p className="font-medium text-gray-900">{formatDate(selectedAdmission.admissionDate)}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Admission Date:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {formatDate(selectedAdmission.admissionDate)}
+                                                </p>
                                             </div>
                                             <div>
-                                                <span className="text-sm text-gray-500">Submitted On:</span>
-                                                <p className="font-medium text-gray-900">{formatDate(selectedAdmission.createdAt)}</p>
+                                                <span className="text-sm text-gray-500">
+                                                    Submitted On:
+                                                </span>
+                                                <p className="font-medium text-gray-900">
+                                                    {formatDate(selectedAdmission.createdAt)}
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
