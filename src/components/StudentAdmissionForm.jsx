@@ -361,7 +361,7 @@ const StudentAdmissionForm = () => {
               </div>
 
               {/* Date of Birth, Admission Date, Aadhaar */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <FormInput
                   name="dateOfBirth"
                   label="Date of Birth"
@@ -374,26 +374,26 @@ const StudentAdmissionForm = () => {
                   type="date"
                   required
                 />
-              </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Aadhaar Number <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  name="aadharNumber"
-                  control={control}
-                  rules={{
-                    required: "Aadhaar number is required",
-                    pattern: {
-                      value: /^\d{12}$/,
-                      message: "Please enter a valid 12-digit Aadhaar number",
-                    },
-                  }}
-                  render={({ field, fieldState }) => (
-                    <AadharInput field={field} fieldState={fieldState} />
-                  )}
-                />
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Aadhaar Number <span className="text-red-500">*</span>
+                  </label>
+                  <Controller
+                    name="aadharNumber"
+                    control={control}
+                    rules={{
+                      required: "Aadhaar number is required",
+                      pattern: {
+                        value: /^\d{12}$/,
+                        message: "Please enter a valid 12-digit Aadhaar number",
+                      },
+                    }}
+                    render={({ field, fieldState }) => (
+                      <AadharInput field={field} fieldState={fieldState} />
+                    )}
+                  />
+                </div>
               </div>
             </div>
 
@@ -609,7 +609,7 @@ const StudentAdmissionForm = () => {
               />
             </div>
 
-            {/* File Upload Section - Commented out for now */}
+            {/* File Upload Section */}
 
             <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
               <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
