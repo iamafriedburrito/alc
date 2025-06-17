@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 const StudentAdmissionForm = () => {
+  
+  const today = new Date().toISOString().split("T")[0];
+
   const {
     register,
     handleSubmit,
@@ -19,7 +22,7 @@ const StudentAdmissionForm = () => {
       courseName: "",
       referredBy: "",
       joinedWhatsApp: false,
-      admissionDate: "",
+      admissionDate: today,
       dateOfBirth: "",
       mobileNumber: "",
       alternateMobileNumber: "",
@@ -447,7 +450,7 @@ const StudentAdmissionForm = () => {
                     name="state"
                     label="State"
                     readOnly
-                    className="bg-gray-100 text-gray-600 cursor-not-allowed"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-700 cursor-not-allowed focus:outline-none cursor-not-allowed"
                   />
 
                   <FormSelect
