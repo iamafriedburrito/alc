@@ -249,12 +249,14 @@ const StudentEnquiryForm = () => {
                   required
                 />
                 
-                <FormRadioGroup
+                <FormSelect
                   name="gender"
                   label="Gender"
+                  placeholder="Select Gender"
                   options={[
-                    { value: "male", label: "Male" },
-                    { value: "female", label: "Female" }
+                    { value: "MALE", label: "MALE" },
+                    { value: "FEMALE", label: "FEMALE" },
+                    { value: "TRANSGENDER", label: "TRANSGENDER" }
                   ]}
                   required
                 />
