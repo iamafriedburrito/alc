@@ -281,18 +281,18 @@ const StudentEnquiryForm = () => {
                     placeholder="Select"
                     required
                     options={[
-                      { value: "marathi", label: "Marathi" },
-                      { value: "hindi", label: "Hindi" },
-                      { value: "english", label: "English" },
-                      { value: "gujarati", label: "Gujarati" },
-                      { value: "bengali", label: "Bengali" },
-                      { value: "tamil", label: "Tamil" },
-                      { value: "telugu", label: "Telugu" },
-                      { value: "kannada", label: "Kannada" },
-                      { value: "malayalam", label: "Malayalam" },
-                      { value: "punjabi", label: "Punjabi" },
-                      { value: "urdu", label: "Urdu" },
-                      { value: "other", label: "Other" }
+                      { value: "MARATHI", label: "MARATHI" },
+                      { value: "HINDI", label: "HINDI" },
+                      { value: "ENGLISH", label: "ENGLISH" },
+                      { value: "GUJARATI", label: "GUJARATI" },
+                      { value: "BENGALI", label: "BENGALI" },
+                      { value: "TAMIL", label: "TAMIL" },
+                      { value: "TELUGU", label: "TELUGU" },
+                      { value: "KANNADA", label: "KANNADA" },
+                      { value: "MALAYALAM", label: "MALAYALAM" },
+                      { value: "PUNJABI", label: "PUNJABI" },
+                      { value: "URDU", label: "URDU" },
+                      { value: "OTHER", label: "OTHER" }
                     ]}
                   />
                 </div>
@@ -330,25 +330,13 @@ const StudentEnquiryForm = () => {
 
               <div className="space-y-6">
                 <div>
-                  <label htmlFor="correspondenceAddress" className="block text-sm font-medium text-gray-700 mb-2">
-                    Address <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    id="correspondenceAddress"
-                    rows="3"
+                  <FormInput
+                    name="correspondenceAddress"
+                    label="Address"
                     placeholder="Enter complete address"
-                    {...register("correspondenceAddress", {
-                      required: "Address is required"
-                    })}
-                    className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm resize-none ${
-                      errors.correspondenceAddress
-                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                        : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    }`}
+                    required
+                    transform
                   />
-                  {errors.correspondenceAddress && (
-                    <p className="mt-1 text-sm text-red-600">{errors.correspondenceAddress.message}</p>
-                  )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
