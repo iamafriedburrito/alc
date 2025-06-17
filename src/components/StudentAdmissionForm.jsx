@@ -167,7 +167,7 @@ const StudentAdmissionForm = () => {
     type = "text",
     placeholder,
     required = false,
-    transform = false,
+    transform = true,
     ...props
   }) => (
     <div>
@@ -298,20 +298,17 @@ const StudentAdmissionForm = () => {
                     label="First Name / Given Name"
                     placeholder="First name"
                     required
-                    transform
                   />
                   <FormInput
                     name="middleName"
                     label="Middle Name"
                     placeholder="Middle name"
-                    transform
                   />
                   <FormInput
                     name="lastName"
                     label="Last Name / Surname"
                     placeholder="Last name"
                     required
-                    transform
                   />
                 </div>
 
@@ -320,7 +317,6 @@ const StudentAdmissionForm = () => {
                   label="Name as it should appear on Certificate"
                   placeholder="Full name for certificate"
                   required
-                  transform
                 />
               </div>
 
@@ -377,7 +373,6 @@ const StudentAdmissionForm = () => {
                     label="Address"
                     placeholder="Enter complete address"
                     required
-                    transform
                   />
                 </div>
 
@@ -387,7 +382,6 @@ const StudentAdmissionForm = () => {
                     label="City / Town / Village"
                     placeholder="City/Town/Village"
                     required
-                    transform
                   />
 
                   <FormInput
@@ -531,7 +525,6 @@ const StudentAdmissionForm = () => {
                   name="referredBy"
                   label="Referred By"
                   placeholder="Enter referrer's name"
-                  transform
                 />
 
                 <FormSelect
