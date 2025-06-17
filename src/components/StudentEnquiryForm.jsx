@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { districts } from './districts';
 
 const StudentEnquiryForm = () => {
   const {
@@ -7,8 +8,6 @@ const StudentEnquiryForm = () => {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-    watch,
-    setValue,
     reset
   } = useForm({
     defaultValues: {
@@ -22,7 +21,7 @@ const StudentEnquiryForm = () => {
       aadharNumber: "",
       correspondenceAddress: "",
       city: "",
-      state: "Maharashtra",
+      state: "MAHARASHTRA",
       district: "",
       mobileNumber: "",
       alternateMobileNumber: "",
@@ -97,15 +96,6 @@ const StudentEnquiryForm = () => {
       </div>
     );
   };
-
-  const districts = [
-    "AHMEDNAGAR", "AKOLA", "AMRAVATI", "AURANGABAD", "BEED", "BHANDARA",
-    "BULDHANA", "CHANDRAPUR", "DHULE", "GADCHIROLI", "GONDIA", "HINGOLI",
-    "JALGAON", "JALNA", "KOLHAPUR", "LATUR", "MUMBAI CITY", "MUMBAI SUBURBAN",
-    "NAGPUR", "NANDED", "NANDURBAR", "NASHIK", "OSMANABAD", "PALGHAR",
-    "PARBHANI", "PUNE", "RAIGAD", "RATNAGIRI", "SANGLI", "SATARA",
-    "SINDHUDURG", "SOLAPUR", "THANE", "WARDHA", "WASHIM", "YAVATMAL",
-  ];
 
   // Reusable Input Component
   const FormInput = ({ name, label, type = "text", placeholder, required = false, ...props }) => (
@@ -351,7 +341,7 @@ const StudentEnquiryForm = () => {
                     name="state"
                     label="State"
                     readOnly
-                    className="bg-gray-100 text-gray-600 cursor-not-allowed"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-700 cursor-not-allowed focus:outline-none cursor-not-allowed"
                   />
 
                   <FormSelect

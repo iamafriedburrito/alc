@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { districts } from './districts';
 
 const StudentAdmissionForm = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -158,45 +159,6 @@ const StudentAdmissionForm = () => {
       </div>
     );
   };
-
-  const districts = [
-    "AHMEDNAGAR",
-    "AKOLA",
-    "AMRAVATI",
-    "AURANGABAD",
-    "BEED",
-    "BHANDARA",
-    "BULDHANA",
-    "CHANDRAPUR",
-    "DHULE",
-    "GADCHIROLI",
-    "GONDIA",
-    "HINGOLI",
-    "JALGAON",
-    "JALNA",
-    "KOLHAPUR",
-    "LATUR",
-    "MUMBAI CITY",
-    "MUMBAI SUBURBAN",
-    "NAGPUR",
-    "NANDED",
-    "NANDURBAR",
-    "NASHIK",
-    "OSMANABAD",
-    "PALGHAR",
-    "PARBHANI",
-    "PUNE",
-    "RAIGAD",
-    "RATNAGIRI",
-    "SANGLI",
-    "SATARA",
-    "SINDHUDURG",
-    "SOLAPUR",
-    "THANE",
-    "WARDHA",
-    "WASHIM",
-    "YAVATMAL",
-  ];
 
   // Reusable Input Component
   const FormInput = ({
