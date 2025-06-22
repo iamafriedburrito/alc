@@ -5,6 +5,7 @@ import FeeReceipt from './components/FeeReceipt'
 import StudentEnquiriesList from './components/StudentEnquiriesList'
 import StudentAdmissionsList from './components/StudentAdmissionsList'
 import InstituteLogin from './components/InstituteLogin'
+import CoursesFeesManagement from './components/CoursesFeesManagement'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <StudentEnquiriesList />
       <StudentAdmissionsList />
       <InstituteLogin />
+      <CoursesFeesManagement />
     </div>
   )
 }
