@@ -9,10 +9,10 @@ import InstituteLogin from './components/InstituteLogin'
 function App() {
   return (
     <div>
-      {/* <StudentEnquiryForm /> */}
+      <StudentEnquiryForm />
       <StudentAdmissionForm />
-      {/* <FeeReceipt /> */}
-      {/* <StudentEnquiriesList /> */}
+      <FeeReceipt />
+      <StudentEnquiriesList />
       <StudentAdmissionsList />
       <InstituteLogin />
     </div>

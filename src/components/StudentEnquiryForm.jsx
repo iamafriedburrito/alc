@@ -543,16 +543,20 @@ const StudentEnquiryForm = () => {
                   placeholder="Select course"
                   required
                   options={[
-                    { value: "web-development", label: "Web Development" },
-                    { value: "data-science", label: "Data Science" },
-                    { value: "machine-learning", label: "Machine Learning" },
-                    {
-                      value: "mobile-development",
-                      label: "Mobile Development",
-                    },
-                    { value: "digital-marketing", label: "Digital Marketing" },
-                    { value: "graphic-design", label: "Graphic Design" },
-                    { value: "other", label: "Other" },
+                    { value: "MS-CIT", label: "MS-CIT" },
+                    { value: "ADVANCE TALLY - CIT", label: "ADVANCE TALLY - CIT" },
+                    { value: "ADVANCE TALLY - KLIC", label: "ADVANCE TALLY - KLIC" },
+                    { value: "ADVANCE EXCEL - CIT", label: "ADVANCE EXCEL - KLIC" },
+                    { value: "ENGLISH TYPING - MKCL", label: "ENGLISH TYPING - MKCL" },
+                    { value: "ENGLISH TYPING - CIT", label: "ENGLISH TYPING - CIT" },
+                    { value: "ENGLISH TYPING - GOVT", label: "ENGLISH TYPING - GOVT" },
+                    { value: "MARATHI TYPING - MKCL", label: "MARATHI TYPING - MKCL" },
+                    { value: "MARATHI TYPING - CIT", label: "MARATHI TYPING - CIT" },
+                    { value: "MARATHI TYPING - GOVT", label: "MARATHI TYPING - GOVT" },
+                    { value: "DTP - CIT", label: "DTP - CIT" },
+                    { value: "DTP - KLIC", label: "DTP - KLIC" },
+                    { value: "IT - KLIC", label: "IT - KLIC" },
+                    { value: "KLIC DIPLOMA", label: "KLIC DIPLOMA" },
                   ]}
                 />
 
