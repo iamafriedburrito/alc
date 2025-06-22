@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Search, Plus, Edit2, Trash2, Save, X, BookOpen } from "lucide-react";
+import { Search, Plus, Edit2, Trash2, Save, X, BookOpen, AlertCircle } from "lucide-react";
 
 const CoursesFeesManagement = () => {
   const [courses, setCourses] = useState([]);
@@ -8,6 +8,11 @@ const CoursesFeesManagement = () => {
   const [editingCourse, setEditingCourse] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const [stats, setStats] = useState(null);
+
+  // Configure your API base URL - adjust this to match your backend
+  const API_BASE_URL = 'http://localhost:8000/api';
 
   const {
     register,
@@ -22,29 +27,65 @@ const CoursesFeesManagement = () => {
     },
   });
 
-  // Mock data for initial load
+  // Fetch courses from API
+  const fetchCourses = async (search = '') => {
+    setIsLoading(true);
+    setApiError('');
+    try {
+      const url = search 
+        ? `${API_BASE_URL}/courses?search=${encodeURIComponent(search)}`
+        : `${API_BASE_URL}/courses`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      setCourses(data.courses || []);
+    } catch (error) {
+      console.error('Error fetching courses:', error);
+      setApiError('Failed to fetch courses. Please check your connection.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch course statistics
+  const fetchStats = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/courses/stats/overview`);
+      if (response.ok) {
+        const data = await response.json();
+        setStats(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching stats:', error);
+    }
+  };
+
+  // Initial load
   useEffect(() => {
-    const mockCourses = [
-      { id: 1, courseName: "MS-CIT", fees: 2500 },
-      { id: 2, courseName: "ADVANCE TALLY - CIT", fees: 3500 },
-      { id: 3, courseName: "ADVANCE TALLY - KLIC", fees: 3000 },
-      { id: 4, courseName: "ADVANCE EXCEL - CIT", fees: 2000 },
-      { id: 5, courseName: "ENGLISH TYPING - MKCL", fees: 1500 },
-      { id: 6, courseName: "ENGLISH TYPING - CIT", fees: 1800 },
-      { id: 7, courseName: "MARATHI TYPING - MKCL", fees: 1500 },
-      { id: 8, courseName: "DTP - CIT", fees: 2200 },
-      { id: 9, courseName: "IT - KLIC", fees: 4000 },
-      { id: 10, courseName: "KLIC DIPLOMA", fees: 5000 },
-    ];
-    setCourses(mockCourses);
+    fetchCourses();
+    fetchStats();
   }, []);
 
-  const filteredCourses = courses.filter(course =>
-    course.courseName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Search functionality
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (searchTerm) {
+        fetchCourses(searchTerm);
+      } else {
+        fetchCourses();
+      }
+    }, 300); // Debounce search
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm]);
 
   const openModal = (course = null) => {
     setEditingCourse(course);
+    setApiError('');
     if (course) {
       setValue('courseName', course.courseName);
       setValue('fees', course.fees);
@@ -57,51 +98,84 @@ const CoursesFeesManagement = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setEditingCourse(null);
+    setApiError('');
     reset();
   };
 
   const onSubmit = async (data) => {
-    setIsLoading(true);
+    setApiError('');
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
+      const courseData = {
+        courseName: data.courseName.trim(),
+        fees: parseInt(data.fees)
+      };
+
+      let response;
       if (editingCourse) {
         // Update existing course
-        setCourses(prev => prev.map(course => 
-          course.id === editingCourse.id 
-            ? { ...course, courseName: data.courseName, fees: parseInt(data.fees) }
-            : course
-        ));
-        alert('Course updated successfully!');
+        response = await fetch(`${API_BASE_URL}/courses/${editingCourse.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(courseData),
+        });
       } else {
         // Create new course
-        const newCourse = {
-          id: Date.now(),
-          courseName: data.courseName,
-          fees: parseInt(data.fees)
-        };
-        setCourses(prev => [...prev, newCourse]);
-        alert('Course created successfully!');
+        response = await fetch(`${API_BASE_URL}/courses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(courseData),
+        });
       }
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to save course');
+      }
+
+      const result = await response.json();
+      
+      // Show success message
+      alert(result.message || (editingCourse ? 'Course updated successfully!' : 'Course created successfully!'));
+      
+      // Refresh courses list and stats
+      fetchCourses(searchTerm);
+      fetchStats();
       closeModal();
+      
     } catch (error) {
-      alert('Error saving course. Please try again.');
-    } finally {
-      setIsLoading(false);
+      console.error('Error saving course:', error);
+      setApiError(error.message || 'Error saving course. Please try again.');
     }
   };
 
-  const deleteCourse = async (courseId) => {
-    if (window.confirm('Are you sure you want to delete this course?')) {
+  const deleteCourse = async (course) => {
+    if (window.confirm(`Are you sure you want to delete "${course.courseName}"?`)) {
       setIsLoading(true);
+      setApiError('');
       try {
-        // Simulate API call
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setCourses(prev => prev.filter(course => course.id !== courseId));
-        alert('Course deleted successfully!');
+        const response = await fetch(`${API_BASE_URL}/courses/${course.id}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.detail || 'Failed to delete course');
+        }
+
+        const result = await response.json();
+        alert(result.message || 'Course deleted successfully!');
+        
+        // Refresh courses list and stats
+        fetchCourses(searchTerm);
+        fetchStats();
+        
       } catch (error) {
-        alert('Error deleting course. Please try again.');
+        console.error('Error deleting course:', error);
+        setApiError(error.message || 'Error deleting course. Please try again.');
       } finally {
         setIsLoading(false);
       }
@@ -118,6 +192,10 @@ const CoursesFeesManagement = () => {
         placeholder={placeholder}
         {...register(name, {
           required: required ? `${label} is required` : false,
+          ...(name === 'courseName' && {
+            minLength: { value: 1, message: "Course name cannot be empty" },
+            maxLength: { value: 255, message: "Course name is too long" }
+          }),
           ...(type === "number" && { 
             min: { value: 1, message: "Fees must be greater than 0" },
             pattern: { value: /^\d+$/, message: "Please enter a valid amount" }
@@ -139,6 +217,22 @@ const CoursesFeesManagement = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+        {/* API Error Banner */}
+        {apiError && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+            <div className="flex items-center">
+              <AlertCircle className="w-5 h-5 text-red-500 mr-2" />
+              <span className="text-red-700 text-sm">{apiError}</span>
+              <button
+                onClick={() => setApiError('')}
+                className="ml-auto text-red-500 hover:text-red-700"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
@@ -146,10 +240,18 @@ const CoursesFeesManagement = () => {
               <h1 className="text-3xl font-bold text-gray-900 mb-1">
                 Courses & Fees
               </h1>
-              <p className="text-gray-600 flex items-center">
-                <BookOpen className="w-4 h-4 mr-1" />
-                {courses.length} courses available
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center text-gray-600 text-sm space-y-1 sm:space-y-0 sm:space-x-4">
+                <span className="flex items-center">
+                  <BookOpen className="w-4 h-4 mr-1" />
+                  {courses.length} courses available
+                </span>
+                {stats && (
+                  <>
+                    <span>Avg fees: ₹{stats.average_fees?.toLocaleString()}</span>
+                    <span>Range: ₹{stats.min_fees?.toLocaleString()} - ₹{stats.max_fees?.toLocaleString()}</span>
+                  </>
+                )}
+              </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3">
@@ -177,8 +279,16 @@ const CoursesFeesManagement = () => {
           </div>
         </div>
 
+        {/* Loading State */}
+        {isLoading && (
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 text-center py-16">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading courses...</p>
+          </div>
+        )}
+
         {/* Courses Grid */}
-        {filteredCourses.length === 0 ? (
+        {!isLoading && courses.length === 0 ? (
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 text-center py-16">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <BookOpen className="w-6 h-6 text-gray-400" />
@@ -188,9 +298,9 @@ const CoursesFeesManagement = () => {
               {searchTerm ? 'Try adjusting your search terms' : 'Start by adding your first course'}
             </p>
           </div>
-        ) : (
+        ) : !isLoading && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {filteredCourses.map((course, index) => (
+            {courses.map((course, index) => (
               <div key={course.id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-white/20 p-4 hover:shadow-lg transition-all duration-200">
                 <div className="flex items-center justify-between">
                   <div className="flex-1 min-w-0">
@@ -201,8 +311,13 @@ const CoursesFeesManagement = () => {
                       <div className="min-w-0 flex-1">
                         <h3 className="text-base font-semibold text-gray-900 truncate">{course.courseName}</h3>
                         <div className="flex items-center mt-1">
-                          <span className="text-lg font-bold text-green-600">₹{course.fees.toLocaleString()}</span>
+                          <span className="text-lg font-bold text-green-600">₹{course.fees?.toLocaleString()}</span>
                         </div>
+                        {course.createdAt && (
+                          <p className="text-xs text-gray-500 mt-1">
+                            Added: {new Date(course.createdAt).toLocaleDateString()}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -216,7 +331,7 @@ const CoursesFeesManagement = () => {
                       <Edit2 className="w-4 h-4" />
                     </button>
                     <button
-                      onClick={() => deleteCourse(course.id)}
+                      onClick={() => deleteCourse(course)}
                       className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-150"
                       title="Delete course"
                     >
@@ -246,6 +361,16 @@ const CoursesFeesManagement = () => {
                   </button>
                 </div>
 
+                {/* API Error in Modal */}
+                {apiError && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-4">
+                    <div className="flex items-center text-red-700 text-sm">
+                      <AlertCircle className="w-4 h-4 mr-2" />
+                      {apiError}
+                    </div>
+                  </div>
+                )}
+
                 <div className="space-y-4">
                   <FormInput
                     name="courseName"
@@ -274,10 +399,10 @@ const CoursesFeesManagement = () => {
                     <button
                       type="button"
                       onClick={handleSubmit(onSubmit)}
-                      disabled={isSubmitting || isLoading}
+                      disabled={isSubmitting}
                       className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                     >
-                      {isSubmitting || isLoading ? (
+                      {isSubmitting ? (
                         <>
                           <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
                           {editingCourse ? 'Updating...' : 'Creating...'}
