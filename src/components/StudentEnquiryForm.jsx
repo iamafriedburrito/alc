@@ -585,6 +585,26 @@ const StudentEnquiryForm = () => {
               </div>
             </div>
 
+            
+            {/* Institute Use Section */}
+            <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
+                  5
+                </span>
+                For Institute Use
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormInput
+                  name="handledBy"
+                  label="Handled By"
+                  required
+                />
+              </div>
+            </div>
+
+
             <button
               type="button"
               onClick={handleSubmit(onSubmit)}
