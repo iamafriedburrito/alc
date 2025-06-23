@@ -284,8 +284,8 @@ const StudentEnquiryForm = () => {
                   name="maritalStatus"
                   label="Marital Status"
                   options={[
-                    { value: "married", label: "Married" },
-                    { value: "single", label: "Single" },
+                    { value: "MARRIED", label: "Married" },
+                    { value: "SINGLE", label: "Single" },
                   ]}
                   required
                 />
