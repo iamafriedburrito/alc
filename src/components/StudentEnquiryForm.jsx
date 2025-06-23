@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { districts } from "./districts";
+import { FormInput, AadharInput, FormSelect} from "./FormComponents";
 
 const StudentEnquiryForm = () => {
   const {
@@ -65,156 +66,6 @@ const StudentEnquiryForm = () => {
     }
   };
 
-  // Enhanced Aadhar Input Component
-  const AadharInput = ({ field, fieldState }) => {
-    const handleAadharChange = (e) => {
-      const value = e.target.value.replace(/\D/g, ""); // Only digits
-      if (value.length <= 12) {
-        field.onChange(value);
-      }
-    };
-
-    const formatAadhar = (value) => {
-      return value.replace(/(\d{4})(?=\d)/g, "$1 ");
-    };
-
-    return (
-      <div>
-        <input
-          {...field}
-          onChange={handleAadharChange}
-          value={formatAadhar(field.value)}
-          placeholder="1234 5678 9012"
-          maxLength="14" // 12 digits + 2 spaces
-          className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm font-mono text-lg tracking-wider ${
-            fieldState.error
-              ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-              : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          }`}
-        />
-        {fieldState.error && (
-          <p className="mt-1 text-sm text-red-600">
-            {fieldState.error.message}
-          </p>
-        )}
-      </div>
-    );
-  };
-
-  // Reusable Input Component
-  const FormInput = ({
-    name,
-    label,
-    type = "text",
-    placeholder,
-    required = false,
-    transform = true,
-    ...props
-  }) => (
-    <div>
-      <label
-        htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-2"
-      >
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      <input
-        id={name}
-        type={type}
-        placeholder={placeholder}
-        {...register(name, {
-          required: required ? `${label} is required` : false,
-          ...(type === "tel" && {
-            pattern: {
-              value: /^[0-9]{10}$/,
-              message: "Please enter a valid 10-digit mobile number",
-            },
-          }),
-          ...(transform && {
-            onChange: (e) => {
-              e.target.value = e.target.value.toUpperCase();
-            },
-          }),
-        })}
-        className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${
-          errors[name]
-            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-            : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        }`}
-        {...props}
-      />
-      {errors[name] && (
-        <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
-      )}
-    </div>
-  );
-
-  // Reusable Select Component
-  const FormSelect = ({
-    name,
-    label,
-    options,
-    required = false,
-    placeholder = "Select...",
-  }) => (
-    <div>
-      <label
-        htmlFor={name}
-        className="block text-sm font-medium text-gray-700 mb-2"
-      >
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      <select
-        id={name}
-        {...register(name, {
-          required: required ? `${label} is required` : false,
-        })}
-        className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${
-          errors[name]
-            ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-            : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        }`}
-      >
-        <option value="">{placeholder}</option>
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      {errors[name] && (
-        <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
-      )}
-    </div>
-  );
-
-  // Reusable Radio Group Component
-  const FormRadioGroup = ({ name, label, options, required = false }) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        {label} {required && <span className="text-red-500">*</span>}
-      </label>
-      <div className="flex gap-4">
-        {options.map((option) => (
-          <label key={option.value} className="flex items-center space-x-2">
-            <input
-              type="radio"
-              value={option.value}
-              {...register(name, {
-                required: required ? `${label} is required` : false,
-              })}
-              className="accent-blue-500"
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
-      </div>
-      {errors[name] && (
-        <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
-      )}
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -245,17 +96,23 @@ const StudentEnquiryForm = () => {
                   label="First Name / Given Name"
                   placeholder="First name"
                   required
+                  register={register}
+                  errors={errors}
                 />
                 <FormInput
                   name="middleName"
                   label="Middle Name"
                   placeholder="Middle name"
+                  register={register}
+                  errors={errors}
                 />
                 <FormInput
                   name="lastName"
                   label="Last Name / Surname"
                   placeholder="Last name"
                   required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
@@ -266,6 +123,8 @@ const StudentEnquiryForm = () => {
                   label="Date of Birth"
                   type="date"
                   required
+                  register={register}
+                  errors={errors}
                 />
 
                 <FormSelect
@@ -278,16 +137,21 @@ const StudentEnquiryForm = () => {
                     { value: "TRANSGENDER", label: "TRANSGENDER" },
                   ]}
                   required
+                  register={register}
+                  errors={errors}
                 />
 
-                <FormRadioGroup
+                <FormSelect
                   name="maritalStatus"
                   label="Marital Status"
+                  placeholder="Select Marital Status"
                   options={[
-                    { value: "MARRIED", label: "Married" },
-                    { value: "SINGLE", label: "Single" },
+                    { value: "SINGLE", label: "SINGLE" },
+                    { value: "MARRIED", label: "MARRIED" },
                   ]}
                   required
+                  register={register}
+                  errors={errors}
                 />
               </div>
 
@@ -299,6 +163,8 @@ const StudentEnquiryForm = () => {
                     label="Mother Tongue"
                     placeholder="Select"
                     required
+                    register={register}
+                    errors={errors}
                     options={[
                       { value: "MARATHI", label: "MARATHI" },
                       { value: "HINDI", label: "HINDI" },
@@ -354,6 +220,8 @@ const StudentEnquiryForm = () => {
                     label="Address"
                     placeholder="Enter complete address"
                     required
+                    register={register}
+                    errors={errors}
                   />
                 </div>
 
@@ -363,12 +231,16 @@ const StudentEnquiryForm = () => {
                     label="City / Town / Village"
                     placeholder="City/Town/Village"
                     required
+                    register={register}
+                    errors={errors}
                   />
 
                   <FormInput
                     name="state"
                     label="State"
                     readOnly
+                    register={register}
+                    errors={errors}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-700 cursor-not-allowed focus:outline-none cursor-not-allowed"
                   />
 
@@ -381,6 +253,8 @@ const StudentEnquiryForm = () => {
                       value: district,
                       label: district,
                     }))}
+                    register={register}
+                    errors={errors}
                   />
                 </div>
               </div>
@@ -488,6 +362,8 @@ const StudentEnquiryForm = () => {
                   label="Category"
                   placeholder="Select category"
                   required
+                  register={register}
+                  errors={errors}
                   options={[
                     { value: "SCHOOL STUDENT", label: "SCHOOL STUDENT" },
                     { value: "COLLEGE STUDENT", label: "COLLEGE STUDENT" },
@@ -519,6 +395,8 @@ const StudentEnquiryForm = () => {
                   label="Educational Qualification"
                   placeholder="Select qualification"
                   required
+                  register={register}
+                  errors={errors}
                   options={[
                     { value: "1st-4th STD", label: "1st-4th STD." },
                     { value: "5th STD", label: "5th STD." },
@@ -542,6 +420,8 @@ const StudentEnquiryForm = () => {
                   label="Course Name"
                   placeholder="Select course"
                   required
+                  register={register}
+                  errors={errors}
                   options={[
                     { value: "MS-CIT", label: "MS-CIT" },
                     { value: "ADVANCE TALLY - CIT", label: "ADVANCE TALLY - CIT" },
@@ -565,6 +445,8 @@ const StudentEnquiryForm = () => {
                   label="Timing"
                   placeholder="Select timing"
                   required
+                  register={register}
+                  errors={errors}
                   options={[
                     { value: "8AM-9AM", label: "8AM to 9AM" },
                     { value: "9AM-10AM", label: "9AM to 10AM" },
@@ -600,6 +482,8 @@ const StudentEnquiryForm = () => {
                   name="handledBy"
                   label="Handled By"
                   required
+                  register={register}
+                  errors={errors}
                 />
               </div>
             </div>
