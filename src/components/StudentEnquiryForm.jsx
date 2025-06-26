@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { districts } from "./districts";
 import { FormInput, AadharInput, FormSelect} from "./FormComponents";
+import { toast } from 'react-toastify';
 
 const StudentEnquiryForm = () => {
   const {
@@ -49,7 +50,7 @@ const StudentEnquiryForm = () => {
       }
 
       const result = await response.json();
-      alert(`Enquiry submitted successfully! Enquiry ID: ${result.enquiry_id}`);
+      toast.success(`Enquiry submitted successfully! Enquiry ID: ${result.enquiry_id}`);
       reset(); // Reset form after successful submission
     } catch (error) {
       console.error("Error submitting enquiry:", error);
