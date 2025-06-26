@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from 'react-toastify';
 
 const InstituteLogin = () => {
   const {
@@ -24,8 +25,8 @@ const InstituteLogin = () => {
       data.username === VALID_USER.username &&
       data.password === VALID_USER.password
     ) {
-      alert("Login successful! Redirecting...");
-      // 🔁 Redirect logic or token storage here
+      toast.success("Login successful! Redirecting...");
+      // Redirect logic or token storage here
     } else {
       setError("Invalid username or password.");
     }

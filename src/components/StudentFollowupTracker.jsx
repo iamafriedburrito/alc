@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, RefreshCw } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 const StudentFollowupTracker = () => {
   const [enquiries, setEnquiries] = useState([]);
@@ -205,7 +206,7 @@ const StudentFollowupTracker = () => {
       await fetchEnquiries();
       
       setShowFollowupModal(false);
-      alert('Follow-up recorded successfully!');
+      toast.success('Follow-up recorded successfully!');
       
     } catch (error) {
       console.error('Error recording follow-up:', error);

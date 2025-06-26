@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { districts } from './districts';
 import { FormSelect, AadharInput, FormInput } from './FormComponents';
+import { toast } from 'react-toastify';
 
 const StudentAdmissionForm = () => {
     const today = new Date().toISOString().split("T")[0];
@@ -106,7 +107,7 @@ const StudentAdmissionForm = () => {
             }
 
             const result = await response.json();
-            alert(
+            toast.success(
                 `Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`,
             );
             reset(); // Reset form after successful submission

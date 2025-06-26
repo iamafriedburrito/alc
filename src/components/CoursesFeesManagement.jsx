@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Search, Plus, Edit2, Trash2, Save, X, BookOpen, AlertCircle } from "lucide-react";
+import { toast } from 'react-toastify';
 
 const CoursesFeesManagement = () => {
   const [courses, setCourses] = useState([]);
@@ -139,7 +140,7 @@ const CoursesFeesManagement = () => {
       const result = await response.json();
       
       // Show success message
-      alert(result.message || (editingCourse ? 'Course updated successfully!' : 'Course created successfully!'));
+      toast.success(result.message || (editingCourse ? 'Course updated successfully!' : 'Course created successfully!'));
       
       // Refresh courses list and stats
       fetchCourses(searchTerm);
@@ -167,7 +168,7 @@ const CoursesFeesManagement = () => {
         }
 
         const result = await response.json();
-        alert(result.message || 'Course deleted successfully!');
+        toast.success(result.message || 'Course deleted successfully!');
         
         // Refresh courses list and stats
         fetchCourses(searchTerm);

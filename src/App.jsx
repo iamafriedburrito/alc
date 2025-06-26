@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from 'react-toastify';
 import StudentEnquiryForm from "./components/StudentEnquiryForm";
 import StudentAdmissionForm from "./components/StudentAdmissionForm";
 import FeeReceipt from "./components/FeeReceipt";
@@ -11,6 +12,7 @@ import StudentFollowupTracker from "./components/StudentFollowupTracker";
 function App() {
   return (
     <div>
+      <ToastContainer />
       <StudentEnquiryForm />
       <StudentAdmissionForm />
       <FeeReceipt />
