@@ -9,6 +9,7 @@ import StudentAdmissionsList from "./components/StudentAdmissionsList";
 import InstituteLogin from "./components/InstituteLogin";
 import CoursesFeesManagement from "./components/CoursesFeesManagement";
 import StudentFollowupTracker from "./components/StudentFollowupTracker";
+import Sidebar from "./components/Sidebar";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                 <Route path="/admission-list" element={<StudentAdmissionsList />} />
                 <Route path="/courses-fees" element={<CoursesFeesManagement />} />
                 <Route path="/followup-tracker" element={<StudentFollowupTracker />} />
+                <Route path="/sidebar" element={<Sidebar />} />
             </Routes>
         </div>
     );
