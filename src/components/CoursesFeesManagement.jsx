@@ -12,7 +12,7 @@ const CoursesFeesManagement = () => {
   const [apiError, setApiError] = useState('');
   const [stats, setStats] = useState(null);
 
-  // Configure your API base URL - adjust this to match your backend
+  // API base URL
   const API_BASE_URL = 'http://localhost:8000/api';
 
   const {
@@ -246,13 +246,7 @@ const CoursesFeesManagement = () => {
                   <BookOpen className="w-4 h-4 mr-1" />
                   {courses.length} courses available
                 </span>
-                {stats && (
-                  <>
-                    <span>Avg fees: ₹{stats.average_fees?.toLocaleString()}</span>
-                    <span>Range: ₹{stats.min_fees?.toLocaleString()} - ₹{stats.max_fees?.toLocaleString()}</span>
-                  </>
-                )}
-              </div>
+                </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-3">
