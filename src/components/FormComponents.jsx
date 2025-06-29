@@ -21,7 +21,7 @@ export const AadharInput = ({ field, fieldState }) => {
                 value={formatAadhar(field.value)}
                 placeholder="1234 5678 9012"
                 maxLength="14" // 12 digits + 2 spaces
-                className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm font-mono text-lg tracking-wider ${fieldState.error
+                className={`w-[200px] px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm font-mono tracking-wider ${fieldState.error
                         ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                         : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     }`}
