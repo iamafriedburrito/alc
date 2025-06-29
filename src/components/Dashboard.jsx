@@ -129,19 +129,6 @@ const Dashboard = () => {
         })
     }
 
-    const getTimeAgo = (dateString) => {
-        if (!dateString) return 'Unknown'
-        const date = new Date(dateString)
-        const now = new Date()
-        const diffInHours = Math.floor((now - date) / (1000 * 60 * 60))
-        
-        if (diffInHours < 1) return 'Less than an hour ago'
-        if (diffInHours < 24) return `${diffInHours} hour${diffInHours > 1 ? 's' : ''} ago`
-        const diffInDays = Math.floor(diffInHours / 24)
-        if (diffInDays < 7) return `${diffInDays} day${diffInDays > 1 ? 's' : ''} ago`
-        return formatDate(dateString)
-    }
-
     const quickActions = [
         { label: "Add Enquiry", icon: UserPlus, path: "/enquiry", color: "bg-blue-500" },
         { label: "New Admission", icon: GraduationCap, path: "/admission", color: "bg-green-500" },
@@ -334,9 +321,6 @@ const Dashboard = () => {
                                         </p>
                                         <p className="text-xs text-gray-500">
                                             Mobile: {enquiry.mobileNumber}
-                                        </p>
-                                        <p className="text-xs text-gray-400 mt-1">
-                                            {getTimeAgo(enquiry.enquiryDate)}
                                         </p>
                                     </div>
                                 </div>
