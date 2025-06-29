@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ErrorFallback from "./ErrorFallback";
 
 const StudentAdmissionsList = () => {
     const [admissions, setAdmissions] = useState([]);
@@ -99,27 +100,7 @@ const StudentAdmissionsList = () => {
     }
 
     if (error) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-6xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
-                        <div className="text-center">
-                            <div className="text-red-500 text-6xl mb-4">⚠️</div>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                                Error Loading Data
-                            </h2>
-                            <p className="text-gray-600 mb-4">{error}</p>
-                            <button
-                                onClick={fetchAdmissions}
-                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+        return <ErrorFallback onRetry={() => window.location.reload()} />;
     }
 
     return (

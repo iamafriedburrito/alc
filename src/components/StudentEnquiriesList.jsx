@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import ErrorFallback from "./ErrorFallback";
 
 const StudentEnquiriesList = () => {
     const [enquiries, setEnquiries] = useState([]);
@@ -16,7 +17,7 @@ const StudentEnquiriesList = () => {
         try {
             setLoading(true);
             const response = await fetch('http://localhost:8000/api/enquiries');
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -35,7 +36,7 @@ const StudentEnquiriesList = () => {
     const handleViewDetails = async (enquiryId) => {
         try {
             const response = await fetch(`http://localhost:8000/api/enquiry/${enquiryId}`);
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -64,14 +65,14 @@ const StudentEnquiriesList = () => {
 
     // Filter enquiries based on search term and category
     const filteredEnquiries = enquiries.filter(enquiry => {
-        const matchesSearch = 
+        const matchesSearch =
             enquiry.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             enquiry.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
             enquiry.mobileNumber.includes(searchTerm) ||
             enquiry.courseName.toLowerCase().includes(searchTerm.toLowerCase());
-        
+
         const matchesCategory = filterCategory === "" || enquiry.category === filterCategory;
-        
+
         return matchesSearch && matchesCategory;
     });
 
@@ -91,25 +92,7 @@ const StudentEnquiriesList = () => {
     }
 
     if (error) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-                <div className="max-w-6xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
-                        <div className="text-center">
-                            <div className="text-red-500 text-6xl mb-4">⚠️</div>
-                            <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Data</h2>
-                            <p className="text-gray-600 mb-4">{error}</p>
-                            <button
-                                onClick={fetchEnquiries}
-                                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
+        return <ErrorFallback onRetry={() => window.location.reload()} />;
     }
 
     return (
@@ -186,7 +169,7 @@ const StudentEnquiriesList = () => {
                                                     {enquiry.firstName} {enquiry.middleName} {enquiry.lastName}
                                                 </h3>
                                             </div>
-                                            
+
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                                 <div>
                                                     <span className="text-sm text-gray-500">Course:</span>
@@ -205,7 +188,7 @@ const StudentEnquiriesList = () => {
                                                     </p>
                                                 </div>
                                             </div>
-                                            
+
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
                                                     <span className="text-sm text-gray-500">Location:</span>
@@ -221,7 +204,7 @@ const StudentEnquiriesList = () => {
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div className="mt-4 md:mt-0 md:ml-6">
                                             <button
                                                 onClick={() => handleViewDetails(enquiry.id)}
