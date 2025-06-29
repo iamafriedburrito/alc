@@ -12,6 +12,7 @@ import {
     BookOpen,
     UserCheck,
     Phone,
+    Settings,
 } from "lucide-react"
 
 const Sidebar = () => {
@@ -27,6 +28,7 @@ const Sidebar = () => {
         { id: "receipt", label: "Fee Receipt", icon: FileText, path: "/receipt" },
         { id: "courses", label: "Courses & Fees", icon: BookOpen, path: "/courses" },
         { id: "followup", label: "Follow-up Tracker", icon: Phone, path: "/followup" },
+        { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
     ]
 
     return (
