@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle } from 'lucide-react';
 import { toast } from 'react-toastify';
+import ErrorFallback from './ErrorFallback';
 
 const StudentFollowupTracker = () => {
     const [enquiries, setEnquiries] = useState([]);
@@ -12,7 +13,6 @@ const StudentFollowupTracker = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [submitting, setSubmitting] = useState(false);
-    const [apiStatus, setApiStatus] = useState('checking');
     const [followupData, setFollowupData] = useState({
         followup_date: '',
         notes: '',
@@ -21,35 +21,11 @@ const StudentFollowupTracker = () => {
         handled_by: 'System User'
     });
 
-    // Check API health
-    const checkApiHealth = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/health');
-            if (response.ok) {
-                setApiStatus('connected');
-                return true;
-            } else {
-                setApiStatus('error');
-                return false;
-            }
-        } catch (error) {
-            console.error('API health check failed:', error);
-            setApiStatus('disconnected');
-            return false;
-        }
-    };
-
     // Fetch enquiries from backend
     const fetchEnquiries = async () => {
         try {
             setLoading(true);
             setError(null);
-
-            // First check if API is healthy
-            const isHealthy = await checkApiHealth();
-            if (!isHealthy) {
-                throw new Error('API server is not responding. Please ensure the FastAPI server is running on port 8000.');
-            }
 
             const response = await fetch('http://localhost:8000/api/followups/tracker', {
                 method: 'GET',
@@ -58,8 +34,6 @@ const StudentFollowupTracker = () => {
                     'Content-Type': 'application/json',
                 },
             });
-
-            console.log('Response received:', response);
 
             // Check if response is ok
             if (!response.ok) {
@@ -82,7 +56,6 @@ const StudentFollowupTracker = () => {
             if (data.enquiries && Array.isArray(data.enquiries)) {
                 setEnquiries(data.enquiries);
                 setFilteredEnquiries(data.enquiries);
-                setApiStatus('connected');
             } else {
                 console.warn('Unexpected data structure:', data);
                 setEnquiries([]);
@@ -92,7 +65,6 @@ const StudentFollowupTracker = () => {
         } catch (error) {
             console.error('Error fetching enquiries:', error);
             setError(error.message);
-            setApiStatus('error');
         } finally {
             setLoading(false);
         }
@@ -233,7 +205,6 @@ const StudentFollowupTracker = () => {
                         <div className="text-center">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                             <p className="text-gray-600">Loading enquiries...</p>
-                            <p className="text-sm text-gray-500 mt-2">API Status: {apiStatus}</p>
                         </div>
                     </div>
                 </div>
@@ -256,14 +227,6 @@ const StudentFollowupTracker = () => {
                         <p className="text-gray-600">
                             Track and manage student enquiry follow-ups
                         </p>
-                        <div className="mt-2 flex items-center justify-center gap-2">
-                            <div className={`w-3 h-3 rounded-full ${apiStatus === 'connected' ? 'bg-green-500' :
-                                apiStatus === 'disconnected' ? 'bg-red-500' : 'bg-yellow-500'
-                                }`}></div>
-                            <span className="text-sm text-gray-500">
-                                API: {apiStatus}
-                            </span>
-                        </div>
                     </div>
 
                     {/* Search and Filter Section */}
