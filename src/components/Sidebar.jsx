@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Link, useLocation } from "react-router"
+import { Tooltip } from 'react-tooltip'
 import {
     ChevronLeft,
     ChevronRight,
@@ -59,36 +60,34 @@ const Sidebar = () => {
                     const isActive = location.pathname === item.path
 
                     return (
-                        <Link
-                            key={item.id}
-                            to={item.path}
-                            className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 ease-in-out group relative overflow-hidden ${isActive
-                                ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]"
-                                : "text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:transform hover:scale-[1.01]"
-                                } ${isCollapsed ? "justify-center" : "space-x-3"}`}
-                        >
-                            <Icon
-                                className={`h-5 w-5 flex-shrink-0 transition-all duration-300 ease-in-out ${isActive ? "text-white" : "text-gray-500 group-hover:text-gray-700"
-                                    }`}
-                            />
-
-                            <span
-                                className={`font-medium text-sm whitespace-nowrap transition-all duration-500 ease-in-out ${isCollapsed
-                                    ? "opacity-0 transform translate-x-4 pointer-events-none w-0"
-                                    : "opacity-100 transform translate-x-0 w-auto"
-                                    }`}
+                        <div>
+                            <Tooltip id="sidebar-tip" place="right" />
+                            <Link
+                                key={item.id}
+                                to={item.path}
+                                data-tooltip-id="sidebar-tip"
+                                data-tooltip-content={item.label}
+                                data-tooltip-hidden={!isCollapsed}
+                                className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 ease-in-out group relative overflow-hidden ${isActive
+                                    ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]"
+                                    : "text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:transform hover:scale-[1.01]"
+                                    } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                             >
-                                {item.label}
-                            </span>
+                                <Icon
+                                    className={`h-5 w-5 flex-shrink-0 transition-all duration-300 ease-in-out ${isActive ? "text-white" : "text-gray-500 group-hover:text-gray-700"
+                                        }`}
+                                />
 
-                            {/* Tooltip for collapsed state */}
-                            {isCollapsed && (
-                                <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out whitespace-nowrap z-50 flex items-center transform translate-x-2 group-hover:translate-x-0">
+                                <span
+                                    className={`font-medium text-sm whitespace-nowrap transition-all duration-500 ease-in-out ${isCollapsed
+                                        ? "opacity-0 transform translate-x-4 pointer-events-none w-0"
+                                        : "opacity-100 transform translate-x-0 w-auto"
+                                        }`}
+                                >
                                     {item.label}
-                                    <div className="absolute right-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
-                                </div>
-                            )}
-                        </Link>
+                                </span>
+                            </Link>
+                        </div>
                     )
                 })}
             </nav>
@@ -97,14 +96,10 @@ const Sidebar = () => {
             <div className="p-4 border-t border-gray-200/50 flex-shrink-0">
                 {isCollapsed ? (
                     <div className="flex justify-center">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center group relative transition-all duration-300 ease-in-out">
+                        {/* Tooltip for collapsed state */}
+                        <Tooltip id="admin-tooltip" />
+                        <div data-tooltip-id="admin-tooltip" data-tooltip-content="Admin User" className="z-2000 w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center group relative transition-all duration-300 ease-in-out">
                             <span className="text-white font-semibold text-sm">AD</span>
-
-                            {/* Tooltip for collapsed state */}
-                            <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 ease-in-out whitespace-nowrap z-50 flex items-center transform translate-x-2 group-hover:translate-x-0">
-                                Admin User
-                                <div className="absolute right-full top-1/2 transform -translate-y-1/2 border-4 border-transparent border-r-gray-900"></div>
-                            </div>
                         </div>
                     </div>
                 ) : (
