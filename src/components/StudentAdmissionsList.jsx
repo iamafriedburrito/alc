@@ -231,25 +231,6 @@ const StudentAdmissionsList = () => {
                                                 </div>
                                                 <div>
                                                     <span className="text-sm text-gray-500">
-                                                        Certificate:
-                                                    </span>
-                                                    <p className="font-medium text-gray-900 capitalize">
-                                                        {admission.certificateName}
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                <div>
-                                                    <span className="text-sm text-gray-500">
-                                                        Location:
-                                                    </span>
-                                                    <p className="font-medium text-gray-900">
-                                                        {admission.city}, {admission.district}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <span className="text-sm text-gray-500">
                                                         Admission Date:
                                                     </span>
                                                     <p className="font-medium text-gray-900">
