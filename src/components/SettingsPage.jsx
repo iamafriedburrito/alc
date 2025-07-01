@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router'
 import {
     Building2,
     Image,
@@ -20,7 +19,6 @@ import {
 import { toast } from 'react-toastify'
 
 const SettingsPage = () => {
-    const navigate = useNavigate()
     const fileInputRef = useRef(null)
     const backupFileInputRef = useRef(null)
 
@@ -52,7 +50,7 @@ const SettingsPage = () => {
     const [activeTab, setActiveTab] = useState('institute')
 
     // API base URL
-    const API_BASE = 'http://localhost:8000/api'
+    const API_BASE = 'http://localhost:8000'
 
     // Fetch current settings
     const fetchSettings = async () => {
@@ -61,14 +59,19 @@ const SettingsPage = () => {
             setError(null)
 
             const [instituteResponse, dbStatsResponse] = await Promise.all([
-                fetch(`${API_BASE}/settings/institute`).catch(() => ({ ok: false })),
-                fetch(`${API_BASE}/settings/database/stats`).catch(() => ({ ok: false }))
+                fetch(`${API_BASE}/api/settings/institute`).catch(() => ({ ok: false })),
+                fetch(`${API_BASE}/api/settings/database/stats`).catch(() => ({ ok: false }))
             ])
 
             if (instituteResponse.ok) {
                 const instituteData = await instituteResponse.json()
                 setInstituteSettings({
-                    ...instituteData,
+                    name: instituteData.name || '',
+                    address: instituteData.address || '',
+                    phone: instituteData.phone || '',
+                    email: instituteData.email || '',
+                    website: instituteData.website || '',
+                    logo: null,
                     logoPreview: instituteData.logo ? `${API_BASE}/uploads/${instituteData.logo}` : null
                 })
             }
@@ -141,17 +144,18 @@ const SettingsPage = () => {
                 formData.append('logo', instituteSettings.logo)
             }
 
-            const response = await fetch(`${API_BASE}/settings/institute`, {
+            const response = await fetch(`${API_BASE}/api/settings/institute`, {
                 method: 'POST',
                 body: formData
             })
 
             if (response.ok) {
-                toast.success('Institute settings saved successfully!')
+                const result = await response.json()
+                toast.success(result.message || 'Institute settings saved successfully!')
                 fetchSettings() // Refresh settings
             } else {
                 const errorData = await response.json()
-                toast.error(errorData.message || 'Failed to save settings')
+                toast.error(errorData.detail || 'Failed to save settings')
             }
 
         } catch (err) {
@@ -167,7 +171,7 @@ const SettingsPage = () => {
         try {
             setBackupInProgress(true)
 
-            const response = await fetch(`${API_BASE}/settings/database/backup`, {
+            const response = await fetch(`${API_BASE}/api/settings/database/backup`, {
                 method: 'POST'
             })
 
@@ -176,7 +180,19 @@ const SettingsPage = () => {
                 const url = window.URL.createObjectURL(blob)
                 const a = document.createElement('a')
                 a.href = url
-                a.download = `edumanage_backup_${new Date().toISOString().split('T')[0]}.sql`
+
+                // Get filename from response headers or use default
+                const contentDisposition = response.headers.get('content-disposition')
+                let filename = `edumanage_backup_${new Date().toISOString().split('T')[0]}.sql`
+
+                if (contentDisposition) {
+                    const filenameMatch = contentDisposition.match(/filename="?(.+)"?/)
+                    if (filenameMatch) {
+                        filename = filenameMatch[1]
+                    }
+                }
+
+                a.download = filename
                 document.body.appendChild(a)
                 a.click()
                 document.body.removeChild(a)
@@ -186,7 +202,7 @@ const SettingsPage = () => {
                 fetchSettings() // Refresh stats
             } else {
                 const errorData = await response.json()
-                toast.error(errorData.message || 'Failed to create backup')
+                toast.error(errorData.detail || 'Failed to create backup')
             }
 
         } catch (err) {
@@ -205,13 +221,14 @@ const SettingsPage = () => {
             const formData = new FormData()
             formData.append('backup_file', file)
 
-            const response = await fetch(`${API_BASE}/settings/database/restore`, {
+            const response = await fetch(`${API_BASE}/api/settings/database/restore`, {
                 method: 'POST',
                 body: formData
             })
 
             if (response.ok) {
-                toast.success('Database restored successfully!')
+                const result = await response.json()
+                toast.success(result.message || 'Database restored successfully!')
                 fetchSettings() // Refresh stats
                 // Optionally refresh the entire app
                 setTimeout(() => {
@@ -219,7 +236,7 @@ const SettingsPage = () => {
                 }, 2000)
             } else {
                 const errorData = await response.json()
-                toast.error(errorData.message || 'Failed to restore backup')
+                toast.error(errorData.detail || 'Failed to restore backup')
             }
 
         } catch (err) {
