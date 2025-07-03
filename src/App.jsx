@@ -9,6 +9,7 @@ import InstituteLogin from "./components/InstituteLogin"
 import CoursesFeesManagement from "./components/CoursesFeesManagement"
 import StudentFollowupTracker from "./components/StudentFollowupTracker"
 import SettingsPage from "./components/SettingsPage"
+import FeeManagement from "./components/FeeManagement"
 import AppLayout from "./components/AppLayout"
 import Dashboard from "./components/Dashboard"
 
@@ -27,6 +28,7 @@ function App() {
                     <Route path="receipt" element={<FeeReceipt />} />
                     <Route path="courses" element={<CoursesFeesManagement />} />
                     <Route path="followup" element={<StudentFollowupTracker />} />
+                    <Route path="fees" element={<FeeManagement />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>
 
@@ -36,4 +38,5 @@ function App() {
     )
 }
 
-export default App;
+export default App
+
