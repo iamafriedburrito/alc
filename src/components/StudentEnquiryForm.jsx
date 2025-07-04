@@ -157,31 +157,29 @@ const StudentEnquiryForm = () => {
                             </div>
 
                             {/* Mother Tongue and Aadhaar */}
-                            <div className="flex flex-col md:flex-row gap-6 mb-6 items-start">
-                                <div className="md:w-1/3 w-full">
-                                    <FormSelect
-                                        name="motherTongue"
-                                        label="Mother Tongue"
-                                        placeholder="Select"
-                                        required
-                                        register={register}
-                                        errors={errors}
-                                        options={[
-                                            { value: "MARATHI", label: "MARATHI" },
-                                            { value: "HINDI", label: "HINDI" },
-                                            { value: "ENGLISH", label: "ENGLISH" },
-                                            { value: "GUJARATI", label: "GUJARATI" },
-                                            { value: "BENGALI", label: "BENGALI" },
-                                            { value: "TAMIL", label: "TAMIL" },
-                                            { value: "TELUGU", label: "TELUGU" },
-                                            { value: "KANNADA", label: "KANNADA" },
-                                            { value: "MALAYALAM", label: "MALAYALAM" },
-                                            { value: "PUNJABI", label: "PUNJABI" },
-                                            { value: "URDU", label: "URDU" },
-                                            { value: "OTHER", label: "OTHER" },
-                                        ]}
-                                    />
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <FormSelect
+                                    name="motherTongue"
+                                    label="Mother Tongue"
+                                    placeholder="Select"
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                    options={[
+                                        { value: "MARATHI", label: "MARATHI" },
+                                        { value: "HINDI", label: "HINDI" },
+                                        { value: "ENGLISH", label: "ENGLISH" },
+                                        { value: "GUJARATI", label: "GUJARATI" },
+                                        { value: "BENGALI", label: "BENGALI" },
+                                        { value: "TAMIL", label: "TAMIL" },
+                                        { value: "TELUGU", label: "TELUGU" },
+                                        { value: "KANNADA", label: "KANNADA" },
+                                        { value: "MALAYALAM", label: "MALAYALAM" },
+                                        { value: "PUNJABI", label: "PUNJABI" },
+                                        { value: "URDU", label: "URDU" },
+                                        { value: "OTHER", label: "OTHER" },
+                                    ]}
+                                />
 
                                 <div className="flex-1">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -296,8 +294,8 @@ const StudentEnquiryForm = () => {
                                                 },
                                             })}
                                             className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${errors.mobileNumber
-                                                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                                : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                 }`}
                                         />
                                     </div>
@@ -332,8 +330,8 @@ const StudentEnquiryForm = () => {
                                                 },
                                             })}
                                             className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${errors.alternateMobileNumber
-                                                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                                : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                                 }`}
                                         />
                                     </div>
