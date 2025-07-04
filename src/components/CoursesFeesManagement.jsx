@@ -217,7 +217,7 @@ const CoursesFeesManagement = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* API Error Banner */}
         {apiError && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
