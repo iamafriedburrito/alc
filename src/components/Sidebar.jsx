@@ -26,7 +26,6 @@ const Sidebar = () => {
         { id: "admission", label: "Student Admission", icon: GraduationCap, path: "/admission" },
         { id: "enquiries", label: "Enquiries List", icon: Users, path: "/enquiries" },
         { id: "admissions", label: "Admissions List", icon: UserCheck, path: "/admissions" },
-        { id: "receipt", label: "Fee Receipt", icon: FileText, path: "/receipt" },
         { id: "courses", label: "Courses & Fees", icon: BookOpen, path: "/courses" },
         { id: "fees", label: "Fee Management", icon: DollarSign, path: "/fees" },
         { id: "followup", label: "Follow-up Tracker", icon: Phone, path: "/followup" },

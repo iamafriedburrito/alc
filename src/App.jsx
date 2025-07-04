@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router"
 import { ToastContainer } from "react-toastify"
 import StudentEnquiryForm from "./components/StudentEnquiryForm"
 import StudentAdmissionForm from "./components/StudentAdmissionForm"
-import FeeReceipt from "./components/FeeReceipt"
 import StudentEnquiriesList from "./components/StudentEnquiriesList"
 import StudentAdmissionsList from "./components/StudentAdmissionsList"
 import InstituteLogin from "./components/InstituteLogin"
@@ -25,7 +24,6 @@ function App() {
                     <Route path="admission" element={<StudentAdmissionForm />} />
                     <Route path="enquiries" element={<StudentEnquiriesList />} />
                     <Route path="admissions" element={<StudentAdmissionsList />} />
-                    <Route path="receipt" element={<FeeReceipt />} />
                     <Route path="courses" element={<CoursesFeesManagement />} />
                     <Route path="followup" element={<StudentFollowupTracker />} />
                     <Route path="fees" element={<FeeManagement />} />
