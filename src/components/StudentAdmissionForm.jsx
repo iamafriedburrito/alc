@@ -5,7 +5,6 @@ import { FormSelect, AadharInput, FormInput } from './FormComponents';
 import { toast } from 'react-toastify';
 
 const StudentAdmissionForm = () => {
-    const today = new Date().toISOString().split("T")[0];
     const [photoPreview, setPhotoPreview] = useState(null);
     const [signaturePreview, setSignaturePreview] = useState(null);
 
@@ -22,7 +21,6 @@ const StudentAdmissionForm = () => {
             firstName: "",
             middleName: "",
             lastName: "",
-            certificateName: "",
             dateOfBirth: "",
             gender: "",
             maritalStatus: "",
@@ -38,8 +36,8 @@ const StudentAdmissionForm = () => {
             educationalQualification: "",
             courseName: "",
             timing: "",
+            certificateName: "",
             referredBy: "",
-            admissionDate: today,
         },
         mode: "onBlur",
     });
