@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { districts } from './districts';
 import { FormSelect, AadharInput, FormInput } from './FormComponents';
@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 
 const StudentAdmissionForm = () => {
     const today = new Date().toISOString().split("T")[0];
+    const [photoPreview, setPhotoPreview] = useState(null);
+    const [signaturePreview, setSignaturePreview] = useState(null);
 
     const {
         register,
@@ -21,20 +23,23 @@ const StudentAdmissionForm = () => {
             middleName: "",
             lastName: "",
             certificateName: "",
-            courseName: "",
-            referredBy: "",
-            joinedWhatsApp: false,
-            admissionDate: today,
             dateOfBirth: "",
-            mobileNumber: "",
-            alternateMobileNumber: "",
-            educationalQualification: "",
+            gender: "",
+            maritalStatus: "",
+            motherTongue: "",
             aadharNumber: "",
             correspondenceAddress: "",
             city: "",
             state: "MAHARASHTRA",
             district: "",
-            affirmation: false,
+            mobileNumber: "",
+            alternateMobileNumber: "",
+            category: "",
+            educationalQualification: "",
+            courseName: "",
+            timing: "",
+            referredBy: "",
+            admissionDate: today,
         },
         mode: "onBlur",
     });
@@ -64,6 +69,34 @@ const StudentAdmissionForm = () => {
 
         return () => subscription.unsubscribe();
     }, [watch, setValue]);
+
+    // Handle photo file change and preview
+    const handlePhotoChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setPhotoPreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setPhotoPreview(null);
+        }
+    };
+
+    // Handle signature file change and preview
+    const handleSignatureChange = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                setSignaturePreview(e.target.result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setSignaturePreview(null);
+        }
+    };
 
     const onSubmit = async (data) => {
         try {
@@ -111,6 +144,8 @@ const StudentAdmissionForm = () => {
                 `Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`,
             );
             reset(); // Reset form after successful submission
+            setPhotoPreview(null);
+            setSignaturePreview(null);
         } catch (error) {
             console.error("Error submitting admission:", error);
 
@@ -125,26 +160,6 @@ const StudentAdmissionForm = () => {
             }
         }
     };
-
-    // Reusable Checkbox Component
-    const FormCheckbox = ({ name, label, required = false }) => (
-        <div className="flex items-center space-x-2">
-            <input
-                type="checkbox"
-                id={name}
-                {...register(name, {
-                    required: required ? `${label} is required` : false,
-                })}
-                className="accent-blue-500"
-            />
-            <label htmlFor={name} className="text-sm font-medium text-gray-700">
-                {label} {required && <span className="text-red-500">*</span>}
-            </label>
-            {errors[name] && (
-                <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>
-            )}
-        </div>
-    );
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
@@ -170,33 +185,34 @@ const StudentAdmissionForm = () => {
                             </h3>
 
                             {/* Name Section */}
-                            <div className="space-y-4 mb-6">
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <FormInput
-                                        name="firstName"
-                                        label="First Name / Given Name"
-                                        placeholder="First name"
-                                        required
-                                        register={register}
-                                        errors={errors}
-                                    />
-                                    <FormInput
-                                        name="middleName"
-                                        label="Middle Name"
-                                        placeholder="Middle name"
-                                        register={register}
-                                        errors={errors}
-                                    />
-                                    <FormInput
-                                        name="lastName"
-                                        label="Last Name / Surname"
-                                        placeholder="Last name"
-                                        required
-                                        register={register}
-                                        errors={errors}
-                                    />
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <FormInput
+                                    name="firstName"
+                                    label="First Name / Given Name"
+                                    placeholder="First name"
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                />
+                                <FormInput
+                                    name="middleName"
+                                    label="Middle Name"
+                                    placeholder="Middle name"
+                                    register={register}
+                                    errors={errors}
+                                />
+                                <FormInput
+                                    name="lastName"
+                                    label="Last Name / Surname"
+                                    placeholder="Last name"
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                />
+                            </div>
 
+                            {/* Certificate Name */}
+                            <div className="mb-6">
                                 <FormInput
                                     name="certificateName"
                                     label="Name as it should appear on Certificate"
@@ -207,7 +223,7 @@ const StudentAdmissionForm = () => {
                                 />
                             </div>
 
-                            {/* Date of Birth, Admission Date, Aadhaar */}
+                            {/* Date of Birth, Gender, Marital Status */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                                 <FormInput
                                     name="dateOfBirth"
@@ -217,16 +233,61 @@ const StudentAdmissionForm = () => {
                                     register={register}
                                     errors={errors}
                                 />
-                                <FormInput
-                                    name="admissionDate"
-                                    label="Admission Date"
-                                    type="date"
+
+                                <FormSelect
+                                    name="gender"
+                                    label="Gender"
+                                    placeholder="Select Gender"
+                                    options={[
+                                        { value: "MALE", label: "MALE" },
+                                        { value: "FEMALE", label: "FEMALE" },
+                                        { value: "TRANSGENDER", label: "TRANSGENDER" },
+                                    ]}
                                     required
                                     register={register}
                                     errors={errors}
                                 />
 
-                                <div>
+                                <FormSelect
+                                    name="maritalStatus"
+                                    label="Marital Status"
+                                    placeholder="Select Marital Status"
+                                    options={[
+                                        { value: "SINGLE", label: "SINGLE" },
+                                        { value: "MARRIED", label: "MARRIED" },
+                                    ]}
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                />
+                            </div>
+
+                            {/* Mother Tongue and Aadhaar */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <FormSelect
+                                    name="motherTongue"
+                                    label="Mother Tongue"
+                                    placeholder="Select"
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                    options={[
+                                        { value: "MARATHI", label: "MARATHI" },
+                                        { value: "HINDI", label: "HINDI" },
+                                        { value: "ENGLISH", label: "ENGLISH" },
+                                        { value: "GUJARATI", label: "GUJARATI" },
+                                        { value: "BENGALI", label: "BENGALI" },
+                                        { value: "TAMIL", label: "TAMIL" },
+                                        { value: "TELUGU", label: "TELUGU" },
+                                        { value: "KANNADA", label: "KANNADA" },
+                                        { value: "MALAYALAM", label: "MALAYALAM" },
+                                        { value: "PUNJABI", label: "PUNJABI" },
+                                        { value: "URDU", label: "URDU" },
+                                        { value: "OTHER", label: "OTHER" },
+                                    ]}
+                                />
+
+                                <div className="flex-1">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Aadhaar Number <span className="text-red-500">*</span>
                                     </label>
@@ -389,47 +450,47 @@ const StudentAdmissionForm = () => {
                             </div>
                         </div>
 
-                        {/* Course and Additional Information Section */}
+                        {/* Educational & Course Information Section */}
                         <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                                     4
                                 </span>
-                                Course & Additional Information
+                                Educational & Course Information
                             </h3>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <FormSelect
-                                    name="courseName"
-                                    label="Course Name"
-                                    placeholder="Select course"
+                                    name="category"
+                                    label="Category"
+                                    placeholder="Select category"
                                     required
                                     register={register}
                                     errors={errors}
                                     options={[
-                                        { value: "MS-CIT", label: "MS-CIT" },
-                                        { value: "ADVANCE TALLY - CIT", label: "ADVANCE TALLY - CIT" },
-                                        { value: "ADVANCE TALLY - KLIC", label: "ADVANCE TALLY - KLIC" },
-                                        { value: "ADVANCE EXCEL - CIT", label: "ADVANCE EXCEL - KLIC" },
-                                        { value: "ENGLISH TYPING - MKCL", label: "ENGLISH TYPING - MKCL" },
-                                        { value: "ENGLISH TYPING - CIT", label: "ENGLISH TYPING - CIT" },
-                                        { value: "ENGLISH TYPING - GOVT", label: "ENGLISH TYPING - GOVT" },
-                                        { value: "MARATHI TYPING - MKCL", label: "MARATHI TYPING - MKCL" },
-                                        { value: "MARATHI TYPING - CIT", label: "MARATHI TYPING - CIT" },
-                                        { value: "MARATHI TYPING - GOVT", label: "MARATHI TYPING - GOVT" },
-                                        { value: "DTP - CIT", label: "DTP - CIT" },
-                                        { value: "DTP - KLIC", label: "DTP - KLIC" },
-                                        { value: "IT - KLIC", label: "IT - KLIC" },
-                                        { value: "KLIC DIPLOMA", label: "KLIC DIPLOMA" },
+                                        { value: "SCHOOL STUDENT", label: "SCHOOL STUDENT" },
+                                        { value: "COLLEGE STUDENT", label: "COLLEGE STUDENT" },
+                                        { value: "TEACHER", label: "TEACHER" },
+                                        { value: "EMPLOYEE", label: "EMPLOYEE" },
+                                        { value: "SELF EMPLOYED", label: "SELF EMPLOYED" },
+                                        { value: "HOUSEWIFE", label: "HOUSEWIFE" },
+                                        { value: "UNEMPLOYED", label: "UNEMPLOYED" },
+                                        { value: "RETIRED", label: "RETIRED" },
+                                        { value: "FARMER", label: "FARMER" },
+                                        { value: "GOVT EMPLOYEE", label: "GOVT EMPLOYEE" },
+                                        { value: "INDUSTRIAL WORKER", label: "INDUSTRIAL WORKER" },
+                                        {
+                                            value: "BUILDING CONSTRUCTION WORKER",
+                                            label: "BUILDING CONSTRUCTION WORKER",
+                                        },
+                                        {
+                                            value: "APPLICANT OF COMPETITIVE EXAMS (MPSC/UPSC)",
+                                            label: "APPLICANT OF COMPETITIVE EXAMS (MPSC/UPSC)",
+                                        },
+                                        { value: "SENIOR CITIZEN", label: "SENIOR CITIZEN" },
+                                        { value: "TRADER", label: "TRADER" },
+                                        { value: "OTHER", label: "OTHER" },
                                     ]}
-                                />
-
-                                <FormInput
-                                    name="referredBy"
-                                    label="Referred By"
-                                    placeholder="Enter referrer's name"
-                                    register={register}
-                                    errors={errors}
                                 />
 
                                 <FormSelect
@@ -456,16 +517,68 @@ const StudentAdmissionForm = () => {
                                         { value: "OTHER", label: "OTHER" },
                                     ]}
                                 />
-                            </div>
 
-                            <FormCheckbox
-                                name="joinedWhatsApp"
-                                label="Joined WhatsApp Group"
-                            />
+                                <FormSelect
+                                    name="courseName"
+                                    label="Course Name"
+                                    placeholder="Select course"
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                    options={[
+                                        { value: "MS-CIT", label: "MS-CIT" },
+                                        { value: "ADVANCE TALLY - CIT", label: "ADVANCE TALLY - CIT" },
+                                        { value: "ADVANCE TALLY - KLIC", label: "ADVANCE TALLY - KLIC" },
+                                        { value: "ADVANCE EXCEL - CIT", label: "ADVANCE EXCEL - KLIC" },
+                                        { value: "ENGLISH TYPING - MKCL", label: "ENGLISH TYPING - MKCL" },
+                                        { value: "ENGLISH TYPING - CIT", label: "ENGLISH TYPING - CIT" },
+                                        { value: "ENGLISH TYPING - GOVT", label: "ENGLISH TYPING - GOVT" },
+                                        { value: "MARATHI TYPING - MKCL", label: "MARATHI TYPING - MKCL" },
+                                        { value: "MARATHI TYPING - CIT", label: "MARATHI TYPING - CIT" },
+                                        { value: "MARATHI TYPING - GOVT", label: "MARATHI TYPING - GOVT" },
+                                        { value: "DTP - CIT", label: "DTP - CIT" },
+                                        { value: "DTP - KLIC", label: "DTP - KLIC" },
+                                        { value: "IT - KLIC", label: "IT - KLIC" },
+                                        { value: "KLIC DIPLOMA", label: "KLIC DIPLOMA" },
+                                    ]}
+                                />
+
+                                <FormSelect
+                                    name="timing"
+                                    label="Preferred Timing"
+                                    placeholder="Select timing"
+                                    required
+                                    register={register}
+                                    errors={errors}
+                                    options={[
+                                        { value: "8AM-9AM", label: "8AM to 9AM" },
+                                        { value: "9AM-10AM", label: "9AM to 10AM" },
+                                        { value: "10AM-11AM", label: "10AM to 11AM" },
+                                        { value: "11AM-12PM", label: "11AM to 12PM" },
+                                        { value: "12PM-1PM", label: "12PM to 1PM" },
+                                        { value: "1PM-2PM", label: "1PM to 2PM" },
+                                        { value: "2PM-3PM", label: "2PM to 3PM" },
+                                        { value: "3PM-4PM", label: "3PM to 4PM" },
+                                        { value: "4PM-5PM", label: "4PM to 5PM" },
+                                        { value: "5PM-6PM", label: "5PM to 6PM" },
+                                        { value: "6PM-7PM", label: "6PM to 7PM" },
+                                        { value: "7PM-8PM", label: "7PM to 8PM" },
+                                        { value: "8PM-9PM", label: "8PM to 9PM" },
+                                        { value: "9PM-10PM", label: "9PM to 10PM" },
+                                    ]}
+                                />
+
+                                <FormInput
+                                    name="referredBy"
+                                    label="Referred By"
+                                    placeholder="Enter referrer's name"
+                                    register={register}
+                                    errors={errors}
+                                />
+                            </div>
                         </div>
 
-                        {/* File Upload Section */}
-
+                        {/* Document Upload Section */}
                         <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
@@ -486,12 +599,29 @@ const StudentAdmissionForm = () => {
                                         id="photo"
                                         accept="image/*"
                                         {...register("photo", { required: "Photo is required" })}
+                                        onChange={(e) => {
+                                            register("photo").onChange(e);
+                                            handlePhotoChange(e);
+                                        }}
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
                                     />
                                     {errors.photo && (
                                         <p className="mt-1 text-sm text-red-600">
                                             {errors.photo.message}
                                         </p>
+                                    )}
+                                    {/* Photo Preview */}
+                                    {photoPreview && (
+                                        <div className="mt-4">
+                                            <p className="text-sm font-medium text-gray-700 mb-2">Photo Preview:</p>
+                                            <div className="w-32 h-40 border-2 border-gray-200 rounded-lg overflow-hidden">
+                                                <img
+                                                    src={photoPreview}
+                                                    alt="Photo Preview"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        </div>
                                     )}
                                 </div>
                                 <div>
@@ -508,6 +638,10 @@ const StudentAdmissionForm = () => {
                                         {...register("signature", {
                                             required: "Signature is required",
                                         })}
+                                        onChange={(e) => {
+                                            register("signature").onChange(e);
+                                            handleSignatureChange(e);
+                                        }}
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
                                     />
                                     {errors.signature && (
@@ -515,44 +649,21 @@ const StudentAdmissionForm = () => {
                                             {errors.signature.message}
                                         </p>
                                     )}
+                                    {/* Signature Preview */}
+                                    {signaturePreview && (
+                                        <div className="mt-4">
+                                            <p className="text-sm font-medium text-gray-700 mb-2">Signature Preview:</p>
+                                            <div className="w-32 h-20 border-2 border-gray-200 rounded-lg overflow-hidden bg-white">
+                                                <img
+                                                    src={signaturePreview}
+                                                    alt="Signature Preview"
+                                                    className="w-full h-full object-contain"
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-                        </div>
-
-                        {/* Terms and Affirmation Section */}
-                        <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
-                            <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-                                <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
-                                    5
-                                </span>
-                                Terms and Affirmation
-                            </h3>
-
-                            <div className="mb-6">
-                                <h4 className="text-lg font-medium text-gray-900 mb-2">
-                                    Important Notes
-                                </h4>
-                                <ul className="list-disc list-inside text-sm text-gray-600 space-y-2">
-                                    <li>Fees are non-refundable under any circumstances.</li>
-                                    <li>
-                                        Admission may be cancelled if the student is absent for an
-                                        extended period without a leave application.
-                                    </li>
-                                    <li>
-                                        Admission may be cancelled due to misbehavior in class.
-                                    </li>
-                                    <li>
-                                        Failure to pay fees monthly will incur a penalty, and the
-                                        final exam date may be extended.
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <FormCheckbox
-                                name="affirmation"
-                                label="I solemnly affirm that the name, photo, and signature on this form match my proof of identity, and I have understood the information about the course."
-                                required
-                            />
                         </div>
 
                         <button
