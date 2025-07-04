@@ -22,7 +22,7 @@ const Sidebar = () => {
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: Home, path: "/" },
-        { id: "enquiry", label: "Student Enquiry", icon: UserPlus, path: "/enquiry" },
+        { id: "enquiry", label: "New Enquiry", icon: UserPlus, path: "/enquiry" },
         { id: "admission", label: "Student Admission", icon: GraduationCap, path: "/admission" },
         { id: "enquiries", label: "Enquiries List", icon: Users, path: "/enquiries" },
         { id: "admissions", label: "Admissions List", icon: UserCheck, path: "/admissions" },

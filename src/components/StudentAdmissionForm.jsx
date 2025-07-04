@@ -148,14 +148,14 @@ const StudentAdmissionForm = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                     <div className="text-center mb-10">
                         <h2 className="text-4xl font-bold text-gray-900 mb-3">
-                            Student Admission Form
+                            Admission Form
                         </h2>
                         <p className="text-gray-600">
-                            Please provide your details to complete the admission process
+                            Please fill in the applicant's details to complete the admission process.
                         </p>
                     </div>
 
