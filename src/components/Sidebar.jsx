@@ -7,7 +7,6 @@ import {
     Home,
     Users,
     UserPlus,
-    FileText,
     GraduationCap,
     BookOpen,
     UserCheck,
