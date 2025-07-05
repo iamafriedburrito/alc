@@ -138,10 +138,17 @@ const StudentAdmissionForm = () => {
             }
 
             const result = await response.json();
+
+            // Show success message
             toast.success(
                 `Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`,
             );
-            reset(); // Reset form after successful submission
+
+            // Generate and open admit form in new tab
+            generateAdmitForm(textFields, result.admission_id || result.id, photoPreview, signaturePreview);
+
+            // Reset form after successful submission
+            reset();
             setPhotoPreview(null);
             setSignaturePreview(null);
         } catch (error) {
@@ -157,6 +164,154 @@ const StudentAdmissionForm = () => {
                 alert("An unexpected error occurred. Please try again.");
             }
         }
+    };
+
+    const generateAdmitForm = (formData, admissionId, photoPreview, signaturePreview) => {
+        // Create blob URL for the HTML content
+        const admitFormHTML = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>Compact Admission Form</title>
+      <style>
+        /* ---------- PAGE & GLOBALS ---------- */
+        @page          { size:A4; margin:12mm; }
+        body           { font-family:"Segoe UI",sans-serif; font-size:9.2pt; background:#f9f9f9; margin:0; }
+        .container     { width:210mm; background:#fff; padding:12mm; margin:auto; box-sizing:border-box; }
+
+        /* ---------- HEADER ---------- */
+        .header        { display:flex; justify-content:space-between; align-items:center;
+                         border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:8mm; }
+        .header h1     { font-size:15pt; margin:0; text-transform:uppercase; }
+        .subtext       { font-size:8.5pt; line-height:1.4; color:#333; }
+        .header img    { height:38px; }
+
+        /* ---------- SECTION TITLES ---------- */
+        h2.title       { text-align:center; font-size:12pt; margin:6mm 0 4mm; text-transform:uppercase; }
+        .section-title { font-weight:600; font-size:10pt; margin:4mm 0 2mm;
+                         color:#222; border-bottom:1px solid #ccc; padding-bottom:1mm; }
+
+        /* ---------- TABLE ---------- */
+        table          { width:100%; border-collapse:collapse; margin-bottom:4mm; }
+        td             { border:1px solid #ccc; padding:4px 6px; vertical-align:top; min-height:18pt; }
+        .td-label      { width:33%; font-weight:600; background:#f3f3f3; }
+
+        /* ---------- PHOTO / SIGNATURE ---------- */
+        .photo, .signature { border:1px solid #888; display:flex; align-items:center; justify-content:center; background:#fff; }
+        .photo        { width:35mm; height:45mm; }   /* 35 × 45 mm Indian passport size */
+        .signature    { width:35mm; height:15mm; }   /* slim sign box */
+        .photo img, .signature img { max-width:100%; max-height:100%; }
+
+        /* ---------- NOTES ---------- */
+        .notes         { font-size:8.9pt; line-height:1.45; color:#222; }
+        .notes strong  { display:inline-block; margin:5mm 0 2mm; font-size:9.5pt; text-decoration:underline; }
+        ul             { padding-left:18px; margin:0; }
+
+        @media print   { body{background:none;} }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+          <div class="info">
+            <h1>TechSkill Training Institute</h1>
+            <div class="subtext">
+              123 Knowledge Park, Karvenagar, Pune - 411052<br>
+              Center Code: TSTI-KP-01<br>
+              Phone: +91 98765 43210 | Email: info@techskill.edu.in
+            </div>
+          </div>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png" alt="Institute Logo">
+        </div>
+
+        <h2 class="title">Admission Form - ID: ${admissionId}</h2>
+
+        <!-- ===== 1. PERSONAL DETAILS ===== -->
+        <div class="section-title">1 · Personal Details</div>
+        <div style="display:flex; justify-content:space-between; gap:2mm; margin-bottom:4mm;">
+
+          <!-- LEFT: DETAILS TABLE -->
+          <table style="flex:1;">
+            <tr><td class="td-label">First Name</td>          <td>${formData.firstName}</td></tr>
+            <tr><td class="td-label">Middle Name</td>         <td>${formData.middleName}</td></tr>
+            <tr><td class="td-label">Last Name</td>           <td>${formData.lastName}</td></tr>
+            <tr><td class="td-label">Name on Certificate</td> <td>${formData.certificateName}</td></tr>
+            <tr><td class="td-label">Date of Birth</td>       <td>${formData.dateOfBirth}</td></tr>
+            <tr><td class="td-label">Gender</td>              <td>${formData.gender}</td></tr>
+            <tr><td class="td-label">Marital Status</td>      <td>${formData.maritalStatus}</td></tr>
+            <tr><td class="td-label">Mother Tongue</td>       <td>${formData.motherTongue}</td></tr>
+            <tr><td class="td-label">Nationality</td>         <td>INDIAN</td></tr>
+            <tr><td class="td-label">Aadhaar Number</td>      <td>${formData.aadharNumber}</td></tr>
+          </table>
+
+          <!-- RIGHT: PHOTO + SIGN -->
+          <div style="width:38mm; display:flex; flex-direction:column; justify-content:flex-start; gap:1mm;">
+            <div class="photo">
+              ${photoPreview ? `<img src="${photoPreview}" alt="Photo">` : '<span>Photo</span>'}
+            </div>
+            <div class="signature">
+              ${signaturePreview ? `<img src="${signaturePreview}" alt="Signature">` : '<span>Signature</span>'}
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== 2. ADDRESS ===== -->
+        <div class="section-title">2 · Address for Correspondence</div>
+        <table>
+          <tr><td class="td-label">Address</td> <td>${formData.correspondenceAddress}</td></tr>
+          <tr><td class="td-label">City</td>    <td>${formData.city}</td></tr>
+          <tr><td class="td-label">District</td><td>${formData.district}</td></tr>
+          <tr><td class="td-label">State</td>   <td>${formData.state}</td></tr>
+        </table>
+
+        <!-- ===== 3. CONTACT ===== -->
+        <div class="section-title">3 · Contact Information</div>
+        <table>
+          <tr><td class="td-label">Mobile Number</td>    <td>+91 ${formData.mobileNumber}</td></tr>
+          <tr><td class="td-label">Alternate Mobile</td> <td>+91 ${formData.alternateMobileNumber}</td></tr>
+        </table>
+
+        <!-- ===== 4. EDUCATION ===== -->
+        <div class="section-title">4 · Educational & Course Details</div>
+        <table>
+          <tr><td class="td-label">Category</td>                 <td>${formData.category}</td></tr>
+          <tr><td class="td-label">Educational Qualification</td><td>${formData.educationalQualification}</td></tr>
+          <tr><td class="td-label">Course Name</td>              <td>${formData.courseName}</td></tr>
+          <tr><td class="td-label">Preferred Timing</td>         <td>${formData.timing}</td></tr>
+          <tr><td class="td-label">Referred By</td>              <td>${formData.referredBy}</td></tr>
+        </table>
+
+        <!-- ===== 5. TERMS ===== -->
+        <div class="section-title">5 · Terms and Affirmation</div>
+        <div class="notes">
+          <ul>
+            <li>Fees are non-refundable under any circumstances.</li>
+            <li>Admission may be cancelled if the student is absent for an extended period without a leave application.</li>
+            <li>Admission may be cancelled due to misbehavior in class.</li>
+            <li>Failure to pay fees monthly will incur a penalty, and the final exam date may be extended.</li>
+          </ul>
+          <p>
+            I solemnly affirm that my name, photograph, and signature on this form match the details on my proof of identity, and that I have understood the information provided about the course.
+          </p>
+        </div>
+
+      </div>
+    </body>
+    </html>
+    `;
+
+        // Create blob and open in new tab (modern approach)
+        const blob = new Blob([admitFormHTML], { type: 'text/html' });
+        const url = URL.createObjectURL(blob);
+        const newTab = window.open(url, '_blank');
+
+        // Clean up the blob URL after a short delay to allow the page to load
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 1000);
     };
 
     return (
