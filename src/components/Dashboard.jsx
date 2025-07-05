@@ -148,7 +148,7 @@ const Dashboard = () => {
     }
 
     return (
-        <div className="space-y-8">
+        <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
             <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                 <div className="text-center">

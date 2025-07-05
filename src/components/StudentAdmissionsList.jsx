@@ -105,7 +105,7 @@ const StudentAdmissionsList = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-5xl mx-auto">
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                     {/* Header */}
                     <div className="text-center mb-10">
@@ -215,7 +215,7 @@ const StudentAdmissionsList = () => {
                                                         Admission Date:
                                                     </span>
                                                     <p className="font-medium text-gray-900">
-                                                        {formatDate(admission.admissionDate)}
+                                                        {formatDate(admission.createdAt)}
                                                     </p>
                                                 </div>
                                             </div>
@@ -462,14 +462,6 @@ const StudentAdmissionsList = () => {
                                             <div>
                                                 <span className="text-sm text-gray-500">
                                                     Admission Date:
-                                                </span>
-                                                <p className="font-medium text-gray-900">
-                                                    {formatDate(selectedAdmission.admissionDate)}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <span className="text-sm text-gray-500">
-                                                    Submitted On:
                                                 </span>
                                                 <p className="font-medium text-gray-900">
                                                     {formatDate(selectedAdmission.createdAt)}
