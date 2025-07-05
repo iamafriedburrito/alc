@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Search, Plus, Edit2, Trash2, Save, X, BookOpen, AlertCircle } from "lucide-react";
+import { Search, Plus, Edit2, Trash2, Save, X, BookOpen, AlertCircle, RefreshCw } from "lucide-react";
 import { toast } from 'react-toastify';
 
 const CoursesManagement = () => {
@@ -13,6 +13,8 @@ const CoursesManagement = () => {
   const [stats, setStats] = useState(null);
   const [courseToDelete, setCourseToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [totalCourses, setTotalCourses] = useState(0);
 
   // API base URL
   const API_BASE_URL = 'http://localhost:8000/api';
@@ -45,6 +47,10 @@ const CoursesManagement = () => {
       
       const data = await response.json();
       setCourses(data.courses || []);
+      // If not searching, update totalCourses
+      if (!search) {
+        setTotalCourses((data.courses && data.courses.length) || 0);
+      }
     } catch (error) {
       console.error('Error fetching courses:', error);
       setApiError('Failed to fetch courses. Please check your connection.');
@@ -183,6 +189,11 @@ const CoursesManagement = () => {
     }
   };
 
+  const handleRefresh = async () => {
+    await Promise.all([fetchCourses(), fetchStats()]);
+    toast.success('Courses refreshed!');
+  };
+
   const FormInput = ({ name, label, type = "text", placeholder, required = false, ...props }) => (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -235,42 +246,57 @@ const CoursesManagement = () => {
         )}
 
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20 mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-            <div className="mb-4 lg:mb-0">
-              <h1 className="text-3xl font-bold text-gray-900 mb-1">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20 mb-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h2 className="text-4xl font-bold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
                 Course Management
-              </h1>
-              <div className="flex flex-col sm:flex-row sm:items-center text-gray-600 text-sm space-y-1 sm:space-y-0 sm:space-x-4">
-                <span className="flex items-center">
-                  <BookOpen className="w-4 h-4 mr-1" />
-                  {courses.length} courses available
+              </h2>
+              <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
+                <span className="text-blue-500">
+                  <BookOpen className="h-5 w-5" />
                 </span>
-                </div>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-3">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4 z-10" />
-                <input
-                  type="text"
-                  placeholder="Search courses..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 pr-4 py-2.5 w-64 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/50 backdrop-blur-sm text-sm"
-                />
+                <span>
+                  <span className="font-semibold">Total:</span> {totalCourses}
+                </span>
               </div>
-              
-              {/* Add Course Button */}
+            </div>
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => openModal()}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2.5 px-5 rounded-lg font-medium hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 flex items-center shadow-md hover:shadow-lg text-sm"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
               >
-                <Plus className="w-4 h-4 mr-1.5" />
+                <Plus className="w-5 h-5" />
                 Add Course
               </button>
+              <button
+                onClick={handleRefresh}
+                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out"
+              >
+                <RefreshCw className="w-5 h-5" />
+                Refresh Data
+              </button>
             </div>
+          </div>
+        </div>
+
+        {/* Search Bar */}
+        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+          <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
+            Search Courses
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-gray-500 z-10" />
+            </div>
+            <input
+              type="text"
+              id="search"
+              placeholder="Search courses..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm text-sm"
+            />
           </div>
         </div>
 
@@ -298,7 +324,7 @@ const CoursesManagement = () => {
             <div className="bg-white/80 rounded-2xl shadow border border-blue-100">
               <table className="min-w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
                 <thead>
-                  <tr className="bg-blue-50 text-gray-700 text-sm">
+                  <tr className="bg-blue-200 text-gray-700 text-sm">
                     <th className="px-4 py-3 text-left rounded-tl-2xl">#</th>
                     <th className="px-4 py-3 text-left">Course Name</th>
                     <th className="px-4 py-3 text-left">Fees (₹)</th>
