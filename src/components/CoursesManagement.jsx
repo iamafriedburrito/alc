@@ -293,37 +293,51 @@ const CoursesManagement = () => {
             </p>
           </div>
         ) : !isLoading && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {courses.map((course, index) => (
-              <div key={course.id} className="bg-white rounded-2xl shadow-md border border-blue-100 p-6 flex flex-col justify-between hover:shadow-lg transition-all group relative">
-                <div className="flex items-center gap-4 mb-2">
-                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center font-bold text-blue-600 text-lg">{index + 1}</div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-bold text-gray-900 truncate">{course.courseName}</h3>
-                    <div className="text-green-600 font-semibold text-xl mt-1">₹{course.fees?.toLocaleString()}</div>
-                    {course.createdAt && (
-                      <div className="text-xs text-gray-400 mt-1">Added: {new Date(course.createdAt).toLocaleDateString()}</div>
-                    )}
-                  </div>
-                </div>
-                <div className="flex gap-2 mt-4">
-                  <button
-                    onClick={() => openModal(course)}
-                    className="flex-1 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium hover:bg-blue-100 flex items-center justify-center gap-1 transition"
-                    title="Edit course"
-                  >
-                    <Edit2 className="w-4 h-4" /> Edit
-                  </button>
-                  <button
-                    onClick={() => deleteCourse(course)}
-                    className="flex-1 py-2 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-100 flex items-center justify-center gap-1 transition"
-                    title="Delete course"
-                  >
-                    <Trash2 className="w-4 h-4" /> Delete
-                  </button>
-                </div>
-              </div>
-            ))}
+          <div className="overflow-x-auto">
+            <div className="bg-white/80 rounded-2xl shadow border border-blue-100">
+              <table className="min-w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
+                <thead>
+                  <tr className="bg-blue-50 text-gray-700 text-sm">
+                    <th className="px-4 py-3 text-left rounded-tl-2xl">#</th>
+                    <th className="px-4 py-3 text-left">Course Name</th>
+                    <th className="px-4 py-3 text-left">Fees (₹)</th>
+                    <th className="px-4 py-3 text-left">Added Date</th>
+                    <th className="px-4 py-3 text-center rounded-tr-2xl">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {courses.map((course, index) => {
+                    const isLast = index === courses.length - 1;
+                    return (
+                      <tr key={course.id} className="bg-white">
+                        <td className={`px-4 py-3 font-medium text-blue-600${isLast ? ' rounded-bl-2xl' : ''}`}>{index + 1}</td>
+                        <td className="px-4 py-3 font-semibold text-gray-900 truncate max-w-xs">{course.courseName}</td>
+                        <td className="px-4 py-3 text-green-700 font-semibold">₹{course.fees?.toLocaleString()}</td>
+                        <td className="px-4 py-3 text-gray-500 text-sm">{course.createdAt ? new Date(course.createdAt).toLocaleDateString() : '-'}</td>
+                        <td className={`px-4 py-3 text-center${isLast ? ' rounded-br-2xl' : ''}`}>
+                          <div className="flex items-center justify-center gap-2">
+                            <button
+                              onClick={() => openModal(course)}
+                              className="py-1.5 px-3 rounded-lg bg-blue-50 text-blue-700 font-medium hover:bg-blue-100 flex items-center gap-1 transition text-sm"
+                              title="Edit course"
+                            >
+                              <Edit2 className="w-4 h-4" /> Edit
+                            </button>
+                            <button
+                              onClick={() => deleteCourse(course)}
+                              className="py-1.5 px-3 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-100 flex items-center gap-1 transition text-sm"
+                              title="Delete course"
+                            >
+                              <Trash2 className="w-4 h-4" /> Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
