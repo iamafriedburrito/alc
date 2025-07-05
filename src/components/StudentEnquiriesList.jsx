@@ -391,13 +391,15 @@ const StudentEnquiriesList = () => {
                                                 <Eye className="w-4 h-4" />
                                                 View
                                             </button>
-                                            <button
-                                                onClick={() => handleFollowupClick(enquiry)}
-                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
-                                            >
-                                                <Plus className="w-4 h-4" />
-                                                Follow-up
-                                            </button>
+                                            {enquiry.currentStatus !== 'ADMITTED' && (
+                                                <button
+                                                    onClick={() => handleFollowupClick(enquiry)}
+                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
+                                                >
+                                                    <Plus className="w-4 h-4" />
+                                                    Follow-up
+                                                </button>
+                                            )}
                                         </div>
                                     </div>
                                 );
@@ -609,17 +611,33 @@ const StudentEnquiriesList = () => {
                                     </select>
                                 </div>
 
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Next Follow-up Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        value={followupData.next_followup_date}
-                                        onChange={(e) => setFollowupData({ ...followupData, next_followup_date: e.target.value })}
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                                    />
-                                </div>
+                                {followupData.status !== 'ADMITTED' && (
+                                    <>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Next Follow-up Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                value={followupData.next_followup_date}
+                                                onChange={(e) => setFollowupData({ ...followupData, next_followup_date: e.target.value })}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Notes
+                                            </label>
+                                            <textarea
+                                                value={followupData.notes}
+                                                onChange={(e) => setFollowupData({ ...followupData, notes: e.target.value.toUpperCase() })}
+                                                rows={4}
+                                                placeholder="Add any notes about the follow-up conversation..."
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 uppercase"
+                                            />
+                                        </div>
+                                    </>
+                                )}
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -632,19 +650,6 @@ const StudentEnquiriesList = () => {
                                         required
                                         placeholder="Enter your name"
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Notes
-                                    </label>
-                                    <textarea
-                                        value={followupData.notes}
-                                        onChange={(e) => setFollowupData({ ...followupData, notes: e.target.value.toUpperCase() })}
-                                        rows={4}
-                                        placeholder="Add any notes about the follow-up conversation..."
-                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 uppercase"
                                     />
                                 </div>
 
