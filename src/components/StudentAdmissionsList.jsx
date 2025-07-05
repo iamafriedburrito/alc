@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
-import { List, GraduationCap, UserCheck, Plus, RefreshCw } from "lucide-react";
+import { List, GraduationCap, UserCheck, Plus, RefreshCw, Search, Eye } from "lucide-react";
 import { Link } from "react-router";
 
 const StudentAdmissionsList = () => {
@@ -156,14 +156,19 @@ const StudentAdmissionsList = () => {
                                 >
                                     Search Students
                                 </label>
-                                <input
-                                    type="text"
-                                    id="search"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    placeholder="Search by name, mobile, course, or certificate..."
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
-                                />
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Search className="h-5 w-5 text-gray-500 z-10" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="search"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        placeholder="Search by name, mobile, course, or certificate..."
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
+                                    />
+                                </div>
                             </div>
                             <div>
                                 <label
@@ -252,8 +257,9 @@ const StudentAdmissionsList = () => {
                                         <div className="mt-4 md:mt-0 md:ml-6">
                                             <button
                                                 onClick={() => handleViewDetails(admission.id)}
-                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg"
+                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2"
                                             >
+                                                <Eye className="w-4 h-4" />
                                                 View Details
                                             </button>
                                         </div>
