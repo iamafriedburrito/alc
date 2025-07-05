@@ -11,6 +11,8 @@ const CoursesManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
   const [stats, setStats] = useState(null);
+  const [courseToDelete, setCourseToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // API base URL
   const API_BASE_URL = 'http://localhost:8000/api';
@@ -152,33 +154,32 @@ const CoursesManagement = () => {
     }
   };
 
-  const deleteCourse = async (course) => {
-    if (window.confirm(`Are you sure you want to delete "${course.courseName}"?`)) {
-      setIsLoading(true);
-      setApiError('');
-      try {
-        const response = await fetch(`${API_BASE_URL}/courses/${course.id}`, {
-          method: 'DELETE',
-        });
+  const confirmDeleteCourse = (course) => {
+    setCourseToDelete(course);
+  };
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.detail || 'Failed to delete course');
-        }
-
-        const result = await response.json();
-        toast.success(result.message || 'Course deleted successfully!');
-        
-        // Refresh courses list and stats
-        fetchCourses(searchTerm);
-        fetchStats();
-        
-      } catch (error) {
-        console.error('Error deleting course:', error);
-        setApiError(error.message || 'Error deleting course. Please try again.');
-      } finally {
-        setIsLoading(false);
+  const handleDeleteCourse = async () => {
+    if (!courseToDelete) return;
+    setIsDeleting(true);
+    setApiError('');
+    try {
+      const response = await fetch(`${API_BASE_URL}/courses/${courseToDelete.id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to delete course');
       }
+      const result = await response.json();
+      toast.success(result.message || 'Course deleted successfully!');
+      fetchCourses(searchTerm);
+      fetchStats();
+      setCourseToDelete(null);
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      setApiError(error.message || 'Error deleting course. Please try again.');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -324,7 +325,7 @@ const CoursesManagement = () => {
                               <Edit2 className="w-4 h-4" /> Edit
                             </button>
                             <button
-                              onClick={() => deleteCourse(course)}
+                              onClick={() => confirmDeleteCourse(course)}
                               className="py-1.5 px-3 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-100 flex items-center gap-1 transition text-sm"
                               title="Delete course"
                             >
@@ -412,6 +413,55 @@ const CoursesManagement = () => {
                       )}
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {courseToDelete && (
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+              <div className="p-6">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-2xl font-bold text-gray-900">Delete Course</h2>
+                  <button
+                    onClick={() => setCourseToDelete(null)}
+                    className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-gray-200 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="mb-6 text-gray-700 text-lg">
+                  Are you sure you want to delete <span className="font-semibold text-red-600">“{courseToDelete.courseName}”</span>?
+                </div>
+                <div className="flex justify-end space-x-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setCourseToDelete(null)}
+                    className="px-4 py-2 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors text-sm"
+                    disabled={isDeleting}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleDeleteCourse}
+                    disabled={isDeleting}
+                    className="bg-gradient-to-r from-red-600 to-pink-600 text-white py-2 px-6 rounded-lg font-medium hover:from-red-700 hover:to-pink-700 transition-all duration-200 flex items-center disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                  >
+                    {isDeleting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></div>
+                        Deleting...
+                      </>
+                    ) : (
+                      <>
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        Delete
+                      </>
+                    )}
+                  </button>
                 </div>
               </div>
             </div>
