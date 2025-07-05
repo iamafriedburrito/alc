@@ -1,10 +1,12 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate } from "react-router";
 import { DISTRICTS, LANGUAGES, CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, TIMINGS } from "./FormComponents";
 import { FormInput, AadharInput, FormSelect, AddressSection, MobileNumberSection } from "./FormComponents";
 import { toast } from 'react-toastify';
 
 const StudentEnquiryForm = () => {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -52,6 +54,7 @@ const StudentEnquiryForm = () => {
             const result = await response.json();
             toast.success(`Enquiry submitted successfully! Enquiry ID: ${result.enquiry_id}`);
             reset(); // Reset form after successful submission
+            navigate('/enquiries'); // Redirect immediately
         } catch (error) {
             console.error("Error submitting enquiry:", error);
 
