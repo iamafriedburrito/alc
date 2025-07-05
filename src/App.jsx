@@ -5,7 +5,7 @@ import StudentAdmissionForm from "./components/StudentAdmissionForm"
 import StudentEnquiriesList from "./components/StudentEnquiriesList"
 import StudentAdmissionsList from "./components/StudentAdmissionsList"
 import InstituteLogin from "./components/InstituteLogin"
-import CoursesFeesManagement from "./components/CoursesFeesManagement"
+import CoursesManagement from "./components/CoursesManagement"
 import SettingsPage from "./components/SettingsPage"
 import FeeManagement from "./components/FeeManagement"
 import AppLayout from "./components/AppLayout"
@@ -23,7 +23,7 @@ function App() {
                     <Route path="admission" element={<StudentAdmissionForm />} />
                     <Route path="enquiries" element={<StudentEnquiriesList />} />
                     <Route path="admissions" element={<StudentAdmissionsList />} />
-                    <Route path="courses" element={<CoursesFeesManagement />} />
+                    <Route path="courses" element={<CoursesManagement />} />
                     <Route path="fees" element={<FeeManagement />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>

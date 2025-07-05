@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Search, Plus, Edit2, Trash2, Save, X, BookOpen, AlertCircle } from "lucide-react";
 import { toast } from 'react-toastify';
 
-const CoursesFeesManagement = () => {
+const CoursesManagement = () => {
   const [courses, setCourses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState(null);
@@ -14,7 +14,6 @@ const CoursesFeesManagement = () => {
 
   // API base URL
   const API_BASE_URL = 'http://localhost:8000/api';
-
   const {
     register,
     handleSubmit,
@@ -239,7 +238,7 @@ const CoursesFeesManagement = () => {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
             <div className="mb-4 lg:mb-0">
               <h1 className="text-3xl font-bold text-gray-900 mb-1">
-                Courses & Fees
+                Course Management
               </h1>
               <div className="flex flex-col sm:flex-row sm:items-center text-gray-600 text-sm space-y-1 sm:space-y-0 sm:space-x-4">
                 <span className="flex items-center">
@@ -252,7 +251,7 @@ const CoursesFeesManagement = () => {
             <div className="flex flex-col sm:flex-row gap-3">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4 z-10" />
                 <input
                   type="text"
                   placeholder="Search courses..."
@@ -296,43 +295,32 @@ const CoursesFeesManagement = () => {
         ) : !isLoading && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {courses.map((course, index) => (
-              <div key={course.id} className="bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-white/20 p-4 hover:shadow-lg transition-all duration-200">
-                <div className="flex items-center justify-between">
+              <div key={course.id} className="bg-white rounded-2xl shadow-md border border-blue-100 p-6 flex flex-col justify-between hover:shadow-lg transition-all group relative">
+                <div className="flex items-center gap-4 mb-2">
+                  <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center font-bold text-blue-600 text-lg">{index + 1}</div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <span className="text-blue-600 font-semibold text-sm">{index + 1}</span>
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-base font-semibold text-gray-900 truncate">{course.courseName}</h3>
-                        <div className="flex items-center mt-1">
-                          <span className="text-lg font-bold text-green-600">₹{course.fees?.toLocaleString()}</span>
-                        </div>
-                        {course.createdAt && (
-                          <p className="text-xs text-gray-500 mt-1">
-                            Added: {new Date(course.createdAt).toLocaleDateString()}
-                          </p>
-                        )}
-                      </div>
-                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 truncate">{course.courseName}</h3>
+                    <div className="text-green-600 font-semibold text-xl mt-1">₹{course.fees?.toLocaleString()}</div>
+                    {course.createdAt && (
+                      <div className="text-xs text-gray-400 mt-1">Added: {new Date(course.createdAt).toLocaleDateString()}</div>
+                    )}
                   </div>
-                  
-                  <div className="flex items-center space-x-2 ml-4">
-                    <button
-                      onClick={() => openModal(course)}
-                      className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-150"
-                      title="Edit course"
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={() => deleteCourse(course)}
-                      className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-150"
-                      title="Delete course"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
+                </div>
+                <div className="flex gap-2 mt-4">
+                  <button
+                    onClick={() => openModal(course)}
+                    className="flex-1 py-2 rounded-lg bg-blue-50 text-blue-700 font-medium hover:bg-blue-100 flex items-center justify-center gap-1 transition"
+                    title="Edit course"
+                  >
+                    <Edit2 className="w-4 h-4" /> Edit
+                  </button>
+                  <button
+                    onClick={() => deleteCourse(course)}
+                    className="flex-1 py-2 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-100 flex items-center justify-center gap-1 transition"
+                    title="Delete course"
+                  >
+                    <Trash2 className="w-4 h-4" /> Delete
+                  </button>
                 </div>
               </div>
             ))}
@@ -420,4 +408,4 @@ const CoursesFeesManagement = () => {
   );
 };
 
-export default CoursesFeesManagement;
+export default CoursesManagement;
