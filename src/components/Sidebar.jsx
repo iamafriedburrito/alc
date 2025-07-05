@@ -27,7 +27,6 @@ const Sidebar = () => {
         { id: "admissions", label: "Admissions List", icon: UserCheck, path: "/admissions" },
         { id: "courses", label: "Courses & Fees", icon: BookOpen, path: "/courses" },
         { id: "fees", label: "Fee Management", icon: DollarSign, path: "/fees" },
-        { id: "followup", label: "Follow-up Tracker", icon: Phone, path: "/followup" },
         { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
     ]
 

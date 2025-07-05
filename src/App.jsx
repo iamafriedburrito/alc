@@ -6,7 +6,6 @@ import StudentEnquiriesList from "./components/StudentEnquiriesList"
 import StudentAdmissionsList from "./components/StudentAdmissionsList"
 import InstituteLogin from "./components/InstituteLogin"
 import CoursesFeesManagement from "./components/CoursesFeesManagement"
-import StudentFollowupTracker from "./components/StudentFollowupTracker"
 import SettingsPage from "./components/SettingsPage"
 import FeeManagement from "./components/FeeManagement"
 import AppLayout from "./components/AppLayout"
@@ -25,7 +24,6 @@ function App() {
                     <Route path="enquiries" element={<StudentEnquiriesList />} />
                     <Route path="admissions" element={<StudentAdmissionsList />} />
                     <Route path="courses" element={<CoursesFeesManagement />} />
-                    <Route path="followup" element={<StudentFollowupTracker />} />
                     <Route path="fees" element={<FeeManagement />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>

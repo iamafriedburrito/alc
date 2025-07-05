@@ -1,13 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye } from "lucide-react";
+import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
 
 const StudentEnquiriesList = () => {
     const [enquiries, setEnquiries] = useState([]);
+    const [filteredEnquiries, setFilteredEnquiries] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedEnquiry, setSelectedEnquiry] = useState(null);
+    const [showFollowupModal, setShowFollowupModal] = useState(false);
+    const [submitting, setSubmitting] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCategory, setFilterCategory] = useState("");
+    const [statusFilter, setStatusFilter] = useState("ALL");
+    const [activeTab, setActiveTab] = useState("followups"); // Only followups tab needed
+    const [followupData, setFollowupData] = useState({
+        followup_date: "",
+        notes: "",
+        status: "PENDING",
+        next_followup_date: "",
+        handled_by: "System User"
+    });
 
     useEffect(() => {
         fetchEnquiries();
@@ -16,15 +30,32 @@ const StudentEnquiriesList = () => {
     const fetchEnquiries = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:8000/api/enquiries');
+            setError(null);
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            // Fetch both regular enquiries and follow-up data
+            const [enquiriesResponse, followupsResponse] = await Promise.all([
+                fetch('http://localhost:8000/api/enquiries'),
+                fetch('http://localhost:8000/api/followups/tracker')
+            ]);
+
+            let enquiriesData = [];
+            let followupsData = [];
+
+            if (enquiriesResponse.ok) {
+                const enquiriesResult = await enquiriesResponse.json();
+                enquiriesData = enquiriesResult.enquiries || [];
             }
 
-            const data = await response.json();
-            setEnquiries(data.enquiries || []);
-            setError(null);
+            if (followupsResponse.ok) {
+                const followupsResult = await followupsResponse.json();
+                followupsData = followupsResult.enquiries || [];
+            }
+
+            // Merge the data - use followups data if available, otherwise use regular enquiries
+            const mergedData = followupsData.length > 0 ? followupsData : enquiriesData;
+            setEnquiries(mergedData);
+            setFilteredEnquiries(mergedData);
+
         } catch (err) {
             console.error("Error fetching enquiries:", err);
             setError("Failed to fetch enquiries. Please check if the server is running.");
@@ -49,6 +80,94 @@ const StudentEnquiriesList = () => {
         }
     };
 
+    const handleFollowupClick = (enquiry) => {
+        setSelectedEnquiry(enquiry);
+        setShowFollowupModal(true);
+        setFollowupData({
+            followup_date: new Date().toISOString().split('T')[0],
+            notes: '',
+            status: enquiry.currentStatus || 'PENDING',
+            next_followup_date: '',
+            handled_by: 'System User'
+        });
+    };
+
+    const handleFollowupSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!followupData.followup_date) {
+            alert('Please select a follow-up date');
+            return;
+        }
+
+        try {
+            setSubmitting(true);
+
+            const submitData = {
+                enquiry_id: selectedEnquiry.id,
+                followup_date: followupData.followup_date,
+                status: followupData.status,
+                notes: followupData.notes || '',
+                next_followup_date: followupData.next_followup_date || null,
+                handled_by: followupData.handled_by
+            };
+
+            const response = await fetch('http://localhost:8000/api/followup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(submitData)
+            });
+
+            if (!response.ok) {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to save follow-up');
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: Server error`);
+                }
+            }
+
+            const result = await response.json();
+            console.log('Follow-up saved successfully:', result);
+
+            await fetchEnquiries();
+            setShowFollowupModal(false);
+            toast.success('Follow-up recorded successfully!');
+
+        } catch (error) {
+            console.error('Error recording follow-up:', error);
+            alert(`Error recording follow-up: ${error.message}`);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    // Filter enquiries based on search term, category, and status
+    useEffect(() => {
+        let filtered = enquiries;
+
+        if (searchTerm) {
+            filtered = filtered.filter(enquiry =>
+                enquiry.firstName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                enquiry.lastName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                enquiry.mobileNumber?.includes(searchTerm) ||
+                enquiry.courseName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                enquiry.id?.toString().includes(searchTerm)
+            );
+        }
+
+        if (statusFilter !== 'ALL') {
+            filtered = filtered.filter(enquiry => enquiry.currentStatus === statusFilter);
+        }
+
+        setFilteredEnquiries(filtered);
+    }, [searchTerm, statusFilter, enquiries]);
+
     const formatDate = (dateString) => {
         return new Date(dateString).toLocaleDateString('en-IN', {
             year: 'numeric',
@@ -60,21 +179,38 @@ const StudentEnquiriesList = () => {
     };
 
     const formatAadhar = (aadharNumber) => {
+        if (!aadharNumber) return 'Not provided';
         return aadharNumber.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3');
     };
 
-    // Filter enquiries based on search term and category
-    const filteredEnquiries = enquiries.filter(enquiry => {
-        const matchesSearch =
-            enquiry.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            enquiry.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            enquiry.mobileNumber.includes(searchTerm) ||
-            enquiry.courseName.toLowerCase().includes(searchTerm.toLowerCase());
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'PENDING': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+            case 'INTERESTED': return 'bg-green-100 text-green-800 border-green-200';
+            case 'NOT_INTERESTED': return 'bg-red-100 text-red-800 border-red-200';
+            case 'ADMITTED': return 'bg-blue-100 text-blue-800 border-blue-200';
+            default: return 'bg-gray-100 text-gray-800 border-gray-200';
+        }
+    };
 
-        const matchesCategory = filterCategory === "" || enquiry.category === filterCategory;
+    const getStatusIcon = (status) => {
+        switch (status) {
+            case 'PENDING': return <AlertCircle className="w-4 h-4" />;
+            case 'INTERESTED': return <CheckCircle className="w-4 h-4" />;
+            case 'NOT_INTERESTED': return <XCircle className="w-4 h-4" />;
+            case 'ADMITTED': return <BookOpen className="w-4 h-4" />;
+            default: return <AlertCircle className="w-4 h-4" />;
+        }
+    };
 
-        return matchesSearch && matchesCategory;
-    });
+    const getDaysOverdue = (nextFollowupDate) => {
+        if (!nextFollowupDate) return 0;
+        const today = new Date();
+        const followupDate = new Date(nextFollowupDate);
+        const diffTime = today - followupDate;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        return diffDays;
+    };
 
     if (loading) {
         return (
@@ -97,16 +233,25 @@ const StudentEnquiriesList = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-7xl mx-auto">
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                     {/* Header */}
-                    <div className="text-center mb-10">
-                        <h2 className="text-4xl font-bold text-gray-900 mb-3">
-                            Student Enquiries
+                    <div className="mb-10">
+                        <h2 className="text-4xl font-bold text-gray-900 mb-4 text-left md:text-left">
+                            Enquiries
                         </h2>
-                        <p className="text-gray-600">
-                            Total enquiries: {enquiries.length} | Showing: {filteredEnquiries.length}
-                        </p>
+                        <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
+                            <span className="text-blue-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                            </span>
+                            <span>
+                                <span className="font-semibold">Total:</span> {enquiries.length}
+                            </span>
+                            <span className="text-gray-400">|</span>
+                            <span>
+                                <span className="font-semibold">Showing:</span> {filteredEnquiries.length}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Search and Filter Section */}
@@ -116,31 +261,35 @@ const StudentEnquiriesList = () => {
                                 <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
                                     Search Enquiries
                                 </label>
-                                <input
-                                    type="text"
-                                    id="search"
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    placeholder="Search by name, mobile, or course..."
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
-                                />
+                                <div className="relative">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Search className="h-5 w-5 text-gray-400" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="search"
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        placeholder="Search by name, mobile, course, or ID..."
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
+                                    />
+                                </div>
                             </div>
                             <div>
-                                <label htmlFor="categoryFilter" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Filter by Category
+                                <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 mb-2">
+                                    Filter by Status
                                 </label>
                                 <select
-                                    id="categoryFilter"
-                                    value={filterCategory}
-                                    onChange={(e) => setFilterCategory(e.target.value)}
+                                    id="statusFilter"
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
                                 >
-                                    <option value="">All Categories</option>
-                                    <option value="school-student">School Student</option>
-                                    <option value="college-student">College Student</option>
-                                    <option value="govt-employee">Government Employee</option>
-                                    <option value="housewife">Housewife</option>
-                                    <option value="other">Other</option>
+                                    <option value="ALL">All Status</option>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="INTERESTED">Interested</option>
+                                    <option value="NOT_INTERESTED">Not Interested</option>
+                                    <option value="ADMITTED">Admitted</option>
                                 </select>
                             </div>
                         </div>
@@ -152,70 +301,72 @@ const StudentEnquiriesList = () => {
                             <div className="text-gray-400 text-6xl mb-4">📋</div>
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">No Enquiries Found</h3>
                             <p className="text-gray-600">
-                                {searchTerm || filterCategory ? "Try adjusting your search or filter criteria." : "No student enquiries have been submitted yet."}
+                                {searchTerm || statusFilter !== "ALL" ? "Try adjusting your search or filter criteria." : "No student enquiries found in database."}
                             </p>
                         </div>
                     ) : (
                         <div className="space-y-6">
-                            {filteredEnquiries.map((enquiry) => (
-                                <div key={enquiry.id} className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between">
-                                        <div className="flex-1">
-                                            <div className="flex items-center mb-2">
-                                                <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600 font-semibold">
-                                                    {enquiry.id}
-                                                </span>
-                                                <h3 className="text-xl font-semibold text-gray-900">
+                            {filteredEnquiries.map((enquiry) => {
+                                const daysOverdue = getDaysOverdue(enquiry.nextFollowup);
+                                const isOverdue = daysOverdue > 0;
+
+                                return (
+                                    <div
+                                        key={enquiry.id}
+                                        className={`flex flex-col md:flex-row md:items-center justify-between bg-white/90 rounded-2xl shadow border border-gray-100 hover:shadow-lg transition-all duration-200 p-6 gap-4 md:gap-0`}
+                                        style={{ minHeight: '120px' }}
+                                    >
+                                        {/* Left: Main Info */}
+                                        <div className="flex-1 flex flex-col gap-2">
+                                            <div className="flex flex-wrap items-center gap-3 mb-1">
+                                                <span className="text-lg md:text-xl font-bold text-gray-900 tracking-wide uppercase">
                                                     {enquiry.firstName} {enquiry.middleName} {enquiry.lastName}
-                                                </h3>
+                                                </span>
+                                                <span className={`flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(enquiry.currentStatus)}`}
+                                                >
+                                                    {getStatusIcon(enquiry.currentStatus)}
+                                                    <span className="ml-1">{enquiry.currentStatus?.replace('_', ' ') || 'PENDING'}</span>
+                                                </span>
                                             </div>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                                <div>
-                                                    <span className="text-sm text-gray-500">Course:</span>
-                                                    <p className="font-medium text-gray-900 capitalize">
-                                                        {enquiry.courseName.replace('-', ' ')}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <span className="text-sm text-gray-500">Mobile:</span>
-                                                    <p className="font-medium text-gray-900">+91 {enquiry.mobileNumber}</p>
-                                                </div>
-                                                <div>
-                                                    <span className="text-sm text-gray-500">Category:</span>
-                                                    <p className="font-medium text-gray-900 capitalize">
-                                                        {enquiry.category.replace('-', ' ')}
-                                                    </p>
-                                                </div>
+                                            <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm">
+                                                <span>ID: <span className="font-medium text-gray-700">{enquiry.id}</span></span>
+                                                <span className="flex items-center gap-1"><Phone className="w-4 h-4" />+91 {enquiry.mobileNumber}</span>
+                                                <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" />{enquiry.courseName?.replace('-', ' ')}</span>
                                             </div>
-
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                                <div>
-                                                    <span className="text-sm text-gray-500">Location:</span>
-                                                    <p className="font-medium text-gray-900">
-                                                        {enquiry.city}, {enquiry.district}
-                                                    </p>
-                                                </div>
-                                                <div>
-                                                    <span className="text-sm text-gray-500">Submitted:</span>
-                                                    <p className="font-medium text-gray-900">
-                                                        {formatDate(enquiry.createdAt)}
-                                                    </p>
-                                                </div>
+                                            <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm">
+                                                <span className="flex items-center gap-1"><Calendar className="w-4 h-4" />{enquiry.enquiryDate ? `Enquiry: ${enquiry.enquiryDate}` : `Submitted: ${formatDate(enquiry.createdAt)}`}</span>
+                                                <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{enquiry.nextFollowup ? (<><span>Next: {enquiry.nextFollowup}</span>{isOverdue && <span className="text-red-600 font-semibold ml-1">({daysOverdue} days overdue)</span>}</>) : 'No next follow-up scheduled'}</span>
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-6 text-xs text-gray-400 mt-1">
+                                                <span>Follow-ups: <span className="font-semibold text-gray-700">{enquiry.followupCount || 0}</span></span>
+                                                {enquiry.lastFollowup && (
+                                                    <span>Last: <span className="font-semibold text-gray-700">{enquiry.lastFollowup}</span></span>
+                                                )}
+                                                {enquiry.latestNotes && (
+                                                    <span className="italic text-gray-500">{enquiry.latestNotes}</span>
+                                                )}
                                             </div>
                                         </div>
-
-                                        <div className="mt-4 md:mt-0 md:ml-6">
+                                        {/* Right: Actions */}
+                                        <div className="flex flex-col md:items-end gap-2 md:gap-3 min-w-[160px] md:pl-6">
                                             <button
                                                 onClick={() => handleViewDetails(enquiry.id)}
-                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg"
+                                                className="bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-medium border border-gray-200 flex items-center gap-2 shadow-sm transition-all duration-150"
                                             >
-                                                View Details
+                                                <Eye className="w-4 h-4" />
+                                                View
+                                            </button>
+                                            <button
+                                                onClick={() => handleFollowupClick(enquiry)}
+                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                                Follow-up
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     )}
 
@@ -347,7 +498,7 @@ const StudentEnquiriesList = () => {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <span className="text-sm text-gray-500">Category:</span>
-                                                <p className="font-medium text-gray-900 capitalize">{selectedEnquiry.category.replace('-', ' ')}</p>
+                                                <p className="font-medium text-gray-900 capitalize">{selectedEnquiry.category?.replace('-', ' ')}</p>
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">Educational Qualification:</span>
@@ -355,7 +506,7 @@ const StudentEnquiriesList = () => {
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">Course Name:</span>
-                                                <p className="font-medium text-gray-900 capitalize">{selectedEnquiry.courseName.replace('-', ' ')}</p>
+                                                <p className="font-medium text-gray-900 capitalize">{selectedEnquiry.courseName?.replace('-', ' ')}</p>
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">Preferred Timing:</span>
@@ -380,6 +531,111 @@ const StudentEnquiriesList = () => {
                                         className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl"
                                     >
                                         Close Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Follow-up Modal */}
+                {showFollowupModal && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-3xl shadow-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                            <div className="text-center mb-6">
+                                <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                                    Add Follow-up
+                                </h3>
+                                <p className="text-gray-600">
+                                    {selectedEnquiry?.firstName} {selectedEnquiry?.lastName} (ID: {selectedEnquiry?.id})
+                                </p>
+                            </div>
+
+                            <div className="space-y-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Follow-up Date *
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={followupData.followup_date}
+                                        onChange={(e) => setFollowupData({ ...followupData, followup_date: e.target.value })}
+                                        required
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Status *
+                                    </label>
+                                    <select
+                                        value={followupData.status}
+                                        onChange={(e) => setFollowupData({ ...followupData, status: e.target.value })}
+                                        required
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    >
+                                        <option value="PENDING">Pending</option>
+                                        <option value="INTERESTED">Interested</option>
+                                        <option value="NOT_INTERESTED">Not Interested</option>
+                                        <option value="ADMITTED">Admitted</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Next Follow-up Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={followupData.next_followup_date}
+                                        onChange={(e) => setFollowupData({ ...followupData, next_followup_date: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Handled By *
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={followupData.handled_by}
+                                        onChange={(e) => setFollowupData({ ...followupData, handled_by: e.target.value })}
+                                        required
+                                        placeholder="Enter your name"
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Notes
+                                    </label>
+                                    <textarea
+                                        value={followupData.notes}
+                                        onChange={(e) => setFollowupData({ ...followupData, notes: e.target.value.toUpperCase() })}
+                                        rows={4}
+                                        placeholder="Add any notes about the follow-up conversation..."
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 uppercase"
+                                    />
+                                </div>
+
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={handleFollowupSubmit}
+                                        disabled={submitting}
+                                        className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {submitting ? 'Saving...' : 'Save Follow-up'}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowFollowupModal(false)}
+                                        disabled={submitting}
+                                        className="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-xl font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Cancel
                                     </button>
                                 </div>
                             </div>
