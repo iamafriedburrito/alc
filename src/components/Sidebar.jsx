@@ -34,7 +34,7 @@ const Sidebar = () => {
             <div className="p-6 border-b border-gray-200/50 flex-shrink-0">
                 <div className="flex items-center justify-center">
                     <div className="flex items-center space-x-3 w-full">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-500 ease-in-out">
+                        <div className="w-10 h-10 bg-gradient-to-br -ml-[5px] from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-500 ease-in-out">
                             <GraduationCap className="h-6 w-6 text-white" />
                         </div>
                         <div
