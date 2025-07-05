@@ -96,7 +96,7 @@ const StudentAdmissionsList = () => {
         return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-6xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+                    <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
                         <div className="text-center">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                             <p className="text-gray-600">Loading admissions...</p>
@@ -114,7 +114,7 @@ const StudentAdmissionsList = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
                     {/* Header */}
                     <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -153,7 +153,7 @@ const StudentAdmissionsList = () => {
                     </div>
 
                     {/* Search and Filter Section */}
-                    <div className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                    <div className="bg-white/50 backdrop-blur-xs p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label
@@ -172,7 +172,7 @@ const StudentAdmissionsList = () => {
                                         value={searchTerm}
                                         onChange={(e) => setSearchTerm(e.target.value)}
                                         placeholder="Search by name, mobile, course, or certificate..."
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs"
                                     />
                                 </div>
                             </div>
@@ -187,7 +187,7 @@ const StudentAdmissionsList = () => {
                                     id="courseFilter"
                                     value={filterCourse}
                                     onChange={(e) => setFilterCourse(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm"
+                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs"
                                 >
                                     <option value="">All Courses</option>
                                     {[
@@ -222,7 +222,7 @@ const StudentAdmissionsList = () => {
                             {filteredAdmissions.map((admission) => (
                                 <div
                                     key={admission.id}
-                                    className="bg-white/50 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md"
+                                    className="bg-white/50 backdrop-blur-xs p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md"
                                 >
                                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                                         <div className="flex-1">
@@ -280,7 +280,7 @@ const StudentAdmissionsList = () => {
 
                 {/* Modal for Detailed View */}
                 {selectedAdmission && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
                         <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                             <div className="p-8">
                                 <div className="flex justify-between items-center mb-6">
