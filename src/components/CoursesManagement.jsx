@@ -213,7 +213,7 @@ const CoursesManagement = () => {
             pattern: { value: /^\d+$/, message: "Please enter a valid amount" }
           }),
         })}
-        className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${
+        className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${
           errors[name]
             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
             : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -246,7 +246,7 @@ const CoursesManagement = () => {
         )}
 
         {/* Header */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20 mb-10">
+        <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-xl p-8 border border-white/20 mb-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
@@ -281,7 +281,7 @@ const CoursesManagement = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+        <div className="bg-white/80 backdrop-blur-xs p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
           <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
             Search Courses
           </label>
@@ -295,14 +295,14 @@ const CoursesManagement = () => {
               placeholder="Search courses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm text-sm"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs text-sm"
             />
           </div>
         </div>
 
         {/* Loading State */}
         {isLoading && (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 text-center py-16">
+          <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20 text-center py-16">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading courses...</p>
           </div>
@@ -310,7 +310,7 @@ const CoursesManagement = () => {
 
         {/* Courses Grid */}
         {!isLoading && courses.length === 0 ? (
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 text-center py-16">
+          <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20 text-center py-16">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <BookOpen className="w-6 h-6 text-gray-400" />
             </div>
@@ -370,7 +370,7 @@ const CoursesManagement = () => {
 
         {/* Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">
@@ -446,7 +446,7 @@ const CoursesManagement = () => {
         )}
 
         {courseToDelete && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
               <div className="p-6">
                 <div className="flex justify-between items-center mb-6">

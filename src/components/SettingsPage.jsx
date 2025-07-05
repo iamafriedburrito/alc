@@ -293,7 +293,7 @@ const SettingsPage = () => {
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+            <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">System Settings</h1>
                     <p className="text-gray-600 text-lg">Configure your institute settings and manage database</p>
@@ -313,7 +313,7 @@ const SettingsPage = () => {
             </div>
 
             {/* Tab Navigation */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20">
+            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20">
                 <div className="flex space-x-1 p-1">
                     <button
                         onClick={() => setActiveTab('institute')}
@@ -340,7 +340,7 @@ const SettingsPage = () => {
 
             {/* Institute Settings Tab */}
             {activeTab === 'institute' && (
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-8 border border-white/20">
                     <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                         <Building2 className="w-6 h-6 mr-3 text-blue-600" />
                         Institute Information
@@ -493,7 +493,7 @@ const SettingsPage = () => {
             {activeTab === 'database' && (
                 <div className="space-y-8">
                     {/* Database Statistics */}
-                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                    <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                         <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                             <HardDrive className="w-6 h-6 mr-3 text-purple-600" />
                             Database Statistics
@@ -533,7 +533,7 @@ const SettingsPage = () => {
                     </div>
 
                     {/* Backup & Restore Actions */}
-                    <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                    <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                         <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                             <Shield className="w-6 h-6 mr-3 text-green-600" />
                             Backup & Restore
@@ -622,7 +622,7 @@ const SettingsPage = () => {
 
                     {/* Backup History */}
                     {dbStats.backupHistory && dbStats.backupHistory.length > 0 && (
-                        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                        <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <RefreshCw className="w-6 h-6 mr-3 text-blue-600" />
                                 Recent Backups

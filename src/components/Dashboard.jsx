@@ -150,7 +150,7 @@ const Dashboard = () => {
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
+            <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome to EduManage Dashboard</h1>
                     <p className="text-gray-600 text-lg">Manage your institute efficiently with our comprehensive system</p>
@@ -171,7 +171,7 @@ const Dashboard = () => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/enquiries')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -184,7 +184,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/admissions')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -197,7 +197,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/courses')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -210,7 +210,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/followup')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -227,7 +227,7 @@ const Dashboard = () => {
             {/* Quick Actions and Recent Activities */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Quick Actions */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                         <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
                         Quick Actions
@@ -251,7 +251,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* System Status */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                         <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
                         System Status
@@ -291,7 +291,7 @@ const Dashboard = () => {
             {/* Recent Enquiries and Admissions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Recent Enquiries */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                             <Users className="w-5 h-5 mr-2 text-blue-600" />
@@ -341,7 +341,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Recent Admissions */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                             <GraduationCap className="w-5 h-5 mr-2 text-green-600" />
@@ -396,7 +396,7 @@ const Dashboard = () => {
 
             {/* Follow-up Summary */}
             {followupStats && Object.keys(followupStats).length > 0 && (
-                <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                         <Phone className="w-5 h-5 mr-2 text-orange-600" />
                         Follow-up Summary

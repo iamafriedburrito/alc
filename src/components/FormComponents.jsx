@@ -21,7 +21,7 @@ export const AadharInput = ({ field, fieldState }) => {
                 value={formatAadhar(field.value)}
                 placeholder="1234 5678 9012"
                 maxLength="14" // 12 digits + 2 spaces
-                className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm font-mono tracking-wider ${fieldState.error
+                className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs font-mono tracking-wider ${fieldState.error
                     ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                     : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     }`}
@@ -73,7 +73,7 @@ export const FormInput = ({
                     },
                 }),
             })}
-            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${errors[name]
+            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors[name]
                 ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 }`}
@@ -110,7 +110,7 @@ export const FormSelect = ({
             {...register(name, {
                 required: required ? `${label} is required` : false,
             })}
-            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${errors[name]
+            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors[name]
                 ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 }`}
@@ -261,7 +261,7 @@ export const TIMINGS = [
 // Reusable Address Section Component
 export const AddressSection = ({ register, errors }) => {
     return (
-        <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+        <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                     2
@@ -318,7 +318,7 @@ export const AddressSection = ({ register, errors }) => {
 // Reusable Mobile Number Section Component
 export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => {
     return (
-        <div className="bg-white/50 backdrop-blur-sm p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+        <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                     {sectionNumber}
@@ -351,7 +351,7 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                                         "Please enter a valid 10-digit mobile number",
                                 },
                             })}
-                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${errors.mobileNumber
+                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors.mobileNumber
                                 ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                 : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 }`}
@@ -387,7 +387,7 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                                         "Please enter a valid 10-digit mobile number",
                                 },
                             })}
-                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-sm ${errors.alternateMobileNumber
+                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors.alternateMobileNumber
                                 ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                 : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                 }`}
