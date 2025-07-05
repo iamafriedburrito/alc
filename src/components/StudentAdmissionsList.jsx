@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
 import { List, GraduationCap, UserCheck, Plus, RefreshCw, Search, Eye } from "lucide-react";
 import { Link } from "react-router";
+import { toast } from 'react-toastify';
 
 const StudentAdmissionsList = () => {
     const [admissions, setAdmissions] = useState([]);
@@ -86,6 +87,11 @@ const StudentAdmissionsList = () => {
         return matchesSearch && matchesCourse;
     });
 
+    const handleRefresh = async () => {
+        await fetchAdmissions();
+        toast.success('Student list refreshed!');
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -137,7 +143,7 @@ const StudentAdmissionsList = () => {
                                 New Admission
                             </Link>
                             <button
-                                onClick={fetchAdmissions}
+                                onClick={handleRefresh}
                                 className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out"
                             >
                                 <RefreshCw className="w-5 h-5" />

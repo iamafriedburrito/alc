@@ -213,6 +213,11 @@ const StudentEnquiriesList = () => {
         return diffDays;
     };
 
+    const handleRefresh = async () => {
+        await fetchEnquiries();
+        toast.success('Enquiries list refreshed!');
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -264,7 +269,7 @@ const StudentEnquiriesList = () => {
                                 New Enquiry
                             </Link>
                             <button
-                                onClick={fetchEnquiries}
+                                onClick={handleRefresh}
                                 className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out"
                             >
                                 <RefreshCw className="w-5 h-5" />
