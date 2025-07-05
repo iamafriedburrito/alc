@@ -347,14 +347,30 @@ const StudentEnquiriesList = () => {
                                                     <span className="ml-1">{enquiry.currentStatus?.replace('_', ' ') || 'PENDING'}</span>
                                                 </span>
                                             </div>
-                                            <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm">
-                                                <span>ID: <span className="font-medium text-gray-700">{enquiry.id}</span></span>
-                                                <span className="flex items-center gap-1"><Phone className="w-4 h-4" />+91 {enquiry.mobileNumber}</span>
-                                                <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" />{enquiry.courseName?.replace('-', ' ')}</span>
-                                            </div>
-                                            <div className="flex flex-wrap items-center gap-6 text-gray-500 text-sm">
-                                                <span className="flex items-center gap-1"><Calendar className="w-4 h-4" />{enquiry.enquiryDate ? `Enquiry: ${enquiry.enquiryDate}` : `Submitted: ${formatDate(enquiry.createdAt)}`}</span>
-                                                <span className="flex items-center gap-1"><Clock className="w-4 h-4" />{enquiry.nextFollowup ? (<><span>Next: {enquiry.nextFollowup}</span>{isOverdue && <span className="text-red-600 font-semibold ml-1">({daysOverdue} days overdue)</span>}</>) : 'No next follow-up scheduled'}</span>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {/* Left Column: Mobile and Course */}
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                        <Phone className="w-4 h-4" />
+                                                        <span>+91 {enquiry.mobileNumber}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                        <BookOpen className="w-4 h-4" />
+                                                        <span>{enquiry.courseName?.replace('-', ' ')}</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                {/* Right Column: Dates */}
+                                                <div className="space-y-2">
+                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                        <Calendar className="w-4 h-4" />
+                                                        <span>{enquiry.enquiryDate ? `Enquiry: ${enquiry.enquiryDate}` : `Submitted: ${formatDate(enquiry.createdAt)}`}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                        <Clock className="w-4 h-4" />
+                                                        <span>{enquiry.nextFollowup ? (<><span>Next: {enquiry.nextFollowup}</span>{isOverdue && <span className="text-red-600 font-semibold ml-1">({daysOverdue} days overdue)</span>}</>) : 'No next follow-up scheduled'}</span>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div className="flex flex-wrap items-center gap-6 text-xs text-gray-400 mt-1">
                                                 <span>Follow-ups: <span className="font-semibold text-gray-700">{enquiry.followupCount || 0}</span></span>
