@@ -6,11 +6,9 @@ import {
     ChevronRight,
     Home,
     Users,
-    UserPlus,
     GraduationCap,
     BookOpen,
     UserCheck,
-    Phone,
     Settings,
     DollarSign,
 } from "lucide-react"
@@ -21,8 +19,6 @@ const Sidebar = () => {
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: Home, path: "/" },
-        { id: "enquiry", label: "New Enquiry", icon: UserPlus, path: "/enquiry" },
-        { id: "admission", label: "New Admission", icon: GraduationCap, path: "/admission" },
         { id: "enquiries", label: "Enquiries List", icon: Users, path: "/enquiries" },
         { id: "admissions", label: "Students List", icon: UserCheck, path: "/admissions" },
         { id: "courses", label: "Courses & Fees", icon: BookOpen, path: "/courses" },

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
-import { List, GraduationCap } from "lucide-react";
+import { List, GraduationCap, UserCheck, Plus } from "lucide-react";
+import { Link } from "react-router";
 
 const StudentAdmissionsList = () => {
     const [admissions, setAdmissions] = useState([]);
@@ -109,22 +110,31 @@ const StudentAdmissionsList = () => {
             <div className="max-w-5xl mx-auto">
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                     {/* Header */}
-                    <div className="mb-10">
-                        <h2 className="text-4xl font-bold text-gray-900 mb-4 text-left md:text-left">
-                            Students List
-                        </h2>
-                        <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
-                            <span className="text-blue-500">
-                                <GraduationCap className="h-5 w-5" />
-                            </span>
-                            <span>
-                                <span className="font-semibold">Total:</span> {admissions.length}
-                            </span>
-                            <span className="text-gray-400">|</span>
-                            <span>
-                                <span className="font-semibold">Showing:</span> {filteredAdmissions.length}
-                            </span>
+                    <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <h2 className="text-4xl font-bold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
+                                Students List
+                            </h2>
+                            <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
+                                <span className="text-blue-500">
+                                    <GraduationCap className="h-5 w-5" />
+                                </span>
+                                <span>
+                                    <span className="font-semibold">Total:</span> {admissions.length}
+                                </span>
+                                <span className="text-gray-400">|</span>
+                                <span>
+                                    <span className="font-semibold">Showing:</span> {filteredAdmissions.length}
+                                </span>
+                            </div>
                         </div>
+                        <Link
+                            to="/admission"
+                            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
+                        >
+                            <Plus className="w-5 h-5" />
+                            New Admission
+                        </Link>
                     </div>
 
                     {/* Search and Filter Section */}
