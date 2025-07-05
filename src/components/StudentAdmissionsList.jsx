@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
-import { List, GraduationCap, UserCheck, Plus } from "lucide-react";
+import { List, GraduationCap, UserCheck, Plus, RefreshCw } from "lucide-react";
 import { Link } from "react-router";
 
 const StudentAdmissionsList = () => {
@@ -128,13 +128,22 @@ const StudentAdmissionsList = () => {
                                 </span>
                             </div>
                         </div>
-                        <Link
-                            to="/admission"
-                            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
-                        >
-                            <Plus className="w-5 h-5" />
-                            New Admission
-                        </Link>
+                        <div className="flex items-center gap-3">
+                            <Link
+                                to="/admission"
+                                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
+                            >
+                                <Plus className="w-5 h-5" />
+                                New Admission
+                            </Link>
+                            <button
+                                onClick={fetchAdmissions}
+                                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out"
+                            >
+                                <RefreshCw className="w-5 h-5" />
+                                Refresh Data
+                            </button>
+                        </div>
                     </div>
 
                     {/* Search and Filter Section */}
@@ -254,15 +263,7 @@ const StudentAdmissionsList = () => {
                         </div>
                     )}
 
-                    {/* Refresh Button */}
-                    <div className="text-center mt-8">
-                        <button
-                            onClick={fetchAdmissions}
-                            className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-2 rounded-xl font-medium transition-all duration-200 ease-in-out border border-gray-200"
-                        >
-                            Refresh Data
-                        </button>
-                    </div>
+
                 </div>
 
                 {/* Modal for Detailed View */}
