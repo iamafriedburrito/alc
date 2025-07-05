@@ -22,9 +22,9 @@ const Sidebar = () => {
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: Home, path: "/" },
         { id: "enquiry", label: "New Enquiry", icon: UserPlus, path: "/enquiry" },
-        { id: "admission", label: "Student Admission", icon: GraduationCap, path: "/admission" },
+        { id: "admission", label: "New Admission", icon: GraduationCap, path: "/admission" },
         { id: "enquiries", label: "Enquiries List", icon: Users, path: "/enquiries" },
-        { id: "admissions", label: "Admissions List", icon: UserCheck, path: "/admissions" },
+        { id: "admissions", label: "Students List", icon: UserCheck, path: "/admissions" },
         { id: "courses", label: "Courses & Fees", icon: BookOpen, path: "/courses" },
         { id: "fees", label: "Fee Management", icon: DollarSign, path: "/fees" },
         { id: "settings", label: "Settings", icon: Settings, path: "/settings" },

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
+import { List, GraduationCap } from "lucide-react";
 
 const StudentAdmissionsList = () => {
     const [admissions, setAdmissions] = useState([]);
@@ -108,14 +109,22 @@ const StudentAdmissionsList = () => {
             <div className="max-w-5xl mx-auto">
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl p-8 border border-white/20">
                     {/* Header */}
-                    <div className="text-center mb-10">
-                        <h2 className="text-4xl font-bold text-gray-900 mb-3">
-                            Student Admissions
+                    <div className="mb-10">
+                        <h2 className="text-4xl font-bold text-gray-900 mb-4 text-left md:text-left">
+                            Students List
                         </h2>
-                        <p className="text-gray-600">
-                            Total admissions: {admissions.length} | Showing:{" "}
-                            {filteredAdmissions.length}
-                        </p>
+                        <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
+                            <span className="text-blue-500">
+                                <GraduationCap className="h-5 w-5" />
+                            </span>
+                            <span>
+                                <span className="font-semibold">Total:</span> {admissions.length}
+                            </span>
+                            <span className="text-gray-400">|</span>
+                            <span>
+                                <span className="font-semibold">Showing:</span> {filteredAdmissions.length}
+                            </span>
+                        </div>
                     </div>
 
                     {/* Search and Filter Section */}
@@ -126,7 +135,7 @@ const StudentAdmissionsList = () => {
                                     htmlFor="search"
                                     className="block text-sm font-medium text-gray-700 mb-2"
                                 >
-                                    Search Admissions
+                                    Search Students
                                 </label>
                                 <input
                                     type="text"
@@ -253,7 +262,7 @@ const StudentAdmissionsList = () => {
                             <div className="p-8">
                                 <div className="flex justify-between items-center mb-6">
                                     <h2 className="text-3xl font-bold text-gray-900">
-                                        Admission Details - #{selectedAdmission.id}
+                                        Student Details - #{selectedAdmission.id}
                                     </h2>
                                     <button
                                         onClick={() => setSelectedAdmission(null)}
