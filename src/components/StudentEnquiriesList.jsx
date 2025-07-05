@@ -239,7 +239,7 @@ const StudentEnquiriesList = () => {
                     {/* Header */}
                     <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
-                            <h2 className="text-5xl font-extrabold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
+                            <h2 className="text-4xl font-bold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
                                 Enquiries
                             </h2>
                             <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
@@ -273,7 +273,7 @@ const StudentEnquiriesList = () => {
                                 </label>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Search className="h-5 w-5 text-gray-400" />
+                                        <Search className="h-5 w-5 text-gray-500 z-10" />
                                     </div>
                                     <input
                                         type="text"
