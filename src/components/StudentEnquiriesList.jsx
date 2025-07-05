@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye } from "lucide-react";
+import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye, Users } from "lucide-react";
 import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
 
@@ -242,7 +242,7 @@ const StudentEnquiriesList = () => {
                         </h2>
                         <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
                             <span className="text-blue-500">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                                <Users className="h-5 w-5" />
                             </span>
                             <span>
                                 <span className="font-semibold">Total:</span> {enquiries.length}
