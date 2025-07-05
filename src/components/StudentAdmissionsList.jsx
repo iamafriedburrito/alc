@@ -313,6 +313,30 @@ const StudentAdmissionsList = () => {
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">
+                                                    Gender:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.gender}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
+                                                    Marital Status:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.maritalStatus}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
+                                                    Mother Tongue:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.motherTongue}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
                                                     Aadhar Number:
                                                 </span>
                                                 <p className="font-medium text-gray-900">
@@ -443,7 +467,7 @@ const StudentAdmissionsList = () => {
                                                 <span className="text-sm text-gray-500">
                                                     Course Name:
                                                 </span> <p className="font-medium text-gray-900 capitalize">
-                                                    {selectedAdmission.courseName.replace("-", " ")}
+                                                    {selectedAdmission.courseName?.replace("-", " ")}
                                                 </p>
                                             </div>
                                             <div>
@@ -456,10 +480,26 @@ const StudentAdmissionsList = () => {
                                             </div>
                                             <div>
                                                 <span className="text-sm text-gray-500">
+                                                    Category:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.category}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
                                                     Educational Qualification:
                                                 </span>
                                                 <p className="font-medium text-gray-900 capitalize">
                                                     {selectedAdmission.educationalQualification}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <span className="text-sm text-gray-500">
+                                                    Preferred Timing:
+                                                </span>
+                                                <p className="font-medium text-gray-900 capitalize">
+                                                    {selectedAdmission.timing}
                                                 </p>
                                             </div>
                                             <div>
