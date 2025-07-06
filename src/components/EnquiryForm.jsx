@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import { DISTRICTS, LANGUAGES, CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, TIMINGS } from "./FormComponents";
 import { FormInput, AadharInput, FormSelect, AddressSection, MobileNumberSection } from "./FormComponents";
 import { toast } from 'react-toastify';
+import ErrorFallback from './ErrorFallback';
+import { useState, useEffect } from 'react';
 
 const StudentEnquiryForm = () => {
     const navigate = useNavigate();
@@ -39,8 +41,30 @@ const StudentEnquiryForm = () => {
 
     const API_BASE = import.meta.env.VITE_API_URL
 
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const checkServer = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await fetch(`${API_BASE}/enquiries`, { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error('Server unavailable');
+                }
+            } catch (err) {
+                setError('Cannot connect to server. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkServer();
+    }, [API_BASE]);
+
     const onSubmit = async (data) => {
         try {
+            setError(null);
             const response = await fetch(`${API_BASE}/enquiry`, {
                 method: "POST",
                 headers: {
@@ -59,19 +83,23 @@ const StudentEnquiryForm = () => {
             navigate('/enquiries'); // Redirect immediately
         } catch (error) {
             console.error("Error submitting enquiry:", error);
-
-            if (error.message.includes("fetch")) {
-                alert(
-                    "Network error: Please check if the server is running and try again.",
-                );
-            } else if (error.message.includes("HTTP error")) {
-                alert("Server error: Please try again later.");
-            } else {
-                alert("An unexpected error occurred. Please try again.");
-            }
+            setError(error.message || 'An unexpected error occurred. Please try again.');
         }
     };
 
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Checking server status...</p>
+                </div>
+            </div>
+        );
+    }
+    if (error) {
+        return <ErrorFallback error={error} onRetry={() => window.location.reload()} />;
+    }
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
