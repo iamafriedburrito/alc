@@ -177,6 +177,10 @@ const Dashboard = () => {
     // Get a random tip
     const randomTip = tips[Math.floor(Math.random() * tips.length)]
 
+    // Limit to 2 for dashboard display
+    const displayedEnquiries = recentEnquiries.slice(0, 2)
+    const displayedAdmissions = recentAdmissions.slice(0, 2)
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
@@ -313,9 +317,9 @@ const Dashboard = () => {
                         </button>
                     </div>
                     <div className="space-y-4">
-                        {recentEnquiries.length > 0 ? (
-                            recentEnquiries.map((enquiry) => (
-                                <div key={enquiry.id || enquiry.enquiryId} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                        {displayedEnquiries.length > 0 ? (
+                            displayedEnquiries.map((enquiry) => (
+                                <div key={enquiry.id || enquiry.enquiryId} className="flex items-start space-x-3 p-4 min-h-[72px] bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                                      onClick={() => handleNavigation(`/enquiry/${enquiry.id || enquiry.enquiryId}`)}>
                                     <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
                                         <User className="w-4 h-4 text-blue-600" />
@@ -363,9 +367,9 @@ const Dashboard = () => {
                         </button>
                     </div>
                     <div className="space-y-4">
-                        {recentAdmissions.length > 0 ? (
-                            recentAdmissions.map((admission) => (
-                                <div key={admission.id || admission.admissionId} className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                        {displayedAdmissions.length > 0 ? (
+                            displayedAdmissions.map((admission) => (
+                                <div key={admission.id || admission.admissionId} className="flex items-start space-x-3 p-4 min-h-[72px] bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                                      onClick={() => handleNavigation(`/admission/${admission.id || admission.admissionId}`)}>
                                     <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                                         <GraduationCap className="w-4 h-4 text-green-600" />
@@ -379,9 +383,6 @@ const Dashboard = () => {
                                         </p>
                                         <p className="text-xs text-gray-500">
                                             Mobile: {admission.mobileNumber}
-                                        </p>
-                                        <p className="text-xs text-gray-400 mt-1">
-                                            Admitted: {formatDate(admission.admissionDate)}
                                         </p>
                                     </div>
                                 </div>
