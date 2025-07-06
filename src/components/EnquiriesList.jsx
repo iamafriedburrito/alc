@@ -604,50 +604,47 @@ const StudentEnquiriesList = () => {
                                         />
                                     </div>
 
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Status *
+                                            </label>
+                                            <select
+                                                value={followupData.status}
+                                                onChange={(e) => setFollowupData({ ...followupData, status: e.target.value })}
+                                                required
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                            >
+                                                <option value="PENDING">Pending</option>
+                                                <option value="INTERESTED">Interested</option>
+                                                <option value="NOT_INTERESTED">Not Interested</option>
+                                                <option value="ADMITTED">Admitted</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                                                Next Follow-up Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                value={followupData.next_followup_date}
+                                                onChange={(e) => setFollowupData({ ...followupData, next_followup_date: e.target.value })}
+                                                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                            />
+                                        </div>
+                                    </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Status *
+                                            Notes
                                         </label>
-                                        <select
-                                            value={followupData.status}
-                                            onChange={(e) => setFollowupData({ ...followupData, status: e.target.value })}
-                                            required
-                                            className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                                        >
-                                            <option value="PENDING">Pending</option>
-                                            <option value="INTERESTED">Interested</option>
-                                            <option value="NOT_INTERESTED">Not Interested</option>
-                                            <option value="ADMITTED">Admitted</option>
-                                        </select>
+                                        <input
+                                            type="text"
+                                            value={followupData.notes}
+                                            onChange={(e) => setFollowupData({ ...followupData, notes: e.target.value })}
+                                            placeholder="Add notes about the follow-up..."
+                                            className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                                        />
                                     </div>
-
-                                    {followupData.status !== 'ADMITTED' && (
-                                        <>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                    Next Follow-up Date
-                                                </label>
-                                                <input
-                                                    type="date"
-                                                    value={followupData.next_followup_date}
-                                                    onChange={(e) => setFollowupData({ ...followupData, next_followup_date: e.target.value })}
-                                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                                                />
-                                            </div>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                                    Notes
-                                                </label>
-                                                <textarea
-                                                    value={followupData.notes}
-                                                    onChange={(e) => setFollowupData({ ...followupData, notes: e.target.value.toUpperCase() })}
-                                                    rows={4}
-                                                    placeholder="Add any notes about the follow-up conversation..."
-                                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 uppercase"
-                                                />
-                                            </div>
-                                        </>
-                                    )}
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
