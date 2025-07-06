@@ -281,28 +281,7 @@ const StudentAdmissionForm = () => {
                             Please fill in the applicant's details to complete the admission process.
                         </p>
                         
-                        {/* Institute Information Preview */}
-                        {instituteSettings && (
-                            <div className="mt-6 bg-blue-50 rounded-xl p-4 max-w-2xl mx-auto">
-                                <div className="flex items-center justify-between">
-                                    <div className="text-left">
-                                        <h4 className="font-semibold text-gray-900">{getInstituteName()}</h4>
-                                        <p className="text-sm text-gray-600">{getInstituteAddress()}</p>
-                                        <p className="text-sm text-gray-600">{getInstituteContact()}</p>
-                                    </div>
-                                    <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm">
-                                        <img 
-                                            src={getInstituteLogo()} 
-                                            alt="Institute Logo" 
-                                            className="w-12 h-12 object-contain"
-                                        />
-                                    </div>
-                                </div>
-                                <p className="text-xs text-gray-500 mt-2">
-                                    Institute details will be displayed on the generated admission form
-                                </p>
-                            </div>
-                        )}
+
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
