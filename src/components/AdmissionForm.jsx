@@ -8,6 +8,7 @@ import ErrorFallback from './ErrorFallback';
 const StudentAdmissionForm = () => {
     const [photoPreview, setPhotoPreview] = useState(null);
     const [signaturePreview, setSignaturePreview] = useState(null);
+    const [instituteSettings, setInstituteSettings] = useState(null);
     const API_BASE = import.meta.env.VITE_API_URL
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -46,6 +47,39 @@ const StudentAdmissionForm = () => {
         mode: "onBlur",
     });
 
+    // Fetch institute settings
+    const fetchInstituteSettings = async () => {
+        try {
+            const response = await fetch(`${API_BASE}/settings/institute`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                setInstituteSettings(data);
+            } else {
+                // If settings not found, use default values
+                setInstituteSettings({
+                    name: 'TechSkill Training Institute',
+                    address: '123 Knowledge Park, Karvenagar, Pune - 411052',
+                    phone: '+91 98765 43210',
+                    email: 'info@techskill.edu.in',
+                    website: 'www.techskill.edu.in',
+                    logo: null
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching institute settings:', error);
+            // Use default values on error
+            setInstituteSettings({
+                name: 'TechSkill Training Institute',
+                address: '123 Knowledge Park, Karvenagar, Pune - 411052',
+                phone: '+91 98765 43210',
+                email: 'info@techskill.edu.in',
+                website: 'www.techskill.edu.in',
+                logo: null
+            });
+        }
+    };
+
     useEffect(() => {
         const subscription = watch((value, { name }) => {
             // Only update certificate name if firstName, middleName, or lastName changes
@@ -81,6 +115,8 @@ const StudentAdmissionForm = () => {
                 if (!response.ok) {
                     throw new Error('Server unavailable');
                 }
+                // Fetch institute settings after server check
+                await fetchInstituteSettings();
             } catch (err) {
                 setError('Cannot connect to server. Please try again later.');
             } finally {
@@ -89,6 +125,31 @@ const StudentAdmissionForm = () => {
         };
         checkServer();
     }, [API_BASE]);
+
+    // Get institute logo URL or placeholder
+    const getInstituteLogo = () => {
+        if (instituteSettings?.logo) {
+            return `${API_BASE.replace('/api', '')}/uploads/${instituteSettings.logo}`;
+        }
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
+    };
+
+    // Get institute name or default
+    const getInstituteName = () => {
+        return instituteSettings?.name || 'TechSkill Training Institute';
+    };
+
+    // Get institute address or default
+    const getInstituteAddress = () => {
+        return instituteSettings?.address || '123 Knowledge Park, Karvenagar, Pune - 411052';
+    };
+
+    // Get institute contact info or default
+    const getInstituteContact = () => {
+        const phone = instituteSettings?.phone || '+91 98765 43210';
+        const email = instituteSettings?.email || 'info@techskill.edu.in';
+        return `Phone: ${phone} | Email: ${email}`;
+    };
 
     // Handle photo file change and preview
     const handlePhotoChange = (event) => {
@@ -235,14 +296,13 @@ const StudentAdmissionForm = () => {
                 <!-- ===== HEADER ===== -->
                 <div class="header">
                   <div class="info">
-                    <h1>TechSkill Training Institute</h1>
+                    <h1>${getInstituteName()}</h1>
                     <div class="subtext">
-                      123 Knowledge Park, Karvenagar, Pune - 411052<br>
-                      Center Code: TSTI-KP-01<br>
-                      Phone: +91 98765 43210 | Email: info@techskill.edu.in
+                      ${getInstituteAddress()}<br>
+                      ${getInstituteContact()}
                     </div>
                   </div>
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png" alt="Institute Logo">
+                  <img src="${getInstituteLogo()}" alt="Institute Logo">
                 </div>
 
                 <h2 class="title">Admission Form - ID: ${admissionId}</h2>
@@ -363,6 +423,29 @@ const StudentAdmissionForm = () => {
                         <p className="text-gray-600">
                             Please fill in the applicant's details to complete the admission process.
                         </p>
+                        
+                        {/* Institute Information Preview */}
+                        {instituteSettings && (
+                            <div className="mt-6 bg-blue-50 rounded-xl p-4 max-w-2xl mx-auto">
+                                <div className="flex items-center justify-between">
+                                    <div className="text-left">
+                                        <h4 className="font-semibold text-gray-900">{getInstituteName()}</h4>
+                                        <p className="text-sm text-gray-600">{getInstituteAddress()}</p>
+                                        <p className="text-sm text-gray-600">{getInstituteContact()}</p>
+                                    </div>
+                                    <div className="w-16 h-16 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                                        <img 
+                                            src={getInstituteLogo()} 
+                                            alt="Institute Logo" 
+                                            className="w-12 h-12 object-contain"
+                                        />
+                                    </div>
+                                </div>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Institute details will be displayed on the generated admission form
+                                </p>
+                            </div>
+                        )}
                     </div>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
