@@ -12,6 +12,8 @@ const StudentAdmissionsList = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCourse, setFilterCourse] = useState("");
 
+    const API_BASE = import.meta.env.VITE_API_URL
+
     useEffect(() => {
         fetchAdmissions();
     }, []);
@@ -19,7 +21,7 @@ const StudentAdmissionsList = () => {
     const fetchAdmissions = async () => {
         try {
             setLoading(true);
-            const response = await fetch("http://localhost:8000/api/admissions");
+            const response = await fetch(`${API_BASE}/admissions`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -41,7 +43,7 @@ const StudentAdmissionsList = () => {
     const handleViewDetails = async (admissionId) => {
         try {
             const response = await fetch(
-                `http://localhost:8000/api/admission/${admissionId}`,
+                `${API_BASE}/admission/${admissionId}`,
             );
 
             if (!response.ok) {
@@ -371,7 +373,7 @@ const StudentAdmissionsList = () => {
                                                 <span className="text-sm text-gray-500">Photo:</span>
                                                 <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden w-40 h-40">
                                                     <img
-                                                        src={`http://localhost:8000/uploads/${selectedAdmission.photoFilename}`}
+                                                        src={`${API_BASE.replace('/api', '')}/uploads/${selectedAdmission.photoFilename}`}
                                                         alt="Student Photo"
                                                         className="object-cover w-full h-full"
                                                     />
@@ -383,7 +385,7 @@ const StudentAdmissionsList = () => {
                                                 </span>
                                                 <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden w-40 h-20">
                                                     <img
-                                                        src={`http://localhost:8000/uploads/${selectedAdmission.signatureFilename}`}
+                                                        src={`${API_BASE.replace('/api', '')}/uploads/${selectedAdmission.signatureFilename}`}
                                                         alt="Signature"
                                                         className="object-contain w-full h-full"
                                                     />

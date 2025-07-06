@@ -37,9 +37,11 @@ const StudentEnquiryForm = () => {
         mode: "onBlur", // Validate on blur for better UX
     });
 
+    const API_BASE = import.meta.env.VITE_API_URL
+
     const onSubmit = async (data) => {
         try {
-            const response = await fetch("http://localhost:8000/api/enquiry", {
+            const response = await fetch(`${API_BASE}/enquiry`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

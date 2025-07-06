@@ -25,7 +25,7 @@ const FeeManagement = () => {
         late_fee: 0,
     })
 
-    const API_BASE = "http://localhost:8000/api"
+    const API_BASE = import.meta.env.VITE_API_URL
 
     // Fetch data
     const fetchData = async () => {

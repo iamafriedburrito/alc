@@ -24,6 +24,8 @@ const StudentEnquiriesList = () => {
         handled_by: "System User"
     });
 
+    const API_BASE = import.meta.env.VITE_API_URL
+
     useEffect(() => {
         fetchEnquiries();
     }, []);
@@ -35,8 +37,8 @@ const StudentEnquiriesList = () => {
 
             // Fetch both regular enquiries and follow-up data
             const [enquiriesResponse, followupsResponse] = await Promise.all([
-                fetch('http://localhost:8000/api/enquiries'),
-                fetch('http://localhost:8000/api/followups/tracker')
+                fetch(`${API_BASE}/enquiries`),
+                fetch(`${API_BASE}/followups/tracker`)
             ]);
 
             let enquiriesData = [];
@@ -67,7 +69,7 @@ const StudentEnquiriesList = () => {
 
     const handleViewDetails = async (enquiryId) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/enquiry/${enquiryId}`);
+            const response = await fetch(`${API_BASE}/enquiry/${enquiryId}`);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -113,7 +115,7 @@ const StudentEnquiriesList = () => {
                 handled_by: followupData.handled_by
             };
 
-            const response = await fetch('http://localhost:8000/api/followup', {
+            const response = await fetch(`${API_BASE}/followup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

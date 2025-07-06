@@ -16,8 +16,8 @@ const CoursesManagement = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [totalCourses, setTotalCourses] = useState(0);
 
-  // API base URL
-  const API_BASE_URL = 'http://localhost:8000/api';
+  // API base URL from environment
+  const API_BASE = import.meta.env.VITE_API_URL;
   const {
     register,
     handleSubmit,
@@ -37,8 +37,8 @@ const CoursesManagement = () => {
     setApiError('');
     try {
       const url = search 
-        ? `${API_BASE_URL}/courses?search=${encodeURIComponent(search)}`
-        : `${API_BASE_URL}/courses`;
+        ? `${API_BASE}/courses?search=${encodeURIComponent(search)}`
+        : `${API_BASE}/courses`;
       
       const response = await fetch(url);
       if (!response.ok) {
@@ -62,7 +62,7 @@ const CoursesManagement = () => {
   // Fetch course statistics
   const fetchStats = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/courses/stats/overview`);
+      const response = await fetch(`${API_BASE}/courses/stats/overview`);
       if (response.ok) {
         const data = await response.json();
         setStats(data.data);
@@ -121,7 +121,7 @@ const CoursesManagement = () => {
       let response;
       if (editingCourse) {
         // Update existing course
-        response = await fetch(`${API_BASE_URL}/courses/${editingCourse.id}`, {
+        response = await fetch(`${API_BASE}/courses/${editingCourse.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const CoursesManagement = () => {
         });
       } else {
         // Create new course
-        response = await fetch(`${API_BASE_URL}/courses`, {
+        response = await fetch(`${API_BASE}/courses`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -169,7 +169,7 @@ const CoursesManagement = () => {
     setIsDeleting(true);
     setApiError('');
     try {
-      const response = await fetch(`${API_BASE_URL}/courses/${courseToDelete.id}`, {
+      const response = await fetch(`${API_BASE}/courses/${courseToDelete.id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

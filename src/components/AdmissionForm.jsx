@@ -96,6 +96,8 @@ const StudentAdmissionForm = () => {
         }
     };
 
+    const API_BASE = import.meta.env.VITE_API_URL
+
     const onSubmit = async (data) => {
         try {
             const formData = new FormData();
@@ -128,7 +130,7 @@ const StudentAdmissionForm = () => {
                 formData.append("signature", data.signature[0]);
             }
 
-            const response = await fetch("http://localhost:8000/api/admission", {
+            const response = await fetch(`${API_BASE}/admission`, {
                 method: "POST",
                 body: formData, // No headers needed for FormData
             });

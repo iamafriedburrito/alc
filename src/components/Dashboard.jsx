@@ -18,8 +18,8 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
-    // API base URL
-    const API_BASE = 'http://localhost:8000/api'
+    // API base URL from environment
+    const API_BASE = import.meta.env.VITE_API_URL
 
     // Navigation handler
     const handleNavigation = (path) => {

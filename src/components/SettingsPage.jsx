@@ -50,7 +50,7 @@ const SettingsPage = () => {
     const [activeTab, setActiveTab] = useState('institute')
 
     // API base URL
-    const API_BASE = 'http://localhost:8000'
+    const API_BASE = import.meta.env.VITE_API_URL
 
     // Fetch current settings
     const fetchSettings = async () => {
@@ -59,8 +59,8 @@ const SettingsPage = () => {
             setError(null)
 
             const [instituteResponse, dbStatsResponse] = await Promise.all([
-                fetch(`${API_BASE}/api/settings/institute`).catch(() => ({ ok: false })),
-                fetch(`${API_BASE}/api/settings/database/stats`).catch(() => ({ ok: false }))
+                fetch(`${API_BASE}/settings/institute`).catch(() => ({ ok: false })),
+                fetch(`${API_BASE}/settings/database/stats`).catch(() => ({ ok: false }))
             ])
 
             if (instituteResponse.ok) {
@@ -72,7 +72,7 @@ const SettingsPage = () => {
                     email: instituteData.email || '',
                     website: instituteData.website || '',
                     logo: null,
-                    logoPreview: instituteData.logo ? `${API_BASE}/uploads/${instituteData.logo}` : null
+                    logoPreview: instituteData.logo ? `${API_BASE.replace('/api', '')}/uploads/${instituteData.logo}` : null
                 })
             }
 
@@ -144,7 +144,7 @@ const SettingsPage = () => {
                 formData.append('logo', instituteSettings.logo)
             }
 
-            const response = await fetch(`${API_BASE}/api/settings/institute`, {
+            const response = await fetch(`${API_BASE}/settings/institute`, {
                 method: 'POST',
                 body: formData
             })
@@ -171,7 +171,7 @@ const SettingsPage = () => {
         try {
             setBackupInProgress(true)
 
-            const response = await fetch(`${API_BASE}/api/settings/database/backup`, {
+            const response = await fetch(`${API_BASE}/settings/database/backup`, {
                 method: 'POST'
             })
 
@@ -221,7 +221,7 @@ const SettingsPage = () => {
             const formData = new FormData()
             formData.append('backup_file', file)
 
-            const response = await fetch(`${API_BASE}/api/settings/database/restore`, {
+            const response = await fetch(`${API_BASE}/settings/database/restore`, {
                 method: 'POST',
                 body: formData
             })
