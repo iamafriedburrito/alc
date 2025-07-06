@@ -99,20 +99,30 @@ const FeeManagement = () => {
         setFilteredRecords(filtered)
     }, [searchTerm, statusFilter, courseFilter, feeRecords])
 
-    // Calculate payment status
+    // Calculate payment status using fee summary data
     const calculatePaymentStatus = (student) => {
+        // Find the fee record for this student from the fees summary
+        const feeRecord = feeRecords.find(fee => fee.student_id === student.id)
+        
+        if (feeRecord) {
+            return {
+                totalDue: feeRecord.course_fee,
+                totalPaid: feeRecord.total_paid,
+                balance: feeRecord.balance,
+                isOverdue: feeRecord.is_overdue,
+                monthsOverdue: feeRecord.months_overdue || 0,
+            }
+        }
+        
+        // Fallback calculation if no fee record found
         const admissionDate = new Date(student.createdAt)
         const today = new Date()
         const monthsDiff =
             (today.getFullYear() - admissionDate.getFullYear()) * 12 + (today.getMonth() - admissionDate.getMonth())
 
-        // Get course fee (you might want to fetch this from courses API)
         const courseFee = getCourseFee(student.courseName)
         const totalDue = courseFee * Math.max(1, monthsDiff + 1)
-
-        // Calculate total paid (mock calculation)
-        const totalPaid = 0 // This should come from actual payment records
-
+        const totalPaid = 0
         const balance = totalDue - totalPaid
         const isOverdue = balance > 0 && monthsDiff > 0
 
@@ -246,16 +256,26 @@ const FeeManagement = () => {
     const generateFeeRecords = () => {
         return students.map((student) => {
             const paymentStatus = calculatePaymentStatus(student)
-            let status = "PENDING"
+            
+            // Use status from fee record if available, otherwise calculate
+            const feeRecord = feeRecords.find(fee => fee.student_id === student.id)
+            let status = feeRecord ? feeRecord.status : "PENDING"
 
-            if (paymentStatus.balance <= 0) {
-                status = "PAID"
-            } else if (paymentStatus.totalPaid > 0) {
-                status = "PARTIAL"
-            } else if (paymentStatus.isOverdue) {
-                status = "OVERDUE"
+            if (!feeRecord) {
+                // Fallback status calculation
+                if (paymentStatus.balance <= 0) {
+                    status = "PAID"
+                } else if (paymentStatus.totalPaid > 0) {
+                    status = "PARTIAL"
+                } else if (paymentStatus.isOverdue) {
+                    status = "OVERDUE"
+                }
             }
 
+            // Get the latest payment date for this student from fee record
+            const studentFeeRecord = feeRecords.find(fee => fee.student_id === student.id)
+            const lastPaymentDate = studentFeeRecord ? studentFeeRecord.last_payment_date : null
+            
             return {
                 id: student.id,
                 studentId: student.id,
@@ -269,7 +289,7 @@ const FeeManagement = () => {
                 status: status,
                 isOverdue: paymentStatus.isOverdue,
                 monthsOverdue: paymentStatus.monthsOverdue,
-                lastPaymentDate: null, // Would come from payment records
+                lastPaymentDate: lastPaymentDate,
             }
         })
     }
