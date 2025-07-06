@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { Search, Plus, DollarSign, Calendar, AlertTriangle, CheckCircle, Clock, User, X, Save, Eye } from "lucide-react"
 import { toast } from "react-toastify"
+import ErrorFallback from './ErrorFallback'
 
 const FeeManagement = () => {
     const [students, setStudents] = useState([])
@@ -29,14 +30,22 @@ const FeeManagement = () => {
 
     // Fetch data
     const fetchData = async () => {
+        setError(null); // Always clear error before retry
         try {
             setLoading(true)
-            setError(null)
 
             const [studentsResponse, feesResponse] = await Promise.all([
                 fetch(`${API_BASE}/admissions`).catch(() => ({ ok: false })),
                 fetch(`${API_BASE}/fees`).catch(() => ({ ok: false })),
             ])
+
+            if (!studentsResponse.ok) {
+                setError("Failed to load fee data. Please check your connection.");
+                setStudents([])
+                setFeeRecords([])
+                setFilteredRecords([])
+                return;
+            }
 
             if (studentsResponse.ok) {
                 const studentsData = await studentsResponse.json()
@@ -48,14 +57,15 @@ const FeeManagement = () => {
                 setFeeRecords(feesData.fees || [])
                 setFilteredRecords(feesData.fees || [])
             } else {
-                // If fees endpoint doesn't exist, create mock data structure
-                const mockFees = []
-                setFeeRecords(mockFees)
-                setFilteredRecords(mockFees)
+                setFeeRecords([])
+                setFilteredRecords([])
             }
         } catch (err) {
             console.error("Error fetching data:", err)
             setError("Failed to load fee data. Please check your connection.")
+            setStudents([])
+            setFeeRecords([])
+            setFilteredRecords([])
         } finally {
             setLoading(false)
         }
@@ -289,6 +299,10 @@ const FeeManagement = () => {
         )
     }
 
+    if (error) {
+        return <ErrorFallback onRetry={fetchData} />
+    }
+
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
@@ -296,18 +310,6 @@ const FeeManagement = () => {
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">Fee Management</h1>
                     <p className="text-gray-600 text-lg">Track student payments, dues, and overdue fees</p>
-                    {error && (
-                        <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg flex items-center justify-center">
-                            <AlertTriangle className="w-5 h-5 text-red-600 mr-2" />
-                            <span className="text-red-600 text-sm">{error}</span>
-                            <button
-                                onClick={fetchData}
-                                className="ml-3 px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
 
