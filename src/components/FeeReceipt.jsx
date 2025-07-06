@@ -1,7 +1,53 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Printer, Download, X } from 'lucide-react';
 
 const FeeReceipt = ({ paymentData, student, onClose }) => {
+    const [instituteSettings, setInstituteSettings] = useState(null);
+    const [loading, setLoading] = useState(true);
+    
+    // API base URL
+    const API_BASE = import.meta.env.VITE_API_URL;
+
+    // Fetch institute settings
+    const fetchInstituteSettings = async () => {
+        try {
+            setLoading(true);
+            const response = await fetch(`${API_BASE}/settings/institute`);
+            
+            if (response.ok) {
+                const data = await response.json();
+                setInstituteSettings(data);
+            } else {
+                // If settings not found, use default values
+                setInstituteSettings({
+                    name: 'TechSkill Training Institute',
+                    address: '123 Knowledge Park, Karvenagar, Pune - 411052',
+                    phone: '+91 98765 43210',
+                    email: 'info@techskill.edu.in',
+                    website: 'www.techskill.edu.in',
+                    logo: null
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching institute settings:', error);
+            // Use default values on error
+            setInstituteSettings({
+                name: 'TechSkill Training Institute',
+                address: '123 Knowledge Park, Karvenagar, Pune - 411052',
+                phone: '+91 98765 43210',
+                email: 'info@techskill.edu.in',
+                website: 'www.techskill.edu.in',
+                logo: null
+            });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchInstituteSettings();
+    }, []);
+
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat("en-IN", {
             style: "currency",
@@ -19,6 +65,31 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
 
     const generateReceiptNumber = () => {
         return Math.floor(Math.random() * 90000000) + 10000000; // 8-digit number
+    };
+
+    // Get institute logo URL or placeholder
+    const getInstituteLogo = () => {
+        if (instituteSettings?.logo) {
+            return `${API_BASE.replace('/api', '')}/uploads/${instituteSettings.logo}`;
+        }
+        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
+    };
+
+    // Get institute name or default
+    const getInstituteName = () => {
+        return instituteSettings?.name || 'TechSkill Training Institute';
+    };
+
+    // Get institute address or default
+    const getInstituteAddress = () => {
+        return instituteSettings?.address || '123 Knowledge Park, Karvenagar, Pune - 411052';
+    };
+
+    // Get institute contact info or default
+    const getInstituteContact = () => {
+        const phone = instituteSettings?.phone || '+91 98765 43210';
+        const email = instituteSettings?.email || 'info@techskill.edu.in';
+        return `Phone: ${phone} | Email: ${email}`;
     };
 
     const handlePrint = () => {
@@ -59,14 +130,13 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                 <div class="container">
                     <div class="header">
                         <div class="info">
-                            <h1>TechSkill Training Institute</h1>
+                            <h1>${getInstituteName()}</h1>
                             <div class="subtext">
-                                123 Knowledge Park, Karvenagar, Pune - 411052<br>
-                                Center Code: TSTI-KP-01<br>
-                                Phone: +91 98765 43210 | Email: info@techskill.edu.in
+                                ${getInstituteAddress()}<br>
+                                ${getInstituteContact()}
                             </div>
                         </div>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png" alt="Institute Logo">
+                        <img src="${getInstituteLogo()}" alt="Institute Logo">
                     </div>
 
                     <h2 class="title">Fee Receipt</h2>
@@ -163,14 +233,13 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                 <div class="container">
                     <div class="header">
                         <div class="info">
-                            <h1>TechSkill Training Institute</h1>
+                            <h1>${getInstituteName()}</h1>
                             <div class="subtext">
-                                123 Knowledge Park, Karvenagar, Pune - 411052<br>
-                                Center Code: TSTI-KP-01<br>
-                                Phone: +91 98765 43210 | Email: info@techskill.edu.in
+                                ${getInstituteAddress()}<br>
+                                ${getInstituteContact()}
                             </div>
                         </div>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png" alt="Institute Logo">
+                        <img src="${getInstituteLogo()}" alt="Institute Logo">
                     </div>
 
                     <h2 class="title">Fee Receipt</h2>
@@ -258,6 +327,31 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                             <h3 className="text-xl font-semibold text-gray-900">Receipt Preview</h3>
                             <p className="text-sm text-gray-600">Generated receipt for payment recording</p>
                         </div>
+
+                        {/* Institute Information */}
+                        {loading ? (
+                            <div className="text-center py-4">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                                <p className="text-sm text-gray-600">Loading institute details...</p>
+                            </div>
+                        ) : (
+                            <div className="bg-white rounded-xl p-4 mb-4 shadow-sm">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h4 className="font-semibold text-gray-900">{getInstituteName()}</h4>
+                                        <p className="text-sm text-gray-600">{getInstituteAddress()}</p>
+                                        <p className="text-sm text-gray-600">{getInstituteContact()}</p>
+                                    </div>
+                                    <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                        <img 
+                                            src={getInstituteLogo()} 
+                                            alt="Institute Logo" 
+                                            className="w-12 h-12 object-contain"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="bg-white rounded-xl p-6 shadow-sm">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
