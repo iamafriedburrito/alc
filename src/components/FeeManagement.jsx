@@ -339,6 +339,20 @@ const FeeManagement = () => {
 
     const paymentStatus = selectedStudent ? calculatePaymentStatus(selectedStudent) : { balance: 0 };
 
+    // Close modals on Escape key press
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === "Escape") {
+                setShowPaymentModal(false);
+                setShowDetailsModal(false);
+                setShowReceiptModal(false);
+            }
+        };
+
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, []);
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
