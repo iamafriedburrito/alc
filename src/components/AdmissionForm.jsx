@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { CATEGORY, COURSES, DISTRICTS, EDUCATIONAL_QUALIFICATION, LANGUAGES, TIMINGS } from './FormComponents';
+import { CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, LANGUAGES, TIMINGS } from './FormOptions';
 import { FormSelect, AadharInput, FormInput, AddressSection, MobileNumberSection } from './FormComponents';
 import { toast } from 'react-toastify';
 import ErrorFallback from './ErrorFallback';

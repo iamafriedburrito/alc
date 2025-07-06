@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { DISTRICTS, LANGUAGES, CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, TIMINGS } from "./FormComponents";
+import { LANGUAGES, CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, TIMINGS } from "./FormOptions";
 import { FormInput, AadharInput, FormSelect, AddressSection, MobileNumberSection } from "./FormComponents";
 import { toast } from 'react-toastify';
 import ErrorFallback from './ErrorFallback';
