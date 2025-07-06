@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye, Users, RefreshCw } from "lucide-react";
+import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye, Users, RefreshCw, Save } from "lucide-react";
 import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
 import { Link } from "react-router";
@@ -664,8 +664,9 @@ const StudentEnquiriesList = () => {
                                         <button
                                             onClick={handleFollowupSubmit}
                                             disabled={submitting}
-                                            className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                                         >
+                                            <Save className="w-5 h-5" />
                                             {submitting ? 'Saving...' : 'Save Follow-up'}
                                         </button>
                                         <button
