@@ -97,7 +97,7 @@ const Sidebar = () => {
                         <div
                             data-tooltip-id="admin-tooltip"
                             data-tooltip-content="Admin User"
-                            className="z-2000 w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center group relative transition-all duration-300 ease-in-out"
+                            className="z-20 w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center group relative transition-all duration-300 ease-in-out"
                         >
                             <span className="text-white font-semibold text-sm">AD</span>
                         </div>
