@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, Lock, User } from "lucide-react";
+import { useNavigate } from "react-router";
 
 const InstituteLogin = ({ onLogin }) => {
   const {
@@ -15,6 +16,7 @@ const InstituteLogin = ({ onLogin }) => {
   const [instituteSettings, setInstituteSettings] = useState(null);
   const [loadingSettings, setLoadingSettings] = useState(true);
   const API_BASE = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchInstituteSettings = async () => {
@@ -51,7 +53,7 @@ const InstituteLogin = ({ onLogin }) => {
       data.password === VALID_USER.password
     ) {
       toast.success("Login successful! Welcome to the dashboard.");
-      onLogin(); // Call the onLogin prop to update parent state
+      navigate("/"); // Redirect to dashboard
     } else {
       setError("Invalid username or password.");
     }
