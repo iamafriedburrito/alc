@@ -172,11 +172,17 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                                 <td>${paymentData.late_fee}</td>
                             </tr>
                             ` : ''}
+                            ${paymentData.discount > 0 ? `
+                            <tr>
+                                <td>Discount</td>
+                                <td style="color: #dc2626;">-${paymentData.discount}</td>
+                            </tr>
+                            ` : ''}
                         </tbody>
                     </table>
 
                     <div class="totals">
-                        <div><span><strong>Total Paid:</strong></span> <span>${formatCurrency(parseFloat(paymentData.amount) + parseFloat(paymentData.late_fee || 0))}</span></div>
+                        <div><span><strong>Total Paid:</strong></span> <span>${formatCurrency(parseFloat(paymentData.amount) + parseFloat(paymentData.late_fee || 0) - parseFloat(paymentData.discount || 0))}</span></div>
                     </div>
 
                     <div class="notes">
@@ -276,11 +282,17 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                                 <td>${paymentData.late_fee}</td>
                             </tr>
                             ` : ''}
+                            ${paymentData.discount > 0 ? `
+                            <tr>
+                                <td>Discount</td>
+                                <td style="color: #dc2626;">-${paymentData.discount}</td>
+                            </tr>
+                            ` : ''}
                         </tbody>
                     </table>
 
                     <div class="totals">
-                        <div><span><strong>Total Paid:</strong></span> <span>${formatCurrency(parseFloat(paymentData.amount) + parseFloat(paymentData.late_fee || 0))}</span></div>
+                        <div><span><strong>Total Paid:</strong></span> <span>${formatCurrency(parseFloat(paymentData.amount) + parseFloat(paymentData.late_fee || 0) - parseFloat(paymentData.discount || 0))}</span></div>
                     </div>
 
                     <div class="notes">
@@ -389,13 +401,19 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                                         <p className="font-medium text-red-600">{formatCurrency(paymentData.late_fee)}</p>
                                     </div>
                                 )}
+                                {paymentData.discount > 0 && (
+                                    <div>
+                                        <span className="text-sm text-gray-500">Discount:</span>
+                                        <p className="font-medium text-red-600">-{formatCurrency(paymentData.discount)}</p>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="border-t pt-4">
                                 <div className="flex justify-between items-center">
                                     <span className="font-semibold">Total Amount:</span>
                                     <span className="font-bold text-lg text-green-600">
-                                        {formatCurrency(parseFloat(paymentData.amount) + parseFloat(paymentData.late_fee || 0))}
+                                        {formatCurrency(parseFloat(paymentData.amount) + parseFloat(paymentData.late_fee || 0) - parseFloat(paymentData.discount || 0))}
                                     </span>
                                 </div>
                             </div>

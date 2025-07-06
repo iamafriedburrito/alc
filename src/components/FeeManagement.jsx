@@ -28,6 +28,7 @@ const FeeManagement = () => {
         transaction_id: "",
         notes: "",
         late_fee: 0,
+        discount: 0,
     })
 
     const API_BASE = import.meta.env.VITE_API_URL
@@ -219,6 +220,7 @@ const FeeManagement = () => {
             transaction_id: "",
             notes: "",
             late_fee: paymentStatus.isOverdue ? Math.min(500, paymentStatus.balance * 0.1) : 0,
+            discount: 0,
         })
         setShowPaymentModal(true)
     }
@@ -661,6 +663,28 @@ const FeeManagement = () => {
                                             placeholder="Late fee amount"
                                         />
                                     </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-2">Discount</label>
+                                        <input
+                                            type="number"
+                                            value={paymentData.discount}
+                                            onChange={(e) => {
+                                                let value = Number.parseFloat(e.target.value) || 0;
+                                                const maxDiscount = Math.min(paymentStatus.balance, paymentData.amount || 0);
+                                                if (value > maxDiscount) {
+                                                    value = maxDiscount;
+                                                    toast.warn('Discount cannot exceed the payment amount.');
+                                                }
+                                                setPaymentData({ ...paymentData, discount: value });
+                                            }}
+                                            min="0"
+                                            max={Math.min(paymentStatus.balance, paymentData.amount || 0)}
+                                            step="0.01"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Discount amount"
+                                        />
+                                    </div>
                                 </div>
 
                                 {paymentData.payment_method !== "CASH" && (
@@ -868,6 +892,7 @@ const FeeManagement = () => {
                             late_fee: 0,
                             transaction_id: "",
                             notes: "",
+                            discount: 0,
                         });
                     }}
                 />
