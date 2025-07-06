@@ -370,7 +370,7 @@ const FeeManagement = () => {
             <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 z-10" />
                         <input
                             type="text"
                             placeholder="Search students..."
