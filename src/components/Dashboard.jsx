@@ -319,19 +319,19 @@ const Dashboard = () => {
                     <div className="space-y-4">
                         {displayedEnquiries.length > 0 ? (
                             displayedEnquiries.map((enquiry) => (
-                                <div key={enquiry.id || enquiry.enquiryId} className="flex items-start space-x-3 p-4 min-h-[72px] bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                                <div key={enquiry.id || enquiry.enquiryId} className="flex items-center space-x-6 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                                      onClick={() => handleNavigation(`/enquiry/${enquiry.id || enquiry.enquiryId}`)}>
-                                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <User className="w-4 h-4 text-blue-600" />
+                                    <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <User className="w-10 h-10 text-blue-600" />
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-gray-900">
+                                    <div className="flex-1 min-w-0 flex flex-col gap-1">
+                                        <p className="text-base font-semibold text-gray-900">
                                             {enquiry.firstName} {enquiry.lastName}
                                         </p>
-                                        <p className="text-xs text-gray-600 mb-1">
+                                        <p className="text-sm text-gray-600">
                                             Course: {enquiry.courseName || 'Not specified'}
                                         </p>
-                                        <p className="text-xs text-gray-500">
+                                        <p className="text-sm text-gray-500">
                                             Mobile: {enquiry.mobileNumber}
                                         </p>
                                     </div>
@@ -369,19 +369,19 @@ const Dashboard = () => {
                     <div className="space-y-4">
                         {displayedAdmissions.length > 0 ? (
                             displayedAdmissions.map((admission) => (
-                                <div key={admission.id || admission.admissionId} className="flex items-start space-x-3 p-4 min-h-[72px] bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                                <div key={admission.id || admission.admissionId} className="flex items-center space-x-6 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                                      onClick={() => handleNavigation(`/admission/${admission.id || admission.admissionId}`)}>
-                                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <GraduationCap className="w-4 h-4 text-green-600" />
+                                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <GraduationCap className="w-10 h-10 text-green-600" />
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                        <p className="text-sm font-medium text-gray-900">
+                                    <div className="flex-1 min-w-0 flex flex-col gap-1">
+                                        <p className="text-base font-semibold text-gray-900">
                                             {admission.firstName} {admission.lastName}
                                         </p>
-                                        <p className="text-xs text-gray-600 mb-1">
+                                        <p className="text-sm text-gray-600">
                                             Course: {admission.courseName}
                                         </p>
-                                        <p className="text-xs text-gray-500">
+                                        <p className="text-sm text-gray-500">
                                             Mobile: {admission.mobileNumber}
                                         </p>
                                     </div>
