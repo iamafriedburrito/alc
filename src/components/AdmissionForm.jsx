@@ -3,10 +3,14 @@ import { useForm, Controller } from "react-hook-form";
 import { CATEGORY, COURSES, DISTRICTS, EDUCATIONAL_QUALIFICATION, LANGUAGES, TIMINGS } from './FormComponents';
 import { FormSelect, AadharInput, FormInput, AddressSection, MobileNumberSection } from './FormComponents';
 import { toast } from 'react-toastify';
+import ErrorFallback from './ErrorFallback';
 
 const StudentAdmissionForm = () => {
     const [photoPreview, setPhotoPreview] = useState(null);
     const [signaturePreview, setSignaturePreview] = useState(null);
+    const API_BASE = import.meta.env.VITE_API_URL
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const {
         register,
@@ -68,6 +72,24 @@ const StudentAdmissionForm = () => {
         return () => subscription.unsubscribe();
     }, [watch, setValue]);
 
+    useEffect(() => {
+        const checkServer = async () => {
+            try {
+                setLoading(true);
+                setError(null);
+                const response = await fetch(`${API_BASE}/admissions`, { method: 'GET' });
+                if (!response.ok) {
+                    throw new Error('Server unavailable');
+                }
+            } catch (err) {
+                setError('Cannot connect to server. Please try again later.');
+            } finally {
+                setLoading(false);
+            }
+        };
+        checkServer();
+    }, [API_BASE]);
+
     // Handle photo file change and preview
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
@@ -96,10 +118,9 @@ const StudentAdmissionForm = () => {
         }
     };
 
-    const API_BASE = import.meta.env.VITE_API_URL
-
     const onSubmit = async (data) => {
         try {
+            setError(null);
             const formData = new FormData();
 
             // Transform relevant text fields to uppercase before appending
@@ -155,16 +176,7 @@ const StudentAdmissionForm = () => {
             setSignaturePreview(null);
         } catch (error) {
             console.error("Error submitting admission:", error);
-
-            if (error.message.includes("fetch")) {
-                alert(
-                    "Network error: Please check if the server is running and try again.",
-                );
-            } else if (error.message.includes("HTTP error")) {
-                alert("Server error: Please try again later.");
-            } else {
-                alert("An unexpected error occurred. Please try again.");
-            }
+            setError(error.message || 'An unexpected error occurred. Please try again.');
         }
     };
 
@@ -325,6 +337,20 @@ const StudentAdmissionForm = () => {
             URL.revokeObjectURL(url);
         }, 1000);
     };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600">Checking server status...</p>
+                </div>
+            </div>
+        );
+    }
+    if (error) {
+        return <ErrorFallback error={error} onRetry={() => window.location.reload()} />;
+    }
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
