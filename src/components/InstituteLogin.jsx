@@ -49,7 +49,7 @@ const InstituteLogin = ({ onLogin }) => {
         </div>
 
         {/* Login Form */}
-        <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 border border-white/20">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Username Field */}
             <div>

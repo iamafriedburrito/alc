@@ -306,7 +306,7 @@ const FeeManagement = () => {
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
-            <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
+            <div className="bg-white rounded-3xl shadow-xl p-8 border border-white/20">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">Fee Management</h1>
                     <p className="text-gray-600 text-lg">Track student payments, dues, and overdue fees</p>
@@ -315,7 +315,7 @@ const FeeManagement = () => {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Total Students</p>
@@ -327,7 +327,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Paid Up</p>
@@ -341,7 +341,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Overdue</p>
@@ -355,7 +355,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Total Due</p>
@@ -369,7 +369,7 @@ const FeeManagement = () => {
             </div>
 
             {/* Filters */}
-            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+            <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 z-10" />
@@ -378,14 +378,14 @@ const FeeManagement = () => {
                             placeholder="Search students..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="pl-9 pr-4 py-2.5 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/50 backdrop-blur-xs"
+                            className="pl-9 pr-4 py-2.5 w-full rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                         />
                     </div>
 
                     <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/50 backdrop-blur-xs"
+                        className="px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                     >
                         <option value="ALL">All Status</option>
                         <option value="PAID">Paid</option>
@@ -397,7 +397,7 @@ const FeeManagement = () => {
                     <select
                         value={courseFilter}
                         onChange={(e) => setCourseFilter(e.target.value)}
-                        className="px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white/50 backdrop-blur-xs"
+                        className="px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
                     >
                         <option value="ALL">All Courses</option>
                         {[...new Set(students.map((s) => s.courseName))].map((course) => (
@@ -422,7 +422,7 @@ const FeeManagement = () => {
             </div>
 
             {/* Fee Records Table */}
-            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20">
+            <div className="bg-white rounded-2xl shadow-lg border border-white/20">
                 <div className="p-3 md:p-4 border-b border-gray-200">
                     <h2 className="text-xl font-semibold text-gray-900">Student Fee Records</h2>
                 </div>
