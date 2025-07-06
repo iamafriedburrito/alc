@@ -261,7 +261,7 @@ export const TIMINGS = [
 // Reusable Address Section Component
 export const AddressSection = ({ register, errors }) => {
     return (
-        <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+        <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                     2
@@ -318,7 +318,7 @@ export const AddressSection = ({ register, errors }) => {
 // Reusable Mobile Number Section Component
 export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => {
     return (
-        <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+        <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                     {sectionNumber}

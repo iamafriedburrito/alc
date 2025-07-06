@@ -39,7 +39,7 @@ const InstituteLogin = ({ onLogin }) => {
       <div className="max-w-md w-full">
         {/* Logo/Header Section */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+          <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
             <Lock className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -49,7 +49,7 @@ const InstituteLogin = ({ onLogin }) => {
         </div>
 
         {/* Login Form */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 border border-white/20">
+        <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Username Field */}
             <div>
@@ -138,7 +138,7 @@ const InstituteLogin = ({ onLogin }) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-sm hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {isSubmitting ? (
                 <div className="flex items-center justify-center">

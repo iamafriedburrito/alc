@@ -28,7 +28,7 @@ const Sidebar = () => {
 
     return (
         <div
-            className={`${isCollapsed ? "w-20" : "w-80"} transition-all duration-500 ease-in-out bg-white border-r border-gray-200/50 shadow-xl flex flex-col h-screen relative`}
+            className={`${isCollapsed ? "w-20" : "w-80"} transition-all duration-500 ease-in-out bg-white border-r border-gray-200/50 shadow-sm flex flex-col h-screen relative`}
         >
             {/* Header */}
             <div className="p-6 border-b border-gray-200/50 flex-shrink-0">
@@ -65,7 +65,7 @@ const Sidebar = () => {
                                 data-tooltip-content={item.label}
                                 data-tooltip-hidden={!isCollapsed}
                                 className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 ease-in-out group relative overflow-hidden ${isActive
-                                        ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-lg transform scale-[1.02]"
+                                        ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm transform scale-[1.02]"
                                         : "text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:transform hover:scale-[1.01]"
                                     } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                             >

@@ -103,7 +103,7 @@ const StudentEnquiryForm = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-5xl mx-auto">
-                <div className="bg-white rounded-3xl shadow-xl p-8 border border-white/20">
+                <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                     <div className="text-center mb-10">
                         <h2 className="text-4xl font-bold text-gray-900 mb-3">
                             Enquiry Form
@@ -115,7 +115,7 @@ const StudentEnquiryForm = () => {
 
                     <div className="space-y-8">
                         {/* Personal Information Section */}
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                                     1
@@ -227,7 +227,7 @@ const StudentEnquiryForm = () => {
                         <MobileNumberSection register={register} errors={errors} sectionNumber={3} />
 
                         {/* Educational Information Section */}
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                                     4
@@ -280,7 +280,7 @@ const StudentEnquiryForm = () => {
 
 
                         {/* Institute Use Section */}
-                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+                        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600">
                                     5
@@ -304,7 +304,7 @@ const StudentEnquiryForm = () => {
                             type="button"
                             onClick={handleSubmit(onSubmit)}
                             disabled={isSubmitting}
-                            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-sm hover:shadow-sm disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
                             {isSubmitting ? "Submitting..." : "Submit Enquiry"}
                         </button>

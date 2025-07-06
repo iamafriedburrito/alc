@@ -197,7 +197,7 @@ const Dashboard = () => {
     ) : (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 border border-white/20">
+            <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome to EduManage Dashboard</h1>
                     <p className="text-gray-600 text-lg">Manage your institute efficiently with our comprehensive system</p>
@@ -206,7 +206,7 @@ const Dashboard = () => {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20 hover:shadow-sm transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/enquiries')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -219,7 +219,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20 hover:shadow-sm transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/admissions')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -232,7 +232,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20 hover:shadow-sm transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/courses')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -245,7 +245,7 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20 hover:shadow-sm transition-all duration-300 cursor-pointer"
                      onClick={() => handleNavigation('/followup')}>
                     <div className="flex items-center justify-between">
                         <div>
@@ -262,7 +262,7 @@ const Dashboard = () => {
             {/* Quick Actions and Recent Activities */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Quick Actions */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                         <TrendingUp className="w-5 h-5 mr-2 text-blue-600" />
                         Quick Actions
@@ -273,7 +273,7 @@ const Dashboard = () => {
                             return (
                                 <button
                                     key={index}
-                                    className={`${action.color} text-white p-4 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50`}
+                                    className={`${action.color} text-white p-4 rounded-xl hover:opacity-90 transition-all duration-200 transform hover:scale-105 shadow-sm hover:shadow-sm active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50`}
                                     onClick={() => handleNavigation(action.path)}
                                     title={`Navigate to ${action.label}`}
                                 >
@@ -286,7 +286,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Tips */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
                         <Lightbulb className="w-5 h-5 mr-2 text-yellow-600" />
                         Daily Tip
@@ -303,7 +303,7 @@ const Dashboard = () => {
             {/* Recent Enquiries and Admissions */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {/* Recent Enquiries */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                             <Users className="w-5 h-5 mr-2 text-blue-600" />
@@ -353,7 +353,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* Recent Admissions */}
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-xl font-semibold text-gray-900 flex items-center">
                             <GraduationCap className="w-5 h-5 mr-2 text-green-600" />

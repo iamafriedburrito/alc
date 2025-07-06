@@ -326,7 +326,7 @@ const FeeManagement = () => {
     return (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
-            <div className="bg-white rounded-3xl shadow-xl p-8 border border-white/20">
+            <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">Fee Management</h1>
                     <p className="text-gray-600 text-lg">Track student payments, dues, and overdue fees</p>
@@ -335,7 +335,7 @@ const FeeManagement = () => {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Total Students</p>
@@ -347,7 +347,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Paid Up</p>
@@ -361,7 +361,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Overdue</p>
@@ -375,7 +375,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
                             <p className="text-xs font-medium text-gray-600">Total Due</p>
@@ -389,7 +389,7 @@ const FeeManagement = () => {
             </div>
 
             {/* Filters */}
-            <div className="bg-white rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
+            <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 z-10" />
@@ -442,7 +442,7 @@ const FeeManagement = () => {
             </div>
 
             {/* Fee Records Table */}
-            <div className="bg-white rounded-2xl shadow-lg border border-white/20">
+            <div className="bg-white rounded-2xl shadow-sm border border-white/20">
                 <div className="p-3 md:p-4 border-b border-gray-200">
                     <h2 className="text-xl font-semibold text-gray-900">Student Fee Records</h2>
                 </div>
@@ -549,7 +549,7 @@ const FeeManagement = () => {
             {/* Payment Modal */}
             {showPaymentModal && selectedStudent && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-3xl shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white rounded-3xl shadow-sm max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                         <div className="p-8">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-gray-900">Record Payment</h2>
@@ -675,7 +675,7 @@ const FeeManagement = () => {
             {/* Details Modal */}
             {showDetailsModal && selectedStudent && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-3xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                    <div className="bg-white rounded-3xl shadow-sm max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                         <div className="p-8">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-gray-900">Fee Details</h2>

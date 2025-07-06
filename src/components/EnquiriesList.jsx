@@ -253,7 +253,7 @@ const StudentEnquiriesList = () => {
         return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
                 <div className="max-w-6xl mx-auto">
-                    <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
+                    <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-sm p-8 border border-white/20">
                         <div className="text-center">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
                             <p className="text-gray-600">Loading enquiries...</p>
@@ -271,7 +271,7 @@ const StudentEnquiriesList = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <div className="bg-white rounded-3xl shadow-xl p-8 border border-white/20">
+                <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                     {/* Header */}
                     <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -368,7 +368,7 @@ const StudentEnquiriesList = () => {
                                 return (
                                     <div
                                         key={enquiry.id}
-                                        className={`flex flex-col md:flex-row md:items-center justify-between bg-white rounded-2xl shadow border border-gray-100 hover:shadow-lg transition-all duration-200 p-6 gap-4 md:gap-0`}
+                                        className={`flex flex-col md:flex-row md:items-center justify-between bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-sm transition-all duration-200 p-6 gap-4 md:gap-0`}
                                         style={{ minHeight: '120px' }}
                                     >
                                         {/* Left: Main Info */}
@@ -430,7 +430,7 @@ const StudentEnquiriesList = () => {
                                             {enquiry.currentStatus !== 'ADMITTED' && (
                                                 <button
                                                     onClick={() => handleFollowupClick(enquiry)}
-                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
+                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
                                                 >
                                                     <Plus className="w-4 h-4" />
                                                     Follow-up
@@ -449,7 +449,7 @@ const StudentEnquiriesList = () => {
                 {/* Modal for Detailed View */}
                 {selectedEnquiry && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="bg-white rounded-3xl shadow-sm max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                             <div className="p-8">
                                 <div className="flex justify-between items-center mb-6">
                                     <h2 className="text-3xl font-bold text-gray-900">
@@ -593,7 +593,7 @@ const StudentEnquiriesList = () => {
                                 <div className="mt-8 text-center">
                                     <button
                                         onClick={() => setSelectedEnquiry(null)}
-                                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-lg hover:shadow-xl"
+                                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-sm hover:shadow-md"
                                     >
                                         Close Details
                                     </button>
@@ -606,7 +606,7 @@ const StudentEnquiriesList = () => {
                 {/* Follow-up Modal */}
                 {showFollowupModal && followupEnquiry && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                        <div className="bg-white rounded-3xl shadow-sm max-w-4xl w-full max-h-[90vh] overflow-y-auto">
                             <div className="p-8">
                                 <div className="text-center mb-6">
                                     <h3 className="text-2xl font-bold text-gray-900 mb-2">

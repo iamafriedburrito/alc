@@ -234,7 +234,7 @@ const CoursesManagement = () => {
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="bg-white rounded-2xl shadow-xl p-8 border border-white/20 mb-10">
+          <div className="bg-white rounded-2xl shadow-sm p-8 border border-white/20 mb-10">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <h2 className="text-4xl font-bold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
@@ -252,7 +252,7 @@ const CoursesManagement = () => {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => openModal()}
-                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
+                  className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
                 >
                   <Plus className="w-5 h-5" />
                   Add Course
@@ -290,14 +290,14 @@ const CoursesManagement = () => {
 
           {/* Loading State */}
           {isLoading && (
-            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20 text-center py-16">
+            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-sm border border-white/20 text-center py-16">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               <p className="text-gray-600">Loading courses...</p>
             </div>
           )}
 
           {/* Courses Table */}
-          <div className="bg-white rounded-2xl shadow-lg border border-white/20">
+          <div className="bg-white rounded-2xl shadow-sm border border-white/20">
             <div className="p-3 md:p-4 border-b border-gray-200">
               <h2 className="text-xl font-semibold text-gray-900">Course Management</h2>
             </div>
@@ -381,7 +381,7 @@ const CoursesManagement = () => {
           {/* Modal */}
           {isModalOpen && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-              <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+              <div className="bg-white rounded-2xl shadow-sm max-w-md w-full">
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-900">
@@ -457,7 +457,7 @@ const CoursesManagement = () => {
 
           {courseToDelete && (
             <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 z-50">
-              <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full">
+              <div className="bg-white rounded-2xl shadow-sm max-w-md w-full">
                 <div className="p-6">
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-900">Delete Course</h2>

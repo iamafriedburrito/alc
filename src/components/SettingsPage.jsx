@@ -300,7 +300,7 @@ const SettingsPage = () => {
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto space-y-8">
                 {/* Header */}
-                <div className="bg-white rounded-3xl shadow-xl p-8 border border-white/20">
+                <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                     <div className="text-center">
                         <h1 className="text-4xl font-bold text-gray-900 mb-3">System Settings</h1>
                         <p className="text-gray-600 text-lg">Configure your institute settings and manage database</p>
@@ -320,12 +320,12 @@ const SettingsPage = () => {
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="bg-white rounded-2xl shadow-lg border border-white/20">
+                <div className="bg-white rounded-2xl shadow-sm border border-white/20">
                     <div className="flex space-x-1 p-1">
                         <button
                             onClick={() => setActiveTab('institute')}
                             className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'institute'
-                                ? 'bg-blue-500 text-white shadow-md'
+                                ? 'bg-blue-500 text-white shadow-sm'
                                 : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
@@ -335,7 +335,7 @@ const SettingsPage = () => {
                         <button
                             onClick={() => setActiveTab('database')}
                             className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'database'
-                                ? 'bg-blue-500 text-white shadow-md'
+                                ? 'bg-blue-500 text-white shadow-sm'
                                 : 'text-gray-600 hover:bg-gray-100'
                                 }`}
                         >
@@ -347,7 +347,7 @@ const SettingsPage = () => {
 
                 {/* Institute Settings Tab */}
                 {activeTab === 'institute' && (
-                    <div className="bg-white rounded-2xl shadow-lg p-8 border border-white/20">
+                    <div className="bg-white rounded-2xl shadow-sm p-8 border border-white/20">
                         <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                             <Building2 className="w-6 h-6 mr-3 text-blue-600" />
                             Institute Information
@@ -437,7 +437,7 @@ const SettingsPage = () => {
                                                 <img
                                                     src={instituteSettings.logoPreview}
                                                     alt="Institute Logo"
-                                                    className="max-w-full max-h-48 mx-auto rounded-lg shadow-md"
+                                                    className="max-w-full max-h-48 mx-auto rounded-lg shadow-sm"
                                                 />
                                                 <button
                                                     onClick={removeLogo}
@@ -500,7 +500,7 @@ const SettingsPage = () => {
                 {activeTab === 'database' && (
                     <div className="space-y-8">
                         {/* Database Statistics */}
-                        <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                        <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <HardDrive className="w-6 h-6 mr-3 text-purple-600" />
                                 Database Statistics
@@ -540,7 +540,7 @@ const SettingsPage = () => {
                         </div>
 
                         {/* Backup & Restore Actions */}
-                        <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                        <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                             <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                 <Shield className="w-6 h-6 mr-3 text-green-600" />
                                 Backup & Restore
@@ -629,7 +629,7 @@ const SettingsPage = () => {
 
                         {/* Backup History */}
                         {dbStats.backupHistory && dbStats.backupHistory.length > 0 && (
-                            <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
+                            <div className="bg-white rounded-2xl shadow-sm p-6 border border-white/20">
                                 <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
                                     <RefreshCw className="w-6 h-6 mr-3 text-blue-600" />
                                     Recent Backups
