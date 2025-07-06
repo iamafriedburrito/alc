@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { Users, GraduationCap, BookOpen, TrendingUp, Phone, FileText, UserPlus, AlertCircle, CheckCircle, User } from "lucide-react"
+import { Users, GraduationCap, BookOpen, TrendingUp, Phone, FileText, UserPlus, AlertCircle, CheckCircle, User, Lightbulb } from "lucide-react"
 import ErrorFallback from './ErrorFallback'
 
 const Dashboard = () => {
@@ -136,9 +136,46 @@ const Dashboard = () => {
     const quickActions = [
         { label: "Add Enquiry", icon: UserPlus, path: "/enquiry", color: "bg-blue-500" },
         { label: "New Admission", icon: GraduationCap, path: "/admission", color: "bg-green-500" },
-        { label: "Generate Receipt", icon: FileText, path: "/receipt", color: "bg-purple-500" },
-        { label: "Follow-up Tracker", icon: Phone, path: "/followup", color: "bg-orange-500" },
     ]
+
+    // Tips array for randomization
+    const tips = [
+        {
+            title: "💡 Productivity Tip",
+            content: "Use the quick actions to add new enquiries and admissions faster. Regular follow-ups increase conversion rates by 40%.",
+            bgClass: "bg-gradient-to-r from-blue-50 to-indigo-50",
+            borderClass: "border-blue-400",
+            textClass: "text-blue-800",
+            titleClass: "text-blue-900"
+        },
+        {
+            title: "📊 Daily Insight",
+            content: "Track your enquiry-to-admission ratio to optimize your marketing strategies and improve student recruitment.",
+            bgClass: "bg-gradient-to-r from-green-50 to-emerald-50",
+            borderClass: "border-green-400",
+            textClass: "text-green-800",
+            titleClass: "text-green-900"
+        },
+        {
+            title: "🎯 Best Practice",
+            content: "Update student information regularly and maintain detailed follow-up records to improve conversion rates.",
+            bgClass: "bg-gradient-to-r from-purple-50 to-violet-50",
+            borderClass: "border-purple-400",
+            textClass: "text-purple-800",
+            titleClass: "text-purple-900"
+        },
+        {
+            title: "📈 Growth Tip",
+            content: "Analyze peak enquiry periods and optimize your course offerings accordingly for better results.",
+            bgClass: "bg-gradient-to-r from-orange-50 to-amber-50",
+            borderClass: "border-orange-400",
+            textClass: "text-orange-800",
+            titleClass: "text-orange-900"
+        }
+    ]
+
+    // Get a random tip
+    const randomTip = tips[Math.floor(Math.random() * tips.length)]
 
     if (loading) {
         return (
@@ -244,40 +281,17 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* System Status */}
+                {/* Tips */}
                 <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
                     <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                        <CheckCircle className="w-5 h-5 mr-2 text-green-600" />
-                        System Status
+                        <Lightbulb className="w-5 h-5 mr-2 text-yellow-600" />
+                        Daily Tip
                     </h3>
-                    <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">Database Connection</span>
-                            <div className="flex items-center space-x-2">
-                                <div className={`w-3 h-3 rounded-full ${!error ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                <span className={`text-sm ${!error ? 'text-green-600' : 'text-red-600'}`}>
-                                    {!error ? 'Connected' : 'Error'}
-                                </span>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">API Status</span>
-                            <div className="flex items-center space-x-2">
-                                <div className={`w-3 h-3 rounded-full ${!error ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                <span className={`text-sm ${!error ? 'text-green-600' : 'text-red-600'}`}>
-                                    {!error ? 'Online' : 'Offline'}
-                                </span>
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600">Last Updated</span>
-                            <span className="text-sm text-gray-500">
-                                {new Date().toLocaleTimeString('en-IN', { 
-                                    hour: '2-digit', 
-                                    minute: '2-digit' 
-                                })}
-                            </span>
-                        </div>
+                    <div className={`${randomTip.bgClass} p-4 rounded-lg border-l-4 ${randomTip.borderClass}`}>
+                        <h4 className={`font-medium mb-2 ${randomTip.titleClass}`}>{randomTip.title}</h4>
+                        <p className={`text-sm ${randomTip.textClass}`}>
+                            {randomTip.content}
+                        </p>
                     </div>
                 </div>
             </div>
