@@ -17,6 +17,8 @@ const FeeManagement = () => {
     const [showDetailsModal, setShowDetailsModal] = useState(false)
     const [showReceiptModal, setShowReceiptModal] = useState(false)
     const [selectedStudent, setSelectedStudent] = useState(null)
+    const [paymentHistory, setPaymentHistory] = useState([])
+    const [loadingHistory, setLoadingHistory] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [paymentData, setPaymentData] = useState({
         student_id: "",
@@ -73,6 +75,24 @@ const FeeManagement = () => {
         }
     }
 
+    const fetchPaymentHistory = async (studentId) => {
+        setLoadingHistory(true)
+        try {
+            const response = await fetch(`${API_BASE}/fees/payments/student/${studentId}`)
+            if (response.ok) {
+                const result = await response.json()
+                setPaymentHistory(result.payments || [])
+            } else {
+                setPaymentHistory([])
+            }
+        } catch (error) {
+            console.error("Error fetching payment history:", error)
+            setPaymentHistory([])
+        } finally {
+            setLoadingHistory(false)
+        }
+    }
+
     useEffect(() => {
         fetchData()
     }, [])
@@ -105,7 +125,7 @@ const FeeManagement = () => {
     const calculatePaymentStatus = (student) => {
         // Find the fee record for this student from the fees summary
         const feeRecord = feeRecords.find(fee => fee.student_id === student.id)
-        
+
         if (feeRecord) {
             return {
                 totalDue: feeRecord.course_fee,
@@ -115,7 +135,7 @@ const FeeManagement = () => {
                 monthsOverdue: feeRecord.months_overdue || 0,
             }
         }
-        
+
         // Fallback calculation if no fee record found
         const admissionDate = new Date(student.createdAt)
         const today = new Date()
@@ -218,6 +238,7 @@ const FeeManagement = () => {
             if (response.ok) {
                 const result = await response.json()
                 toast.success("Payment recorded successfully!")
+                fetchPaymentHistory(selectedStudent.id) // Refresh payment history
                 setShowPaymentModal(false)
                 setShowReceiptModal(true)
                 fetchData() // Refresh data
@@ -240,6 +261,7 @@ const FeeManagement = () => {
     const handleViewDetails = (student) => {
         setSelectedStudent(student)
         setShowDetailsModal(true)
+        fetchPaymentHistory(student.id)
     }
 
     const formatCurrency = (amount) => {
@@ -261,7 +283,7 @@ const FeeManagement = () => {
     const generateFeeRecords = () => {
         return students.map((student) => {
             const paymentStatus = calculatePaymentStatus(student)
-            
+
             // Use status from fee record if available, otherwise calculate
             const feeRecord = feeRecords.find(fee => fee.student_id === student.id)
             let status = feeRecord ? feeRecord.status : "PENDING"
@@ -280,7 +302,7 @@ const FeeManagement = () => {
             // Get the latest payment date for this student from fee record
             const studentFeeRecord = feeRecords.find(fee => fee.student_id === student.id)
             const lastPaymentDate = studentFeeRecord ? studentFeeRecord.last_payment_date : null
-            
+
             return {
                 id: student.id,
                 studentId: student.id,
@@ -694,7 +716,10 @@ const FeeManagement = () => {
                         <div className="p-8">
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-bold text-gray-900">Fee Details</h2>
-                                <button onClick={() => setShowDetailsModal(false)} className="text-gray-400 hover:text-gray-600">
+                                <button onClick={() => {
+                                    setShowDetailsModal(false)
+                                    setPaymentHistory([])
+                                }} className="text-gray-400 hover:text-gray-600">
                                     <X className="w-6 h-6" />
                                 </button>
                             </div>
@@ -756,21 +781,67 @@ const FeeManagement = () => {
                                         })()}
                                     </div>
                                 </div>
-
                                 {/* Payment History */}
                                 <div className="bg-gray-50 p-6 rounded-xl">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Payment History</h3>
-                                    <div className="text-center py-8 text-gray-500">
-                                        <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                                        <p>No payment history available</p>
-                                        <p className="text-sm mt-1">Payments will appear here once recorded</p>
-                                    </div>
+                                    {loadingHistory ? (
+                                        <div className="text-center py-8">
+                                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                                            <p className="text-gray-600">Loading payment history...</p>
+                                        </div>
+                                    ) : paymentHistory.length === 0 ? (
+                                        <div className="text-center py-8 text-gray-500">
+                                            <Calendar className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                                            <p>No payment history available</p>
+                                            <p className="text-sm mt-1">Payments will appear here once recorded</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-3">
+                                            {paymentHistory.map((payment) => (
+                                                <div key={payment.id} className="bg-white p-4 rounded-lg border border-gray-200">
+                                                    <div className="flex justify-between items-start">
+                                                        <div className="flex-1">
+                                                            <div className="flex items-center gap-2 mb-2">
+                                                                <span className="text-lg font-semibold text-green-600">
+                                                                    {formatCurrency(payment.amount)}
+                                                                </span>
+                                                                <span className="text-sm px-2 py-1 bg-blue-100 text-blue-800 rounded">
+                                                                    {payment.payment_method}
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-sm text-gray-600 mb-1">
+                                                                Date: {formatDate(payment.payment_date)}
+                                                            </p>
+                                                            {payment.transaction_id && (
+                                                                <p className="text-sm text-gray-600 mb-1">
+                                                                    Transaction ID: {payment.transaction_id}
+                                                                </p>
+                                                            )}
+                                                            {payment.notes && (
+                                                                <p className="text-sm text-gray-600">
+                                                                    Notes: {payment.notes}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                        {payment.late_fee > 0 && (
+                                                            <div className="text-sm text-red-600">
+                                                                Late Fee: {formatCurrency(payment.late_fee)}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="mt-8 flex justify-end">
                                 <button
-                                    onClick={() => setShowDetailsModal(false)}
+                                    onClick={() => {
+                                        setShowDetailsModal(false)
+                                        setPaymentHistory([])
+                                    }}
                                     className="bg-blue-500 text-white px-6 py-3 rounded-xl hover:bg-blue-600 transition-colors"
                                 >
                                     Close
