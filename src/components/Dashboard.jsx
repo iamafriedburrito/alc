@@ -403,45 +403,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* Follow-up Summary */}
-            {followupStats && Object.keys(followupStats).length > 0 && (
-                <div className="bg-white rounded-2xl shadow-lg p-6 border border-white/20">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                        <Phone className="w-5 h-5 mr-2 text-orange-600" />
-                        Follow-up Summary
-                    </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {followupStats.pending_followups && (
-                            <div className="text-center p-4 bg-orange-50 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors"
-                                 onClick={() => handleNavigation('/followup?filter=pending')}>
-                                <p className="text-2xl font-bold text-orange-600">{followupStats.pending_followups}</p>
-                                <p className="text-sm text-gray-600">Pending</p>
-                            </div>
-                        )}
-                        {followupStats.completed_followups && (
-                            <div className="text-center p-4 bg-green-50 rounded-lg cursor-pointer hover:bg-green-100 transition-colors"
-                                 onClick={() => handleNavigation('/followup?filter=completed')}>
-                                <p className="text-2xl font-bold text-green-600">{followupStats.completed_followups}</p>
-                                <p className="text-sm text-gray-600">Completed</p>
-                            </div>
-                        )}
-                        {followupStats.overdue_followups && (
-                            <div className="text-center p-4 bg-red-50 rounded-lg cursor-pointer hover:bg-red-100 transition-colors"
-                                 onClick={() => handleNavigation('/followup?filter=overdue')}>
-                                <p className="text-2xl font-bold text-red-600">{followupStats.overdue_followups}</p>
-                                <p className="text-sm text-gray-600">Overdue</p>
-                            </div>
-                        )}
-                        {followupStats.total_followups && (
-                            <div className="text-center p-4 bg-blue-50 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors"
-                                 onClick={() => handleNavigation('/followup')}>
-                                <p className="text-2xl font-bold text-blue-600">{followupStats.total_followups}</p>
-                                <p className="text-sm text-gray-600">Total</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            )}
+
         </div>
     )
 }
