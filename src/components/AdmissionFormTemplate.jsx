@@ -27,7 +27,7 @@ export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, s
         <html lang="en">
         <head>
           <meta charset="UTF-8">
-          <title>Compact Admission Form</title>
+          <title>Admission Form</title>
           <style>
             /* ---------- PAGE & GLOBALS ---------- */
             @page          { size:A4; margin:12mm; }
