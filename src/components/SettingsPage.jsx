@@ -31,6 +31,7 @@ const SettingsPage = () => {
     // Institute Settings State
     const [instituteSettings, setInstituteSettings] = useState({
         name: '',
+        centerCode: '',
         logo: null,
         logoPreview: null,
         address: '',
@@ -74,6 +75,7 @@ const SettingsPage = () => {
             const instituteData = await instituteResponse.json()
             setInstituteSettings({
                 name: instituteData.name || '',
+                centerCode: instituteData.centerCode || '',
                 address: instituteData.address || '',
                 phone: instituteData.phone || '',
                 email: instituteData.email || '',
@@ -139,6 +141,7 @@ const SettingsPage = () => {
 
             const formData = new FormData()
             formData.append('name', instituteSettings.name)
+            formData.append('centerCode', instituteSettings.centerCode)
             formData.append('address', instituteSettings.address)
             formData.append('phone', instituteSettings.phone)
             formData.append('email', instituteSettings.email)
@@ -366,6 +369,19 @@ const SettingsPage = () => {
                                         onChange={(e) => setInstituteSettings(prev => ({ ...prev, name: e.target.value }))}
                                         className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter institute name"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Center Code
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={instituteSettings.centerCode}
+                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, centerCode: e.target.value }))}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter center code"
                                     />
                                 </div>
 
