@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { Users, GraduationCap, BookOpen, TrendingUp, Phone, FileText, UserPlus, AlertCircle, CheckCircle, User } from "lucide-react"
+import ErrorFallback from './ErrorFallback'
 
 const Dashboard = () => {
     const navigate = useNavigate()
@@ -28,9 +29,9 @@ const Dashboard = () => {
     }
 
     const fetchData = async () => {
+        setError(null)
         try {
             setLoading(true)
-            setError(null)
 
             // Fetch all data in parallel
             const [
@@ -47,62 +48,65 @@ const Dashboard = () => {
                 fetch(`${API_BASE}/courses`).catch(() => ({ ok: false }))
             ])
 
-            // Process stats
-            if (statsResponse.ok) {
-                const statsData = await statsResponse.json()
-                setStats(prevStats => ({
-                    ...prevStats,
-                    totalEnquiries: statsData.total_enquiries || 0,
-                    totalAdmissions: statsData.total_admissions || 0,
-                }))
+            // If any response is not OK, show error fallback
+            if (
+                !statsResponse.ok ||
+                !enquiriesResponse.ok ||
+                !admissionsResponse.ok ||
+                !followupStatsResponse.ok ||
+                !coursesResponse.ok
+            ) {
+                setError('Failed to load dashboard data. Please check your connection.');
+                setLoading(false);
+                return;
             }
 
+            // Process stats
+            const statsData = await statsResponse.json()
+            setStats(prevStats => ({
+                ...prevStats,
+                totalEnquiries: statsData.total_enquiries || 0,
+                totalAdmissions: statsData.total_admissions || 0,
+            }))
+
             // Process enquiries
-            if (enquiriesResponse.ok) {
-                const enquiriesData = await enquiriesResponse.json()
-                const sortedEnquiries = enquiriesData.enquiries
-                    ?.sort((a, b) => new Date(b.enquiryDate) - new Date(a.enquiryDate))
-                    ?.slice(0, 5) || []
-                setRecentEnquiries(sortedEnquiries)
-                
-                // Update enquiries count if not from stats API
-                if (!statsResponse.ok) {
-                    setStats(prev => ({ ...prev, totalEnquiries: enquiriesData.total || 0 }))
-                }
+            const enquiriesData = await enquiriesResponse.json()
+            const sortedEnquiries = enquiriesData.enquiries
+                ?.sort((a, b) => new Date(b.enquiryDate) - new Date(a.enquiryDate))
+                ?.slice(0, 5) || []
+            setRecentEnquiries(sortedEnquiries)
+            
+            // Update enquiries count if not from stats API
+            if (!statsResponse.ok) {
+                setStats(prev => ({ ...prev, totalEnquiries: enquiriesData.total || 0 }))
             }
 
             // Process admissions
-            if (admissionsResponse.ok) {
-                const admissionsData = await admissionsResponse.json()
-                const sortedAdmissions = admissionsData.admissions
-                    ?.sort((a, b) => new Date(b.admissionDate) - new Date(a.admissionDate))
-                    ?.slice(0, 5) || []
-                setRecentAdmissions(sortedAdmissions)
-                
-                // Update admissions count if not from stats API
-                if (!statsResponse.ok) {
-                    setStats(prev => ({ ...prev, totalAdmissions: admissionsData.total || 0 }))
-                }
+            const admissionsData = await admissionsResponse.json()
+            const sortedAdmissions = admissionsData.admissions
+                ?.sort((a, b) => new Date(b.admissionDate) - new Date(a.admissionDate))
+                ?.slice(0, 5) || []
+            setRecentAdmissions(sortedAdmissions)
+            
+            // Update admissions count if not from stats API
+            if (!statsResponse.ok) {
+                setStats(prev => ({ ...prev, totalAdmissions: admissionsData.total || 0 }))
             }
 
             // Process followup stats
-            if (followupStatsResponse.ok) {
-                const followupData = await followupStatsResponse.json()
-                setFollowupStats(followupData)
-                setStats(prev => ({ 
-                    ...prev, 
-                    pendingFollowups: followupData.pending_followups || 0 
-                }))
-            }
+            const followupData = await followupStatsResponse.json()
+            setFollowupStats(followupData)
+            setStats(prev => ({ 
+                ...prev, 
+                pendingFollowups: followupData.pending_followups || 0 
+            }))
 
             // Process courses
-            if (coursesResponse.ok) {
-                const coursesData = await coursesResponse.json()
-                setStats(prev => ({ 
-                    ...prev, 
-                    activeCourses: coursesData.total || 0 
-                }))
-            }
+            const coursesData = await coursesResponse.json()
+            setStats(prev => ({ 
+                ...prev, 
+                activeCourses: coursesData.total || 0 
+            }))
 
         } catch (err) {
             console.error('Error fetching dashboard data:', err)
@@ -147,25 +151,15 @@ const Dashboard = () => {
         )
     }
 
-    return (
+    return error ? (
+        <ErrorFallback onRetry={fetchData} />
+    ) : (
         <div className="max-w-5xl mx-auto space-y-8">
             {/* Header */}
             <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-xl p-8 border border-white/20">
                 <div className="text-center">
                     <h1 className="text-4xl font-bold text-gray-900 mb-3">Welcome to EduManage Dashboard</h1>
                     <p className="text-gray-600 text-lg">Manage your institute efficiently with our comprehensive system</p>
-                    {error && (
-                        <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg flex items-center justify-center">
-                            <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
-                            <span className="text-red-600 text-sm">{error}</span>
-                            <button 
-                                onClick={fetchData}
-                                className="ml-3 px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
-                            >
-                                Retry
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
 
