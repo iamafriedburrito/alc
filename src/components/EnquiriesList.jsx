@@ -36,14 +36,16 @@ const StudentEnquiriesList = () => {
             setLoading(true);
             setError(null);
 
-            // Fetch both regular enquiries and follow-up data
-            const [enquiriesResponse, followupsResponse] = await Promise.all([
+            // Fetch enquiries, tracker data, and all follow-ups
+            const [enquiriesResponse, followupsResponse, allFollowupsResponse] = await Promise.all([
                 fetch(`${API_BASE}/enquiries`),
-                fetch(`${API_BASE}/followups/tracker`)
+                fetch(`${API_BASE}/followups/tracker`),
+                fetch(`${API_BASE}/followups`)
             ]);
 
             let enquiriesData = [];
             let followupsData = [];
+            let allFollowupsData = [];
 
             if (enquiriesResponse.ok) {
                 const enquiriesResult = await enquiriesResponse.json();
@@ -55,10 +57,35 @@ const StudentEnquiriesList = () => {
                 followupsData = followupsResult.enquiries || [];
             }
 
+            if (allFollowupsResponse.ok) {
+                const allFollowupsResult = await allFollowupsResponse.json();
+                allFollowupsData = allFollowupsResult.followups || [];
+            }
+
             // Merge the data - use followups data if available, otherwise use regular enquiries
             const mergedData = followupsData.length > 0 ? followupsData : enquiriesData;
-            setEnquiries(mergedData);
-            setFilteredEnquiries(mergedData);
+            
+            // Update each enquiry with its latest follow-up status
+            const enrichedData = mergedData.map(enquiry => {
+                // Find the latest follow-up for this enquiry
+                const enquiryFollowups = allFollowupsData.filter(followup => 
+                    followup.enquiry_id === enquiry.id
+                ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+                
+                const latestFollowup = enquiryFollowups[0];
+                
+                return {
+                    ...enquiry,
+                    // Use the latest follow-up status if available, otherwise use currentStatus
+                    currentStatus: latestFollowup ? latestFollowup.status : enquiry.currentStatus,
+                    latestFollowupDate: latestFollowup ? latestFollowup.followup_date : null,
+                    latestNotes: latestFollowup ? latestFollowup.notes : enquiry.latestNotes,
+                    nextFollowup: latestFollowup ? latestFollowup.next_followup_date : enquiry.nextFollowup
+                };
+            });
+            
+            setEnquiries(enrichedData);
+            setFilteredEnquiries(enrichedData);
 
         } catch (err) {
             console.error("Error fetching enquiries:", err);
@@ -91,7 +118,7 @@ const StudentEnquiriesList = () => {
             followup_date: new Date().toISOString().split('T')[0],
             notes: '',
             status: enquiry.currentStatus || 'PENDING',
-            next_followup_date: '',
+            next_followup_date: enquiry.nextFollowup || '',
             handled_by: 'System User'
         });
     };
