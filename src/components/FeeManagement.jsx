@@ -447,7 +447,7 @@ const FeeManagement = () => {
             </div>
 
             {/* Fee Records Table */}
-            <div className="bg-white rounded-2xl shadow-sm border border-white/20">
+            <div className="bg-white rounded-2xl shadow-sm border border-white/20 overflow-hidden">
                 <div className="p-3 md:p-4 border-b border-gray-200">
                     <h2 className="text-xl font-semibold text-gray-900">Student Fee Records</h2>
                 </div>
