@@ -94,6 +94,18 @@ const StudentAdmissionsList = () => {
         toast.success('Student list refreshed!');
     };
 
+    // Close modal on Escape key press
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === "Escape") {
+                setSelectedAdmission(null);
+            }
+        };
+
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, []);
+
     if (loading) {
         return (
             <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
