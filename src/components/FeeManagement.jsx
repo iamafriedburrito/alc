@@ -313,6 +313,8 @@ const FeeManagement = () => {
         return matchesSearch && matchesStatus && matchesCourse
     })
 
+    const paymentStatus = selectedStudent ? calculatePaymentStatus(selectedStudent) : { balance: 0 };
+
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-[400px]">
@@ -579,9 +581,17 @@ const FeeManagement = () => {
                                         <input
                                             type="number"
                                             value={paymentData.amount}
-                                            onChange={(e) => setPaymentData({ ...paymentData, amount: e.target.value })}
+                                            onChange={(e) => {
+                                                let value = e.target.value;
+                                                if (Number(value) > paymentStatus.balance) {
+                                                    value = paymentStatus.balance;
+                                                    toast.warn('Amount cannot exceed the balance due.');
+                                                }
+                                                setPaymentData({ ...paymentData, amount: value });
+                                            }}
                                             required
                                             min="0"
+                                            max={paymentStatus.balance}
                                             step="0.01"
                                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             placeholder="Enter amount"
