@@ -296,65 +296,84 @@ const CoursesManagement = () => {
             </div>
           )}
 
-          {/* Courses Grid */}
-          {!isLoading && courses.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-lg border border-white/20 text-center py-16">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-6 h-6 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No courses found</h3>
-              <p className="text-gray-600 text-sm">
-                {searchTerm ? 'Try adjusting your search terms' : 'Start by adding your first course'}
-              </p>
+          {/* Courses Table */}
+          <div className="bg-white rounded-2xl shadow-lg border border-white/20">
+            <div className="p-3 md:p-4 border-b border-gray-200">
+              <h2 className="text-xl font-semibold text-gray-900">Course Management</h2>
             </div>
-          ) : !isLoading && (
-            <div className="overflow-x-auto">
-              <div className="bg-white/80 rounded-2xl shadow border border-blue-100">
-                <table className="min-w-full" style={{ borderCollapse: 'separate', borderSpacing: 0 }}>
-                  <thead>
-                    <tr className="bg-blue-200 text-gray-700 text-sm">
-                      <th className="px-4 py-3 text-left rounded-tl-2xl">#</th>
-                      <th className="px-4 py-3 text-left">Course Name</th>
-                      <th className="px-4 py-3 text-left">Fees (₹)</th>
-                      <th className="px-4 py-3 text-left">Added Date</th>
-                      <th className="px-4 py-3 text-center rounded-tr-2xl">Actions</th>
+
+            {!isLoading && courses.length === 0 ? (
+              <div className="text-center py-12">
+                <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">No Courses Found</h3>
+                <p className="text-gray-600">
+                  {searchTerm ? 'Try adjusting your search terms' : 'Start by adding your first course'}
+                </p>
+              </div>
+            ) : !isLoading && (
+              <div className="w-full">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        #
+                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Course Name
+                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Fees (₹)
+                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Added Date
+                      </th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {courses.map((course, index) => {
-                      const isLast = index === courses.length - 1;
-                      return (
-                        <tr key={course.id} className="bg-white">
-                          <td className={`px-4 py-3 font-medium text-blue-600${isLast ? ' rounded-bl-2xl' : ''}`}>{index + 1}</td>
-                          <td className="px-4 py-3 font-semibold text-gray-900 truncate max-w-xs">{course.courseName}</td>
-                          <td className="px-4 py-3 text-green-700 font-semibold">₹{course.fees?.toLocaleString()}</td>
-                          <td className="px-4 py-3 text-gray-500 text-sm">{course.createdAt ? new Date(course.createdAt).toLocaleDateString() : '-'}</td>
-                          <td className={`px-4 py-3 text-center${isLast ? ' rounded-br-2xl' : ''}`}>
-                            <div className="flex items-center justify-center gap-2">
-                              <button
-                                onClick={() => openModal(course)}
-                                className="py-1.5 px-3 rounded-lg bg-blue-50 text-blue-700 font-medium hover:bg-blue-100 flex items-center gap-1 transition text-sm"
-                                title="Edit course"
-                              >
-                                <Edit2 className="w-4 h-4" /> Edit
-                              </button>
-                              <button
-                                onClick={() => confirmDeleteCourse(course)}
-                                className="py-1.5 px-3 rounded-lg bg-red-50 text-red-600 font-medium hover:bg-red-100 flex items-center gap-1 transition text-sm"
-                                title="Delete course"
-                              >
-                                <Trash2 className="w-4 h-4" /> Delete
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {courses.map((course, index) => (
+                      <tr key={course.id} className="hover:bg-gray-50">
+                        <td className="px-3 py-2 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">{index + 1}</div>
+                        </td>
+                        <td className="px-3 py-2 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">{course.courseName}</div>
+                        </td>
+                        <td className="px-3 py-2 whitespace-nowrap">
+                          <div className="text-sm font-medium text-green-600">₹{course.fees?.toLocaleString()}</div>
+                        </td>
+                        <td className="px-3 py-2 whitespace-nowrap">
+                          <div className="text-sm text-gray-500">
+                            {course.createdAt ? new Date(course.createdAt).toLocaleDateString() : '-'}
+                          </div>
+                        </td>
+                        <td className="px-3 py-2 whitespace-nowrap text-sm font-medium">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => openModal(course)}
+                              className="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-100"
+                              title="Edit course"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => confirmDeleteCourse(course)}
+                              className="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-100"
+                              title="Delete course"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
-            </div>
-          )}
+            )}
+          </div>
 
           {/* Modal */}
           {isModalOpen && (
