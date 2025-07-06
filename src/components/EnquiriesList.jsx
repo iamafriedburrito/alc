@@ -23,6 +23,7 @@ const StudentEnquiriesList = () => {
         next_followup_date: "",
         handled_by: "System User"
     });
+    const [followupEnquiry, setFollowupEnquiry] = useState(null);
 
     const API_BASE = import.meta.env.VITE_API_URL
 
@@ -84,7 +85,7 @@ const StudentEnquiriesList = () => {
     };
 
     const handleFollowupClick = (enquiry) => {
-        setSelectedEnquiry(enquiry);
+        setFollowupEnquiry(enquiry);
         setShowFollowupModal(true);
         setFollowupData({
             followup_date: new Date().toISOString().split('T')[0],
@@ -107,7 +108,7 @@ const StudentEnquiriesList = () => {
             setSubmitting(true);
 
             const submitData = {
-                enquiry_id: selectedEnquiry.id,
+                enquiry_id: followupEnquiry.id,
                 followup_date: followupData.followup_date,
                 status: followupData.status,
                 notes: followupData.notes || '',
@@ -140,6 +141,7 @@ const StudentEnquiriesList = () => {
 
             await fetchEnquiries();
             setShowFollowupModal(false);
+            setFollowupEnquiry(null);
             toast.success('Follow-up recorded successfully!');
 
         } catch (error) {
@@ -575,7 +577,7 @@ const StudentEnquiriesList = () => {
                 )}
 
                 {/* Follow-up Modal */}
-                {showFollowupModal && (
+                {showFollowupModal && followupEnquiry && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                         <div className="bg-white rounded-3xl shadow-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                             <div className="text-center mb-6">
@@ -583,7 +585,7 @@ const StudentEnquiriesList = () => {
                                     Add Follow-up
                                 </h3>
                                 <p className="text-gray-600">
-                                    {selectedEnquiry?.firstName} {selectedEnquiry?.lastName} (ID: {selectedEnquiry?.id})
+                                    {followupEnquiry?.firstName} {followupEnquiry?.lastName} (ID: {followupEnquiry?.id})
                                 </p>
                             </div>
 
@@ -670,7 +672,7 @@ const StudentEnquiriesList = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => setShowFollowupModal(false)}
+                                        onClick={() => { setShowFollowupModal(false); setFollowupEnquiry(null); }}
                                         disabled={submitting}
                                         className="flex-1 bg-gray-200 text-gray-800 py-3 px-6 rounded-xl font-medium hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
                                     >
