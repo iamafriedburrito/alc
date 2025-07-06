@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { Search, Plus, DollarSign, Calendar, AlertTriangle, CheckCircle, Clock, User, X, Save, Eye } from "lucide-react"
 import { toast } from "react-toastify"
 import ErrorFallback from './ErrorFallback'
+import FeeReceipt from './FeeReceipt'
 
 const FeeManagement = () => {
     const [students, setStudents] = useState([])
@@ -14,6 +15,7 @@ const FeeManagement = () => {
     const [courseFilter, setCourseFilter] = useState("ALL")
     const [showPaymentModal, setShowPaymentModal] = useState(false)
     const [showDetailsModal, setShowDetailsModal] = useState(false)
+    const [showReceiptModal, setShowReceiptModal] = useState(false)
     const [selectedStudent, setSelectedStudent] = useState(null)
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [paymentData, setPaymentData] = useState({
@@ -217,11 +219,13 @@ const FeeManagement = () => {
                 const result = await response.json()
                 toast.success("Payment recorded successfully!")
                 setShowPaymentModal(false)
+                setShowReceiptModal(true)
                 fetchData() // Refresh data
             } else {
                 // Mock success for demo
                 toast.success("Payment recorded successfully!")
                 setShowPaymentModal(false)
+                setShowReceiptModal(true)
                 // In real app, you would update the local state here
             }
         } catch (error) {
@@ -229,6 +233,7 @@ const FeeManagement = () => {
             // Mock success for demo
             toast.success("Payment recorded successfully!")
             setShowPaymentModal(false)
+            setShowReceiptModal(true)
         }
     }
 
@@ -764,6 +769,27 @@ const FeeManagement = () => {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Fee Receipt Modal */}
+            {showReceiptModal && selectedStudent && (
+                <FeeReceipt
+                    paymentData={paymentData}
+                    student={selectedStudent}
+                    onClose={() => {
+                        setShowReceiptModal(false);
+                        setSelectedStudent(null);
+                        setPaymentData({
+                            student_id: "",
+                            amount: "",
+                            payment_date: new Date().toISOString().split("T")[0],
+                            payment_method: "CASH",
+                            late_fee: 0,
+                            transaction_id: "",
+                            notes: "",
+                        });
+                    }}
+                />
             )}
         </div>
     )
