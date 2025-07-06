@@ -92,6 +92,11 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
         return `Phone: ${phone} | Email: ${email}`;
     };
 
+    // Get center code or default
+    const getCenterCode = () => {
+        return instituteSettings?.centerCode || 'C001';
+    };
+
     const handlePrint = () => {
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
@@ -107,7 +112,7 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                     .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 8mm; }
                     .header h1 { font-size: 15pt; margin: 0; text-transform: uppercase; }
                     .subtext { font-size: 8.5pt; line-height: 1.4; color: #333; }
-                    .header img { height: 38px; }
+                    .header img { height: 60px; }
                     h2.title { text-align: center; font-size: 12pt; margin: 6mm 0 4mm; text-transform: uppercase; }
                     table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; }
                     td, th { border: 1px solid #ccc; padding: 4px 6px; vertical-align: top; min-height: 18pt; }
@@ -120,7 +125,7 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                     .notes { font-size: 8.9pt; line-height: 1.45; color: #222; margin-top: 6mm; }
                     .notes h4 { font-size: 9.5pt; margin-bottom: 2mm; }
                     ul { padding-left: 18px; margin: 0; }
-                    .sign { margin-top: 6mm; display: flex; justify-content: flex-end; }
+                    .sign { margin-top: 1mm; display: flex; justify-content: flex-end; }
                     .sign div { text-align: center; }
                     .sign-line { margin-top: 12mm; width: 180px; border-top: 1px solid #999; }
                     @media print { body { background: none; } }
@@ -132,6 +137,7 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                         <div class="info">
                             <h1>${getInstituteName()}</h1>
                             <div class="subtext">
+                                Center Code: ${getCenterCode()}<br>
                                 ${getInstituteAddress()}<br>
                                 ${getInstituteContact()}
                             </div>
@@ -210,7 +216,7 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                     .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #000; padding-bottom: 6px; margin-bottom: 8mm; }
                     .header h1 { font-size: 15pt; margin: 0; text-transform: uppercase; }
                     .subtext { font-size: 8.5pt; line-height: 1.4; color: #333; }
-                    .header img { height: 38px; }
+                    .header img { height: 56px; }
                     h2.title { text-align: center; font-size: 12pt; margin: 6mm 0 4mm; text-transform: uppercase; }
                     table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; }
                     td, th { border: 1px solid #ccc; padding: 4px 6px; vertical-align: top; min-height: 18pt; }
@@ -223,7 +229,7 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                     .notes { font-size: 8.9pt; line-height: 1.45; color: #222; margin-top: 6mm; }
                     .notes h4 { font-size: 9.5pt; margin-bottom: 2mm; }
                     ul { padding-left: 18px; margin: 0; }
-                    .sign { margin-top: 6mm; display: flex; justify-content: flex-end; }
+                    .sign { margin-top: 2mm; display: flex; justify-content: flex-end; }
                     .sign div { text-align: center; }
                     .sign-line { margin-top: 12mm; width: 180px; border-top: 1px solid #999; }
                     @media print { body { background: none; } }
@@ -235,6 +241,7 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                         <div class="info">
                             <h1>${getInstituteName()}</h1>
                             <div class="subtext">
+                                Center Code: ${getCenterCode()}<br>
                                 ${getInstituteAddress()}<br>
                                 ${getInstituteContact()}
                             </div>
@@ -339,14 +346,15 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h4 className="font-semibold text-gray-900">{getInstituteName()}</h4>
+                                        <p className="text-sm text-gray-600">Center Code: {getCenterCode()}</p>
                                         <p className="text-sm text-gray-600">{getInstituteAddress()}</p>
                                         <p className="text-sm text-gray-600">{getInstituteContact()}</p>
                                     </div>
-                                    <div className="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                    <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center">
                                         <img 
                                             src={getInstituteLogo()} 
                                             alt="Institute Logo" 
-                                            className="w-12 h-12 object-contain"
+                                            className="w-20 h-20 object-contain"
                                         />
                                     </div>
                                 </div>
