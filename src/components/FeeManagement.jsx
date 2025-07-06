@@ -91,7 +91,7 @@ const FeeManagement = () => {
 
     // Calculate payment status
     const calculatePaymentStatus = (student) => {
-        const admissionDate = new Date(student.admissionDate)
+        const admissionDate = new Date(student.createdAt)
         const today = new Date()
         const monthsDiff =
             (today.getFullYear() - admissionDate.getFullYear()) * 12 + (today.getMonth() - admissionDate.getMonth())
@@ -249,10 +249,10 @@ const FeeManagement = () => {
             return {
                 id: student.id,
                 studentId: student.id,
-                studentName: `${student.firstName} ${student.lastName}`,
+                studentName: `${student.firstName} ${student.middleName || ''} ${student.lastName}`,
                 courseName: student.courseName,
                 mobileNumber: student.mobileNumber,
-                admissionDate: student.admissionDate,
+                admissionDate: student.createdAt,
                 totalDue: paymentStatus.totalDue,
                 totalPaid: paymentStatus.totalPaid,
                 balance: paymentStatus.balance,
@@ -312,64 +312,62 @@ const FeeManagement = () => {
             </div>
 
             {/* Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Total Students</p>
-                            <p className="text-3xl font-bold text-blue-600">{displayRecords.length}</p>
+                            <p className="text-xs font-medium text-gray-600">Total Students</p>
+                            <p className="text-xl font-bold text-blue-600">{displayRecords.length}</p>
                         </div>
-                        <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <User className="w-6 h-6 text-blue-600" />
+                        <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
+                            <User className="w-5 h-5 text-blue-600" />
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Paid Up</p>
-                            <p className="text-3xl font-bold text-green-600">
+                            <p className="text-xs font-medium text-gray-600">Paid Up</p>
+                            <p className="text-xl font-bold text-green-600">
                                 {displayRecords.filter((r) => r.status === "PAID").length}
                             </p>
                         </div>
-                        <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                            <CheckCircle className="w-6 h-6 text-green-600" />
+                        <div className="w-9 h-9 bg-green-100 rounded-lg flex items-center justify-center">
+                            <CheckCircle className="w-5 h-5 text-green-600" />
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Overdue</p>
-                            <p className="text-3xl font-bold text-red-600">
+                            <p className="text-xs font-medium text-gray-600">Overdue</p>
+                            <p className="text-xl font-bold text-red-600">
                                 {displayRecords.filter((r) => r.status === "OVERDUE").length}
                             </p>
                         </div>
-                        <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                            <AlertTriangle className="w-6 h-6 text-red-600" />
+                        <div className="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center">
+                            <AlertTriangle className="w-5 h-5 text-red-600" />
                         </div>
                     </div>
                 </div>
 
-                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
+                <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-gray-600">Total Due</p>
-                            <p className="text-3xl font-bold text-orange-600">
-                                {formatCurrency(displayRecords.reduce((sum, r) => sum + r.balance, 0))}
-                            </p>
+                            <p className="text-xs font-medium text-gray-600">Total Due</p>
+                            <p className="text-xl font-bold text-orange-600">{formatCurrency(displayRecords.reduce((sum, r) => sum + r.balance, 0))}</p>
                         </div>
-                        <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                            <DollarSign className="w-6 h-6 text-orange-600" />
+                        <div className="w-9 h-9 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <DollarSign className="w-5 h-5 text-orange-400" />
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Filters */}
-            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-6 border border-white/20">
+            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg p-3 md:p-4 border border-white/20">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div className="relative">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -422,8 +420,8 @@ const FeeManagement = () => {
             </div>
 
             {/* Fee Records Table */}
-            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20 overflow-hidden">
-                <div className="p-6 border-b border-gray-200">
+            <div className="bg-white/80 backdrop-blur-xs rounded-2xl shadow-lg border border-white/20">
+                <div className="p-3 md:p-4 border-b border-gray-200">
                     <h2 className="text-xl font-semibold text-gray-900">Student Fee Records</h2>
                 </div>
 
@@ -436,29 +434,29 @@ const FeeManagement = () => {
                         </p>
                     </div>
                 ) : (
-                    <div className="overflow-x-auto">
+                    <div className="w-full">
                         <table className="w-full">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Student
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Course
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Total Due
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Paid
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Balance
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Status
                                     </th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
@@ -466,7 +464,7 @@ const FeeManagement = () => {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {filteredDisplayRecords.map((record) => (
                                     <tr key={record.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-3 py-2 whitespace-nowrap">
                                             <div>
                                                 <div className="text-sm font-medium text-gray-900">{record.studentName}</div>
                                                 <div className="text-sm text-gray-500">
@@ -474,17 +472,17 @@ const FeeManagement = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-3 py-2 whitespace-nowrap">
                                             <div className="text-sm text-gray-900">{record.courseName}</div>
                                             <div className="text-sm text-gray-500">Admitted: {formatDate(record.admissionDate)}</div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-3 py-2 whitespace-nowrap">
                                             <div className="text-sm font-medium text-gray-900">{formatCurrency(record.totalDue)}</div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-3 py-2 whitespace-nowrap">
                                             <div className="text-sm font-medium text-green-600">{formatCurrency(record.totalPaid)}</div>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-3 py-2 whitespace-nowrap">
                                             <div className={`text-sm font-medium ${record.balance > 0 ? "text-red-600" : "text-green-600"}`}>
                                                 {formatCurrency(record.balance)}
                                             </div>
@@ -492,7 +490,7 @@ const FeeManagement = () => {
                                                 <div className="text-xs text-red-500">{record.monthsOverdue} months overdue</div>
                                             )}
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
+                                        <td className="px-3 py-2 whitespace-nowrap">
                                             <span
                                                 className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(record.status)}`}
                                             >
@@ -500,7 +498,7 @@ const FeeManagement = () => {
                                                 {record.status}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <td className="px-3 py-2 whitespace-nowrap text-sm font-medium">
                                             <div className="flex items-center space-x-2">
                                                 <button
                                                     onClick={() => handleAddPayment(students.find((s) => s.id === record.studentId))}
@@ -540,7 +538,7 @@ const FeeManagement = () => {
 
                             <div className="mb-6 p-4 bg-blue-50 rounded-lg">
                                 <h3 className="font-medium text-gray-900">
-                                    {selectedStudent.firstName} {selectedStudent.lastName}
+                                    {selectedStudent.firstName} {selectedStudent.middleName || ''} {selectedStudent.lastName}
                                 </h3>
                                 <p className="text-sm text-gray-600">
                                     Course: {selectedStudent.courseName} • Mobile: {selectedStudent.mobileNumber}
@@ -672,7 +670,7 @@ const FeeManagement = () => {
                                         <div>
                                             <span className="text-sm text-gray-500">Name:</span>
                                             <p className="font-medium">
-                                                {selectedStudent.firstName} {selectedStudent.lastName}
+                                                {selectedStudent.firstName} {selectedStudent.middleName || ''} {selectedStudent.lastName}
                                             </p>
                                         </div>
                                         <div>
@@ -685,7 +683,7 @@ const FeeManagement = () => {
                                         </div>
                                         <div>
                                             <span className="text-sm text-gray-500">Admission Date:</span>
-                                            <p className="font-medium">{formatDate(selectedStudent.admissionDate)}</p>
+                                            <p className="font-medium">{formatDate(selectedStudent.createdAt)}</p>
                                         </div>
                                     </div>
                                 </div>
