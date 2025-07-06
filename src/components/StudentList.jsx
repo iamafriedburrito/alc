@@ -241,7 +241,7 @@ const StudentAdmissionsList = () => {
                                     <div className="flex flex-col md:flex-row md:items-center justify-between">
                                         <div className="flex-1">
                                             <div className="flex items-center mb-2">
-                                                <span className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3 text-blue-600 font-semibold">
+                                                <span className="bg-blue-100 text-blue-600 font-bold rounded-lg px-3 py-1.5 mr-3 text-base min-w-[48px] text-center inline-block align-middle">
                                                     {admission.id}
                                                 </span>
                                                 <h3 className="text-xl font-semibold text-gray-900">
