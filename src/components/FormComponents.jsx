@@ -317,6 +317,12 @@ export const AddressSection = ({ register, errors }) => {
 
 // Reusable Mobile Number Section Component
 export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => {
+    // Handler to only allow numeric input
+    const handleNumericInput = (e) => {
+        const value = e.target.value.replace(/\D/g, ""); // Remove non-digits
+        e.target.value = value;
+    };
+
     return (
         <div className="bg-white/50 backdrop-blur-xs p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
@@ -343,6 +349,7 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                             id="mobileNumber"
                             placeholder="Enter 10-digit mobile number"
                             maxLength="10"
+                            onInput={handleNumericInput}
                             {...register("mobileNumber", {
                                 required: "Mobile number is required",
                                 pattern: {
@@ -380,6 +387,7 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                             id="alternateMobileNumber"
                             placeholder="Enter 10-digit mobile number"
                             maxLength="10"
+                            onInput={handleNumericInput}
                             {...register("alternateMobileNumber", {
                                 pattern: {
                                     value: /^[0-9]{10}$/,
@@ -389,7 +397,7 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                             })}
                             className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors.alternateMobileNumber
                                 ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                : "border-gray-200 focus:ring-blue-500 focus:border-blue-500"
                                 }`}
                         />
                     </div>
