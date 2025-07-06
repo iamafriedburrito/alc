@@ -22,6 +22,10 @@ export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, s
         return `Phone: ${phone} | Email: ${email}`;
     };
 
+    const getCenterCode = () => {
+        return instituteSettings?.centerCode || 'C001';
+    };
+
     return `
         <!DOCTYPE html>
         <html lang="en">
@@ -39,7 +43,7 @@ export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, s
                              border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:8mm; }
             .header h1     { font-size:15pt; margin:0; text-transform:uppercase; }
             .subtext       { font-size:8.5pt; line-height:1.4; color:#333; }
-            .header img    { height:38px; }
+            .header img    { height:60px; }
 
             /* ---------- SECTION TITLES ---------- */
             h2.title       { text-align:center; font-size:12pt; margin:6mm 0 4mm; text-transform:uppercase; }
@@ -77,6 +81,7 @@ export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, s
               <div class="info">
                 <h1>${getInstituteName()}</h1>
                 <div class="subtext">
+                  Center Code: ${getCenterCode()}<br>
                   ${getInstituteAddress()}<br>
                   ${getInstituteContact()}
                 </div>
