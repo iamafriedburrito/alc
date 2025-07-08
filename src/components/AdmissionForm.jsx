@@ -249,6 +249,14 @@ const StudentAdmissionForm = () => {
         const url = URL.createObjectURL(blob);
         const newTab = window.open(url, '_blank');
 
+        // Auto-download the form as HTML
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `admission_form_${formData.firstName}_${formData.lastName}_${admissionId}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
         // Clean up the blob URL after a short delay to allow the page to load
         setTimeout(() => {
             URL.revokeObjectURL(url);
