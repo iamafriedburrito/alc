@@ -48,6 +48,15 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
         fetchInstituteSettings();
     }, []);
 
+    // Auto-download receipt on mount
+    useEffect(() => {
+        if (!loading && instituteSettings) {
+            handleDownload();
+        }
+        // Only run when loading is false and instituteSettings is set
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loading, instituteSettings]);
+
     const formatCurrency = (amount) => {
         return new Intl.NumberFormat("en-IN", {
             style: "currency",
