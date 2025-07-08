@@ -681,20 +681,21 @@ const FeeManagement = () => {
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">Discount</label>
                                         <input
-                                            type="number"
+                                            type="text"
                                             value={paymentData.discount}
                                             onChange={(e) => {
-                                                let value = Number.parseFloat(e.target.value) || 0;
+                                                // Only allow digits
+                                                let value = e.target.value.replace(/[^0-9]/g, "");
+                                                let intValue = parseInt(value) || 0;
                                                 const maxDiscount = Math.min(paymentStatus.balance, paymentData.amount || 0);
-                                                if (value > maxDiscount) {
-                                                    value = maxDiscount;
+                                                if (intValue > maxDiscount) {
+                                                    intValue = maxDiscount;
                                                     toast.warn('Discount cannot exceed the payment amount.');
                                                 }
-                                                setPaymentData({ ...paymentData, discount: value });
+                                                setPaymentData({ ...paymentData, discount: intValue });
                                             }}
                                             min="0"
                                             max={Math.min(paymentStatus.balance, paymentData.amount || 0)}
-                                            step="0.01"
                                             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             placeholder="Discount amount"
                                         />
