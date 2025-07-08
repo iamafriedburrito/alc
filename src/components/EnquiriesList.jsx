@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye, Users, RefreshCw, Save } from "lucide-react";
 import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 const StudentEnquiriesList = () => {
     const [enquiries, setEnquiries] = useState([]);
@@ -24,6 +24,7 @@ const StudentEnquiriesList = () => {
         handled_by: "System User"
     });
     const [followupEnquiry, setFollowupEnquiry] = useState(null);
+    const navigate = useNavigate();
 
     const API_BASE = import.meta.env.VITE_API_URL
 
@@ -590,12 +591,21 @@ const StudentEnquiriesList = () => {
                                     </div>
                                 </div>
 
-                                <div className="mt-8 text-center">
+                                <div className="mt-8 flex flex-col md:flex-row gap-4 justify-center items-center">
                                     <button
                                         onClick={() => setSelectedEnquiry(null)}
                                         className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-3 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-sm hover:shadow-md"
                                     >
                                         Close Details
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setSelectedEnquiry(null);
+                                            navigate('/admission', { state: { enquiry: selectedEnquiry } });
+                                        }}
+                                        className="bg-green-500 text-white px-8 py-3 rounded-xl font-medium hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-sm hover:shadow-md"
+                                    >
+                                        Convert to Admission
                                     </button>
                                 </div>
                             </div>

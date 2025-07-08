@@ -5,6 +5,7 @@ import { FormSelect, AadharInput, FormInput, AddressSection, MobileNumberSection
 import { toast } from 'react-toastify';
 import ErrorFallback from './ErrorFallback';
 import { generateAdmissionFormHTML } from './AdmissionFormTemplate';
+import { useLocation } from 'react-router';
 
 const StudentAdmissionForm = () => {
     const [photoPreview, setPhotoPreview] = useState(null);
@@ -13,6 +14,8 @@ const StudentAdmissionForm = () => {
     const API_BASE = import.meta.env.VITE_API_URL
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const location = useLocation();
+    const enquiry = location.state?.enquiry;
 
     const {
         register,
@@ -127,6 +130,30 @@ const StudentAdmissionForm = () => {
         checkServer();
     }, [API_BASE]);
 
+    useEffect(() => {
+        if (enquiry) {
+            // Prefill fields from enquiry
+            setValue('firstName', enquiry.firstName || '');
+            setValue('middleName', enquiry.middleName || '');
+            setValue('lastName', enquiry.lastName || '');
+            setValue('dateOfBirth', enquiry.dateOfBirth || '');
+            setValue('gender', enquiry.gender || '');
+            setValue('maritalStatus', enquiry.maritalStatus || '');
+            setValue('motherTongue', enquiry.motherTongue || '');
+            setValue('aadharNumber', enquiry.aadharNumber || '');
+            setValue('correspondenceAddress', enquiry.correspondenceAddress || '');
+            setValue('city', enquiry.city || '');
+            setValue('state', enquiry.state || 'MAHARASHTRA');
+            setValue('district', enquiry.district || '');
+            setValue('mobileNumber', enquiry.mobileNumber || '');
+            setValue('alternateMobileNumber', enquiry.alternateMobileNumber || '');
+            setValue('category', enquiry.category || '');
+            setValue('educationalQualification', enquiry.educationalQualification || '');
+            setValue('courseName', enquiry.courseName || '');
+            setValue('timing', enquiry.timing || '');
+            setValue('referredBy', enquiry.referredBy || '');
+        }
+    }, [enquiry, setValue]);
 
     // Helper functions for preview (these are also in the template)
     const getInstituteLogo = () => {
