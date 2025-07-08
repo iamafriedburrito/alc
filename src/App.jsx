@@ -8,6 +8,7 @@ import InstituteLogin from "./components/InstituteLogin"
 import CoursesManagement from "./components/CoursesManagement"
 import SettingsPage from "./components/SettingsPage"
 import FeeManagement from "./components/FeeManagement"
+import AttendanceManagement from "./components/AttendanceManagement"
 import AppLayout from "./components/AppLayout"
 import Dashboard from "./components/Dashboard"
 
@@ -23,6 +24,7 @@ function App() {
                     <Route path="admission" element={<AdmissionForm />} />
                     <Route path="enquiries" element={<EnquiriesList />} />
                     <Route path="admissions" element={<StudentList />} />
+                    <Route path="attendance" element={<AttendanceManagement />} />
                     <Route path="courses" element={<CoursesManagement />} />
                     <Route path="fees" element={<FeeManagement />} />
                     <Route path="settings" element={<SettingsPage />} />
