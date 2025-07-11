@@ -12,6 +12,7 @@ import {
     Settings,
     DollarSign,
     ClipboardList,
+    FileText,
 } from "lucide-react"
 
 const Sidebar = () => {
@@ -25,6 +26,7 @@ const Sidebar = () => {
         { id: "attendance", label: "Attendance Management", icon: ClipboardList, path: "/attendance" },
         { id: "courses", label: "Course Management", icon: BookOpen, path: "/courses" },
         { id: "fees", label: "Fee Management", icon: DollarSign, path: "/fees" },
+        { id: "documents", label: "Document Upload", icon: FileText, path: "/documents" },
         { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
     ]
 

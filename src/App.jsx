@@ -9,6 +9,7 @@ import CoursesManagement from "./components/CoursesManagement"
 import SettingsPage from "./components/SettingsPage"
 import FeeManagement from "./components/FeeManagement"
 import AttendanceManagement from "./components/AttendanceManagement"
+import DocumentUpload from "./components/DocumentUpload"
 import AppLayout from "./components/AppLayout"
 import Dashboard from "./components/Dashboard"
 
@@ -27,6 +28,7 @@ function App() {
                     <Route path="attendance" element={<AttendanceManagement />} />
                     <Route path="courses" element={<CoursesManagement />} />
                     <Route path="fees" element={<FeeManagement />} />
+                    <Route path="documents" element={<DocumentUpload />} />
                     <Route path="settings" element={<SettingsPage />} />
                 </Route>
 
