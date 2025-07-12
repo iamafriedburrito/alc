@@ -12,6 +12,7 @@ import AttendanceManagement from "./components/AttendanceManagement"
 import DocumentUpload from "./components/DocumentUpload"
 import AppLayout from "./components/AppLayout"
 import Dashboard from "./components/Dashboard"
+import NotFound from "./components/NotFound"
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                 </Route>
 
                 <Route path="/login" element={<InstituteLogin />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
     )
