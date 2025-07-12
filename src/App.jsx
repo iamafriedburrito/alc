@@ -24,8 +24,9 @@ function App() {
                     <Route index element={<Dashboard />} />
                     <Route path="enquiry" element={<EnquiryForm />} />
                     <Route path="admission" element={<AdmissionForm />} />
-                    <Route path="enquiries" element={<EnquiriesList />} />
                     <Route path="admissions" element={<StudentList />} />
+                    <Route path="admissions/edit/:id" element={<AdmissionForm />} />
+                    <Route path="enquiries" element={<EnquiriesList />} />
                     <Route path="attendance" element={<AttendanceManagement />} />
                     <Route path="courses" element={<CoursesManagement />} />
                     <Route path="fees" element={<FeeManagement />} />

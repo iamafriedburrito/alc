@@ -5,9 +5,12 @@ import { FormSelect, AadharInput, FormInput, AddressSection, MobileNumberSection
 import { toast } from 'react-toastify';
 import ErrorFallback from './ErrorFallback';
 import { generateAdmissionFormHTML } from './AdmissionFormTemplate';
-import { useLocation } from 'react-router';
+import { useLocation, useParams, useNavigate } from 'react-router';
 
-const StudentAdmissionForm = () => {
+const StudentAdmissionForm = ({ student: propStudent }) => {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const [student, setStudent] = useState(propStudent || null);
     const [photoPreview, setPhotoPreview] = useState(null);
     const [signaturePreview, setSignaturePreview] = useState(null);
     const [instituteSettings, setInstituteSettings] = useState(null);
@@ -131,29 +134,39 @@ const StudentAdmissionForm = () => {
     }, [API_BASE]);
 
     useEffect(() => {
-        if (enquiry) {
-            // Prefill fields from enquiry
-            setValue('firstName', enquiry.firstName || '');
-            setValue('middleName', enquiry.middleName || '');
-            setValue('lastName', enquiry.lastName || '');
-            setValue('dateOfBirth', enquiry.dateOfBirth || '');
-            setValue('gender', enquiry.gender || '');
-            setValue('maritalStatus', enquiry.maritalStatus || '');
-            setValue('motherTongue', enquiry.motherTongue || '');
-            setValue('aadharNumber', enquiry.aadharNumber || '');
-            setValue('correspondenceAddress', enquiry.correspondenceAddress || '');
-            setValue('city', enquiry.city || '');
-            setValue('state', enquiry.state || 'MAHARASHTRA');
-            setValue('district', enquiry.district || '');
-            setValue('mobileNumber', enquiry.mobileNumber || '');
-            setValue('alternateMobileNumber', enquiry.alternateMobileNumber || '');
-            setValue('category', enquiry.category || '');
-            setValue('educationalQualification', enquiry.educationalQualification || '');
-            setValue('courseName', enquiry.courseName || '');
-            setValue('timing', enquiry.timing || '');
-            setValue('referredBy', enquiry.referredBy || '');
+        if (id && !propStudent) {
+            // Fetch student by ID for editing
+            fetch(`${API_BASE}/admission/${id}`)
+                .then(res => res.json())
+                .then(data => setStudent(data))
+                .catch(() => setStudent(null));
         }
-    }, [enquiry, setValue]);
+    }, [id, propStudent, API_BASE]);
+
+    useEffect(() => {
+        if (student) {
+            // Prefill fields from student
+            setValue('firstName', student.firstName || '');
+            setValue('middleName', student.middleName || '');
+            setValue('lastName', student.lastName || '');
+            setValue('dateOfBirth', student.dateOfBirth || '');
+            setValue('gender', student.gender || '');
+            setValue('maritalStatus', student.maritalStatus || '');
+            setValue('motherTongue', student.motherTongue || '');
+            setValue('aadharNumber', student.aadharNumber || '');
+            setValue('correspondenceAddress', student.correspondenceAddress || '');
+            setValue('city', student.city || '');
+            setValue('state', student.state || 'MAHARASHTRA');
+            setValue('district', student.district || '');
+            setValue('mobileNumber', student.mobileNumber || '');
+            setValue('alternateMobileNumber', student.alternateMobileNumber || '');
+            setValue('category', student.category || '');
+            setValue('educationalQualification', student.educationalQualification || '');
+            setValue('courseName', student.courseName || '');
+            setValue('timing', student.timing || '');
+            setValue('referredBy', student.referredBy || '');
+        }
+    }, [student, setValue]);
 
     // Helper functions for preview (these are also in the template)
     const getInstituteLogo = () => {
@@ -238,29 +251,29 @@ const StudentAdmissionForm = () => {
                 formData.append("signature", data.signature[0]);
             }
 
-            const response = await fetch(`${API_BASE}/admission`, {
-                method: "POST",
-                body: formData, // No headers needed for FormData
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            if (student || id) {
+                // Update existing student
+                const response = await fetch(`${API_BASE}/admission/${id || student.id}`, {
+                    method: 'PUT',
+                    body: formData,
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                toast.success('Student updated successfully!');
+                navigate('/admissions');
+            } else {
+                // Create new admission (existing code)
+                const response = await fetch(`${API_BASE}/admission`, {
+                    method: "POST",
+                    body: formData,
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const result = await response.json();
+                toast.success(`Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`);
+                generateAdmitForm(textFields, result.admission_id || result.id, photoPreview, signaturePreview);
+                reset();
+                setPhotoPreview(null);
+                setSignaturePreview(null);
             }
-
-            const result = await response.json();
-
-            // Show success message
-            toast.success(
-                `Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`,
-            );
-
-            // Generate and open admit form in new tab
-            generateAdmitForm(textFields, result.admission_id || result.id, photoPreview, signaturePreview);
-
-            // Reset form after successful submission
-            reset();
-            setPhotoPreview(null);
-            setSignaturePreview(null);
         } catch (error) {
             console.error("Error submitting admission:", error);
             setError(error.message || 'An unexpected error occurred. Please try again.');
@@ -518,13 +531,13 @@ const StudentAdmissionForm = () => {
                                         htmlFor="photo"
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     >
-                                        Passport Size Photo <span className="text-red-500">*</span>
+                                        Passport Size Photo {(!student && !id) && <span className="text-red-500">*</span>}
                                     </label>
                                     <input
                                         type="file"
                                         id="photo"
                                         accept="image/*"
-                                        {...register("photo", { required: "Photo is required" })}
+                                        {...register("photo", { required: (!student && !id) ? "Photo is required" : false })}
                                         onChange={(e) => {
                                             register("photo").onChange(e);
                                             handlePhotoChange(e);
@@ -532,9 +545,20 @@ const StudentAdmissionForm = () => {
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white"
                                     />
                                     {errors.photo && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.photo.message}
-                                        </p>
+                                        <p className="mt-1 text-sm text-red-600">{errors.photo.message}</p>
+                                    )}
+                                    {/* Show current photo if editing and no new photo uploaded */}
+                                    {((student || id) && !photoPreview && student?.photoFilename) && (
+                                        <div className="mt-4">
+                                            <p className="text-sm font-medium text-gray-700 mb-2">Current Photo:</p>
+                                            <div className="w-32 h-40 border-2 border-gray-200 rounded-lg overflow-hidden">
+                                                <img
+                                                    src={`${API_BASE.replace('/api', '')}/uploads/${student.photoFilename}`}
+                                                    alt="Current Photo"
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                        </div>
                                     )}
                                     {/* Photo Preview */}
                                     {photoPreview && (
@@ -555,15 +579,13 @@ const StudentAdmissionForm = () => {
                                         htmlFor="signature"
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     >
-                                        Signature <span className="text-red-500">*</span>
+                                        Signature {(!student && !id) && <span className="text-red-500">*</span>}
                                     </label>
                                     <input
                                         type="file"
                                         id="signature"
                                         accept="image/*"
-                                        {...register("signature", {
-                                            required: "Signature is required",
-                                        })}
+                                        {...register("signature", { required: (!student && !id) ? "Signature is required" : false })}
                                         onChange={(e) => {
                                             register("signature").onChange(e);
                                             handleSignatureChange(e);
@@ -571,9 +593,20 @@ const StudentAdmissionForm = () => {
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white"
                                     />
                                     {errors.signature && (
-                                        <p className="mt-1 text-sm text-red-600">
-                                            {errors.signature.message}
-                                        </p>
+                                        <p className="mt-1 text-sm text-red-600">{errors.signature.message}</p>
+                                    )}
+                                    {/* Show current signature if editing and no new signature uploaded */}
+                                    {((student || id) && !signaturePreview && student?.signatureFilename) && (
+                                        <div className="mt-4">
+                                            <p className="text-sm font-medium text-gray-700 mb-2">Current Signature:</p>
+                                            <div className="w-32 h-20 border-2 border-gray-200 rounded-lg overflow-hidden bg-white">
+                                                <img
+                                                    src={`${API_BASE.replace('/api', '')}/uploads/${student.signatureFilename}`}
+                                                    alt="Current Signature"
+                                                    className="w-full h-full object-contain"
+                                                />
+                                            </div>
+                                        </div>
                                     )}
                                     {/* Signature Preview */}
                                     {signaturePreview && (
@@ -597,7 +630,7 @@ const StudentAdmissionForm = () => {
                             disabled={isSubmitting}
                             className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                            {isSubmitting ? "Submitting..." : "Submit Admission Form"}
+                            {student || id ? 'Update Student' : isSubmitting ? "Submitting..." : "Submit Admission Form"}
                         </button>
                     </form>
                 </div>

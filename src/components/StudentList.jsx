@@ -274,7 +274,7 @@ const StudentAdmissionsList = () => {
                                             </div>
                                         </div>
 
-                                        <div className="mt-4 md:mt-0 md:ml-6">
+                                        <div className="mt-4 md:mt-0 md:ml-6 flex gap-2">
                                             <button
                                                 onClick={() => handleViewDetails(admission.id)}
                                                 className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-sm hover:shadow-sm flex items-center gap-2"
@@ -282,6 +282,12 @@ const StudentAdmissionsList = () => {
                                                 <Eye className="w-4 h-4" />
                                                 View Details
                                             </button>
+                                            <Link
+                                                to={`/admissions/edit/${admission.id}`}
+                                                className="bg-yellow-500 text-white px-6 py-2 rounded-xl font-medium hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2"
+                                            >
+                                                ✏️ Edit
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
