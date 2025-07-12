@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Save } from "lucide-react";
 
 const FollowupModal = ({
@@ -10,6 +10,18 @@ const FollowupModal = ({
     onSubmit,
     submitting
 }) => {
+    // Close modal on Escape key press
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === "Escape" && open) {
+                onClose();
+            }
+        };
+
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, [open, onClose]);
+
     if (!open || !enquiry) return null;
 
     return (
