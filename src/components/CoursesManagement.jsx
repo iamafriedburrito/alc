@@ -92,6 +92,23 @@ const CoursesManagement = () => {
     return () => clearTimeout(timeoutId);
   }, [searchTerm]);
 
+  // Close modal on Escape key press
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === "Escape") {
+        if (isModalOpen) {
+          closeModal();
+        }
+        if (courseToDelete) {
+          setCourseToDelete(null);
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [isModalOpen, courseToDelete]);
+
   const openModal = (course = null) => {
     setEditingCourse(course);
     setApiError('');
