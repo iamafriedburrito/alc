@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Utility functions (can be imported from a utils file if moved later)
 const formatDate = (dateString) => {
@@ -17,6 +17,18 @@ const formatAadhar = (aadharNumber) => {
 };
 
 const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) => {
+    // Close modal on Escape key press
+    useEffect(() => {
+        const handleKey = (e) => {
+            if (e.key === "Escape" && open) {
+                onClose();
+            }
+        };
+
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+    }, [open, onClose]);
+
     if (!open || !enquiry) return null;
 
     return (
