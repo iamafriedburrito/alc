@@ -18,7 +18,8 @@ import {
 } from "lucide-react"
 import { toast } from 'react-toastify'
 import ErrorFallback from './ErrorFallback'
-import DatabaseManagement from "./DatabaseManagement";
+import DatabaseManagement from "./DatabaseManagement"
+import ExportData from "./ExportData"
 
 const SettingsPage = () => {
     const fileInputRef = useRef(null)
@@ -346,6 +347,16 @@ const SettingsPage = () => {
                             <Database className="w-5 h-5" />
                             <span>Database Management</span>
                         </button>
+                        <button
+                            onClick={() => setActiveTab('export')}
+                            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'export'
+                                ? 'bg-blue-500 text-white shadow-sm'
+                                : 'text-gray-600 hover:bg-gray-100'
+                                }`}
+                        >
+                            <Download className="w-5 h-5" />
+                            <span>Export Data</span>
+                        </button>
                     </div>
                 </div>
 
@@ -525,6 +536,11 @@ const SettingsPage = () => {
                         backupFileInputRef={backupFileInputRef}
                         handleBackupFileChange={handleBackupFileChange}
                     />
+                )}
+
+                {/* Export Data Tab */}
+                {activeTab === 'export' && (
+                    <ExportData />
                 )}
             </div>
         </div>
