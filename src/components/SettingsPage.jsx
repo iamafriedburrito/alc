@@ -4,15 +4,9 @@ import {
     Image,
     Database,
     Download,
-    Upload,
     Save,
     AlertCircle,
     Loader2,
-    FileText,
-    Shield,
-    Clock,
-    HardDrive,
-    RefreshCw,
     Camera,
     X
 } from "lucide-react"
@@ -303,7 +297,7 @@ const SettingsPage = () => {
         <ErrorFallback onRetry={fetchSettings} />
     ) : (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto space-y-8">
+            <div className="max-w-5xl mx-auto space-y-8">
                 {/* Header */}
                 <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                     <div className="text-center">
