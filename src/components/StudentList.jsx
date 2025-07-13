@@ -12,6 +12,8 @@ const StudentAdmissionsList = () => {
     const [selectedAdmission, setSelectedAdmission] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCourse, setFilterCourse] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
+    const studentsPerPage = 12;
 
     const API_BASE = import.meta.env.VITE_API_URL
 
@@ -76,6 +78,18 @@ const StudentAdmissionsList = () => {
 
         return matchesSearch && matchesCourse;
     });
+
+    // Pagination logic
+    const totalPages = Math.ceil(filteredAdmissions.length / studentsPerPage);
+    const paginatedAdmissions = filteredAdmissions.slice(
+        (currentPage - 1) * studentsPerPage,
+        currentPage * studentsPerPage
+    );
+
+    // Reset to page 1 when search/filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, filterCourse]);
 
     const handleRefresh = async () => {
         if (window._fetchAdmissions) {
@@ -181,7 +195,7 @@ const StudentAdmissionsList = () => {
                 </div>
 
                 {/* Admissions List */}
-                {filteredAdmissions.length === 0 ? (
+                {paginatedAdmissions.length === 0 ? (
                     <div className="text-center py-12">
                         <div className="text-gray-400 text-6xl mb-4">📋</div>
                         <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -195,7 +209,7 @@ const StudentAdmissionsList = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                        {filteredAdmissions.map((admission) => (
+                        {paginatedAdmissions.map((admission) => (
                             <div
                                 key={admission.id}
                                 className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center transition-all duration-200 h-full hover:shadow-md"
@@ -232,6 +246,36 @@ const StudentAdmissionsList = () => {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                )}
+
+                {totalPages > 1 && (
+                    <div className="flex justify-center mt-8">
+                        <nav className="inline-flex rounded-xl shadow-sm overflow-hidden border border-gray-200 bg-white">
+                            <button
+                                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                disabled={currentPage === 1}
+                                className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Previous
+                            </button>
+                            {[...Array(totalPages)].map((_, idx) => (
+                                <button
+                                    key={idx + 1}
+                                    onClick={() => setCurrentPage(idx + 1)}
+                                    className={`px-4 py-2 text-sm font-medium ${currentPage === idx + 1 ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-blue-50'}`}
+                                >
+                                    {idx + 1}
+                                </button>
+                            ))}
+                            <button
+                                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                disabled={currentPage === totalPages}
+                                className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                Next
+                            </button>
+                        </nav>
                     </div>
                 )}
 
