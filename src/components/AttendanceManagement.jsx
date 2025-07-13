@@ -206,7 +206,7 @@ const AttendanceManagement = () => {
                                 className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out h-12 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <RefreshCw className="w-5 h-5" />
-                                Refresh
+                                Refresh Data
                             </button>
                         </div>
                     </div>
