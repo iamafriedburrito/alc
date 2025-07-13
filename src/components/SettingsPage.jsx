@@ -5,7 +5,6 @@ import {
     Database,
     Download,
     Save,
-    AlertCircle,
     Loader2,
     Camera,
     X
@@ -303,20 +302,9 @@ const SettingsPage = () => {
                     <div className="text-center">
                         <h1 className="text-4xl font-bold text-gray-900 mb-3">System Settings</h1>
                         <p className="text-gray-600 text-lg">Configure your institute settings and manage database</p>
-                        {error && (
-                            <div className="mt-4 p-3 bg-red-100 border border-red-300 rounded-lg flex items-center justify-center">
-                                <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
-                                <span className="text-red-600 text-sm">{error}</span>
-                                <button
-                                    onClick={fetchSettings}
-                                    className="ml-3 px-2 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700"
-                                >
-                                    Retry
-                                </button>
-                            </div>
-                        )}
                     </div>
                 </div>
+
 
                 {/* Tab Navigation */}
                 <div className="bg-white rounded-2xl shadow-sm border border-white/20">
