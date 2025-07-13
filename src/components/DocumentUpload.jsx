@@ -16,7 +16,7 @@ import {
     User,
 } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
-import { formatDate } from "./utils";
+import { formatDate, getStatusColor, getStatusIcon } from "./utils";
 
 // Searchable Student Selector Component
 const StudentSelector = ({ students, selectedStudent, onStudentSelect, error }) => {
@@ -399,34 +399,6 @@ const DocumentUpload = () => {
         const sizes = ["Bytes", "KB", "MB", "GB"]
         const i = Math.floor(Math.log(bytes) / Math.log(k))
         return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-    }
-
-    // Get status color
-    const getStatusColor = (status) => {
-        switch (status) {
-            case "UPLOADED":
-                return "bg-green-100 text-green-800 border-green-200"
-            case "PENDING":
-                return "bg-yellow-100 text-yellow-800 border-yellow-200"
-            case "REJECTED":
-                return "bg-red-100 text-red-800 border-red-200"
-            default:
-                return "bg-gray-100 text-gray-800 border-gray-200"
-        }
-    }
-
-    // Get status icon
-    const getStatusIcon = (status) => {
-        switch (status) {
-            case "UPLOADED":
-                return <CheckCircle className="w-4 h-4" />
-            case "PENDING":
-                return <Clock className="w-4 h-4" />
-            case "REJECTED":
-                return <AlertCircle className="w-4 h-4" />
-            default:
-                return <FileText className="w-4 h-4" />
-        }
     }
 
     if (loading) {
