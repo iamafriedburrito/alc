@@ -382,18 +382,37 @@ const FeeManagement = () => {
 
             {/* Summary Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                {/* Pending */}
                 <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-xs font-medium text-gray-600">Total Students</p>
-                            <p className="text-xl font-bold text-blue-600">{displayRecords.length}</p>
+                            <p className="text-xs font-medium text-gray-600">Pending</p>
+                            <p className="text-xl font-bold text-blue-500">
+                                {displayRecords.filter((r) => r.status === "PENDING").length}
+                            </p>
                         </div>
                         <div className="w-9 h-9 bg-blue-100 rounded-lg flex items-center justify-center">
-                            <User className="w-5 h-5 text-blue-600" />
+                            <Clock className="w-5 h-5 text-blue-500" />
                         </div>
                     </div>
                 </div>
 
+                {/* Partial */}
+                <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <p className="text-xs font-medium text-gray-600">Partial</p>
+                            <p className="text-xl font-bold text-yellow-600">
+                                {displayRecords.filter((r) => r.status === "PARTIAL").length}
+                            </p>
+                        </div>
+                        <div className="w-9 h-9 bg-yellow-100 rounded-lg flex items-center justify-center">
+                            <Clock className="w-5 h-5 text-yellow-600" />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Paid Up */}
                 <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
@@ -408,20 +427,7 @@ const FeeManagement = () => {
                     </div>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <p className="text-xs font-medium text-gray-600">Overdue</p>
-                            <p className="text-xl font-bold text-red-600">
-                                {displayRecords.filter((r) => r.status === "OVERDUE").length}
-                            </p>
-                        </div>
-                        <div className="w-9 h-9 bg-red-100 rounded-lg flex items-center justify-center">
-                            <AlertTriangle className="w-5 h-5 text-red-600" />
-                        </div>
-                    </div>
-                </div>
-
+                {/* Total Due */}
                 <div className="bg-white rounded-2xl shadow-sm p-3 md:p-4 border border-white/20">
                     <div className="flex items-center justify-between">
                         <div>
