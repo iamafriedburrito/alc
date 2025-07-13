@@ -290,6 +290,21 @@ const FeeManagement = () => {
 
     const paymentStatus = selectedStudent ? calculatePaymentStatus(selectedStudent) : { balance: 0 };
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 12;
+
+    // Pagination logic
+    const totalPages = Math.ceil(filteredDisplayRecords.length / recordsPerPage);
+    const paginatedRecords = filteredDisplayRecords.slice(
+        (currentPage - 1) * recordsPerPage,
+        currentPage * recordsPerPage
+    );
+
+    // Reset to page 1 when search/filter changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchTerm, statusFilter, courseFilter]);
+
     // Close modals on Escape key press
     useEffect(() => {
         const handleKey = (e) => {
@@ -486,7 +501,7 @@ const FeeManagement = () => {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {filteredDisplayRecords.map((record) => (
+                                {paginatedRecords.map((record) => (
                                     <tr key={record.id} className="hover:bg-gray-50">
                                         <td className="px-3 py-2 whitespace-nowrap">
                                             <div>
@@ -547,6 +562,37 @@ const FeeManagement = () => {
                     </div>
                 )}
             </div>
+
+            {/* Add pagination controls below the table */}
+            {totalPages > 1 && (
+                <div className="flex justify-center mt-8">
+                    <nav className="inline-flex rounded-xl shadow-sm overflow-hidden border border-gray-200 bg-white">
+                        <button
+                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                            disabled={currentPage === 1}
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Previous
+                        </button>
+                        {[...Array(totalPages)].map((_, idx) => (
+                            <button
+                                key={idx + 1}
+                                onClick={() => setCurrentPage(idx + 1)}
+                                className={`px-4 py-2 text-sm font-medium ${currentPage === idx + 1 ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-blue-50'}`}
+                            >
+                                {idx + 1}
+                            </button>
+                        ))}
+                        <button
+                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                            disabled={currentPage === totalPages}
+                            className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            Next
+                        </button>
+                    </nav>
+                </div>
+            )}
 
             {/* Payment Modal */}
             <RecordPaymentModal
