@@ -211,11 +211,6 @@ const StudentEnquiriesList = () => {
         });
     };
 
-    const formatAadhar = (aadharNumber) => {
-        if (!aadharNumber) return 'Not provided';
-        return aadharNumber.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3');
-    };
-
     const getStatusColor = (status) => {
         switch (status) {
             case 'PENDING': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
