@@ -9,8 +9,6 @@ import {
     Download,
     Search,
     CheckCircle,
-    AlertCircle,
-    Clock,
     Trash2,
     ChevronDown,
     User,
