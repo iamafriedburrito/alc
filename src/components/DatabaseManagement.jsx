@@ -114,7 +114,7 @@ const DatabaseManagement = ({
                             Restore your database from a previously created backup file.
                         </p>
 
-                        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-10">
                             <div className="flex items-start space-x-3">
                                 <AlertCircle className="w-5 h-5 text-red-600 mt-0.5" />
                                 <div className="text-sm text-red-700">
