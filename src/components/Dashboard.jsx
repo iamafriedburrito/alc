@@ -371,9 +371,14 @@ const Dashboard = () => {
                             displayedAdmissions.map((admission) => (
                                 <div key={admission.id || admission.admissionId} className="flex items-center space-x-6 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                                      onClick={() => handleNavigation(`/admission/${admission.id || admission.admissionId}`)}>
-                                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                        <GraduationCap className="w-10 h-10 text-green-600" />
-                                    </div>
+                                    <img
+                                        src={`${API_BASE.replace('/api', '')}/uploads/${admission.photoFilename}`}
+                                        alt={admission.firstName + ' ' + admission.lastName}
+                                        className="w-20 h-20 rounded-full object-cover border-2 border-white shadow-sm bg-green-100 flex-shrink-0"
+                                        onError={(e) => {
+                                            e.target.src = 'https://via.placeholder.com/80x80?text=No+Photo';
+                                        }}
+                                    />
                                     <div className="flex-1 min-w-0 flex flex-col gap-1">
                                         <p className="text-base font-semibold text-gray-900">
                                             {admission.firstName} {admission.lastName}
