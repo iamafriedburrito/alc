@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Printer, Download, X } from 'lucide-react';
-import { formatDate, formatCurrency } from "./utils";
+import { formatDate, formatCurrency } from "./utils.jsx";
 
 const FeeReceipt = ({ paymentData, student, onClose }) => {
     const [instituteSettings, setInstituteSettings] = useState(null);

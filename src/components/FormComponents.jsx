@@ -1,6 +1,6 @@
 import React from "react";
 import { DISTRICTS } from "./FormOptions";
-import { formatAadhar } from "./utils";
+import { formatAadhar } from "./utils.jsx";
 
 // Enhanced Aadhar Input Component
 export const AadharInput = ({ field, fieldState }) => {

@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import ErrorFallback from './ErrorFallback'
 import DatabaseManagement from "./DatabaseManagement"
 import ExportData from "./ExportData"
-import { formatDate } from "./utils";
+import { formatDate } from "./utils.jsx";
 
 const SettingsPage = () => {
     const fileInputRef = useRef(null)

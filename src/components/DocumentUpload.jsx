@@ -16,7 +16,7 @@ import {
     User,
 } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
-import { formatDate, getStatusColor, getStatusIcon } from "./utils";
+import { formatDate, getStatusColor, getStatusIcon } from "./utils.jsx";
 
 // Searchable Student Selector Component
 const StudentSelector = ({ students, selectedStudent, onStudentSelect, error }) => {

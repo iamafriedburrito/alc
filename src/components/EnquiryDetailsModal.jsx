@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { formatAadhar, formatDate } from "./utils";
+import { formatAadhar, formatDate } from "./utils.jsx";
 
 const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) => {
     // Close modal on Escape key press

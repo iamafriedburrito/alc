@@ -5,7 +5,7 @@ import ErrorFallback from "./ErrorFallback";
 import { Link, useNavigate } from "react-router";
 import EnquiryDetailsModal from "./EnquiryDetailsModal";
 import FollowupModal from "./FollowupModal";
-import { formatDate, getStatusColor, getStatusIcon } from "./utils";
+import { formatDate, getStatusColor, getStatusIcon } from "./utils.jsx";
 
 const StudentEnquiriesList = () => {
     const [enquiries, setEnquiries] = useState([]);

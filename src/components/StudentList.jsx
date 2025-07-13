@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
 import { GraduationCap, Plus, RefreshCw, Search, Eye, Edit2 } from "lucide-react";
-import { formatAadhar, formatDate } from "./utils";
+import { formatAadhar, formatDate } from "./utils.jsx";
 import { Link } from "react-router";
 import { toast } from 'react-toastify';
 

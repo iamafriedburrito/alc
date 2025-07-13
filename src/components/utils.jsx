@@ -1,3 +1,4 @@
+import React from "react";
 // Shared formatting utilities for the app
 
 // Format Aadhar number as XXXX XXXX XXXX

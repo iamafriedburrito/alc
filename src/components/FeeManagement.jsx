@@ -5,7 +5,7 @@ import ErrorFallback from './ErrorFallback'
 import FeeReceipt from './FeeReceipt'
 import RecordPaymentModal from "./RecordPaymentModal";
 import FeeDetailsModal from "./FeeDetailsModal";
-import { formatDate, formatCurrency, getStatusColor, getStatusIcon } from "./utils";
+import { formatDate, formatCurrency, getStatusColor, getStatusIcon } from "./utils.jsx";
 
 const FeeManagement = () => {
     const [students, setStudents] = useState([])

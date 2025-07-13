@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { Users, GraduationCap, BookOpen, TrendingUp, Phone, FileText, UserPlus, AlertCircle, CheckCircle, User, Lightbulb } from "lucide-react"
 import ErrorFallback from './ErrorFallback'
-import { formatDate } from "./utils";
+import { formatDate } from "./utils.jsx";
 
 const Dashboard = () => {
     const navigate = useNavigate()
