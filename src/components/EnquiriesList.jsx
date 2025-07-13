@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { Search, Phone, Calendar, User, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye, Users, RefreshCw, Save } from "lucide-react";
+import { Search, Phone, Calendar, BookOpen, Clock, CheckCircle, AlertCircle, XCircle, Plus, Eye, Users, RefreshCw } from "lucide-react";
 import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
 import { Link, useNavigate } from "react-router";
@@ -15,9 +15,7 @@ const StudentEnquiriesList = () => {
     const [showFollowupModal, setShowFollowupModal] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
-    const [filterCategory, setFilterCategory] = useState("");
     const [statusFilter, setStatusFilter] = useState("ALL");
-    const [activeTab, setActiveTab] = useState("followups"); // Only followups tab needed
     const [followupData, setFollowupData] = useState({
         followup_date: "",
         notes: "",
