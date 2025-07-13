@@ -270,7 +270,8 @@ const StudentEnquiriesList = () => {
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div className="flex flex-1 gap-3">
-                            <div className="relative w-full max-w-xs">
+                            {/* Make search input wider and status filter narrower */}
+                            <div className="relative flex-[2] w-full max-w-2xl">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Search className="h-5 w-5 text-gray-500" />
                                 </div>
@@ -287,7 +288,7 @@ const StudentEnquiriesList = () => {
                                 id="statusFilter"
                                 value={statusFilter}
                                 onChange={(e) => setStatusFilter(e.target.value)}
-                                className="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                className="flex-[1] w-full max-w-[180px] px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
                             >
                                 <option value="ALL">All Status</option>
                                 <option value="PENDING">Pending</option>
