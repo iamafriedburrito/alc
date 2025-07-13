@@ -1,20 +1,5 @@
 import React, { useEffect } from "react";
-
-// Utility functions (can be imported from a utils file if moved later)
-const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-IN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-};
-
-const formatAadhar = (aadharNumber) => {
-    if (!aadharNumber) return 'Not provided';
-    return aadharNumber.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3');
-};
+import { formatAadhar, formatDate } from "./utils";
 
 const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) => {
     // Close modal on Escape key press

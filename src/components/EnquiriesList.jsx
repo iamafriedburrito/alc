@@ -5,6 +5,7 @@ import ErrorFallback from "./ErrorFallback";
 import { Link, useNavigate } from "react-router";
 import EnquiryDetailsModal from "./EnquiryDetailsModal";
 import FollowupModal from "./FollowupModal";
+import { formatDate } from "./utils";
 
 const StudentEnquiriesList = () => {
     const [enquiries, setEnquiries] = useState([]);
@@ -200,16 +201,6 @@ const StudentEnquiriesList = () => {
 
         setFilteredEnquiries(filtered);
     }, [searchTerm, statusFilter, enquiries]);
-
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString('en-IN', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
 
     const getStatusColor = (status) => {
         switch (status) {

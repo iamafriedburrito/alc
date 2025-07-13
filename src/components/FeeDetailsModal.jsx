@@ -1,5 +1,6 @@
 import React from "react";
 import { X, Calendar } from "lucide-react";
+import { formatDate, formatCurrency } from "./utils";
 
 const FeeDetailsModal = ({
     open,
@@ -7,8 +8,6 @@ const FeeDetailsModal = ({
     student,
     paymentHistory,
     loadingHistory,
-    formatCurrency,
-    formatDate,
     calculatePaymentStatus
 }) => {
     if (!open || !student) return null;

@@ -1,5 +1,6 @@
 import React from "react";
 import { DISTRICTS } from "./FormOptions";
+import { formatAadhar } from "./utils";
 
 // Enhanced Aadhar Input Component
 export const AadharInput = ({ field, fieldState }) => {
@@ -8,10 +9,6 @@ export const AadharInput = ({ field, fieldState }) => {
         if (value.length <= 12) {
             field.onChange(value);
         }
-    };
-
-    const formatAadhar = (value) => {
-        return value.replace(/(\d{4})(?=\d)/g, "$1 ");
     };
 
     return (

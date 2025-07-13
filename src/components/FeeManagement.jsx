@@ -5,6 +5,7 @@ import ErrorFallback from './ErrorFallback'
 import FeeReceipt from './FeeReceipt'
 import RecordPaymentModal from "./RecordPaymentModal";
 import FeeDetailsModal from "./FeeDetailsModal";
+import { formatDate, formatCurrency } from "./utils";
 
 const FeeManagement = () => {
     const [students, setStudents] = useState([])
@@ -266,21 +267,6 @@ const FeeManagement = () => {
         setSelectedStudent(student)
         setShowDetailsModal(true)
         fetchPaymentHistory(student.id)
-    }
-
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR",
-        }).format(amount)
-    }
-
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-        })
     }
 
     // Generate fee records from students data for display

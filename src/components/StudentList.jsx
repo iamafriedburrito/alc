@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
 import { GraduationCap, Plus, RefreshCw, Search, Eye, Edit2 } from "lucide-react";
+import { formatAadhar, formatDate } from "./utils";
 import { Link } from "react-router";
 import { toast } from 'react-toastify';
 
@@ -57,20 +58,6 @@ const StudentAdmissionsList = () => {
             console.error("Error fetching admission details:", err);
             alert("Failed to fetch admission details.");
         }
-    };
-
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-IN", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-    };
-
-    const formatAadhar = (aadharNumber) => {
-        return aadharNumber.replace(/(\d{4})(\d{4})(\d{4})/, "$1 $2 $3");
     };
 
     // Filter admissions based on search term and course

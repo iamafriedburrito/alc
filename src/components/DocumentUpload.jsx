@@ -16,6 +16,7 @@ import {
     User,
 } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
+import { formatDate } from "./utils";
 
 // Searchable Student Selector Component
 const StudentSelector = ({ students, selectedStudent, onStudentSelect, error }) => {
@@ -398,17 +399,6 @@ const DocumentUpload = () => {
         const sizes = ["Bytes", "KB", "MB", "GB"]
         const i = Math.floor(Math.log(bytes) / Math.log(k))
         return Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
-    }
-
-    // Format date
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-        })
     }
 
     // Get status color

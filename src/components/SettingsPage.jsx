@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import ErrorFallback from './ErrorFallback'
 import DatabaseManagement from "./DatabaseManagement"
 import ExportData from "./ExportData"
+import { formatDate } from "./utils";
 
 const SettingsPage = () => {
     const fileInputRef = useRef(null)
@@ -267,18 +268,6 @@ const SettingsPage = () => {
         const sizes = ['Bytes', 'KB', 'MB', 'GB']
         const i = Math.floor(Math.log(bytes) / Math.log(k))
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-    }
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'Never'
-        const date = new Date(dateString)
-        return date.toLocaleString('en-IN', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        })
     }
 
     if (loading) {

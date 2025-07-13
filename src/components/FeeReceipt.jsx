@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Printer, Download, X } from 'lucide-react';
+import { formatDate, formatCurrency } from "./utils";
 
 const FeeReceipt = ({ paymentData, student, onClose }) => {
     const [instituteSettings, setInstituteSettings] = useState(null);
@@ -56,21 +57,6 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
         // Only run when loading is false and instituteSettings is set
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, instituteSettings]);
-
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat("en-IN", {
-            style: "currency",
-            currency: "INR",
-        }).format(amount);
-    };
-
-    const formatDate = (dateString) => {
-        return new Date(dateString).toLocaleDateString("en-IN", {
-            day: "2-digit",
-            month: "short",
-            year: "numeric",
-        });
-    };
 
     const generateReceiptNumber = () => {
         return Math.floor(Math.random() * 90000000) + 10000000; // 8-digit number

@@ -11,11 +11,11 @@ import {
     HardDrive,
     RefreshCw
 } from "lucide-react";
+import { formatDate } from "./utils";
 
 const DatabaseManagement = ({
     dbStats,
     formatFileSize,
-    formatDate,
     createBackup,
     backupInProgress,
     restoreInProgress,

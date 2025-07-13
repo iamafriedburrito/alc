@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { Users, GraduationCap, BookOpen, TrendingUp, Phone, FileText, UserPlus, AlertCircle, CheckCircle, User, Lightbulb } from "lucide-react"
 import ErrorFallback from './ErrorFallback'
+import { formatDate } from "./utils";
 
 const Dashboard = () => {
     const navigate = useNavigate()
@@ -122,16 +123,6 @@ const Dashboard = () => {
         const interval = setInterval(fetchData, 5 * 60 * 1000)
         return () => clearInterval(interval)
     }, [])
-
-    const formatDate = (dateString) => {
-        if (!dateString) return 'N/A'
-        const date = new Date(dateString)
-        return date.toLocaleDateString('en-IN', {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric'
-        })
-    }
 
     const quickActions = [
         { label: "Add Enquiry", icon: UserPlus, path: "/enquiry", color: "bg-blue-500" },
