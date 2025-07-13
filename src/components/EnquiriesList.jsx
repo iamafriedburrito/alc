@@ -67,16 +67,16 @@ const StudentEnquiriesList = () => {
 
             // Merge the data - use followups data if available, otherwise use regular enquiries
             const mergedData = followupsData.length > 0 ? followupsData : enquiriesData;
-            
+
             // Update each enquiry with its latest follow-up status
             const enrichedData = mergedData.map(enquiry => {
                 // Find the latest follow-up for this enquiry
-                const enquiryFollowups = allFollowupsData.filter(followup => 
+                const enquiryFollowups = allFollowupsData.filter(followup =>
                     followup.enquiry_id === enquiry.id
                 ).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                
+
                 const latestFollowup = enquiryFollowups[0];
-                
+
                 return {
                     ...enquiry,
                     // Use the latest follow-up status if available, otherwise use currentStatus
@@ -86,7 +86,7 @@ const StudentEnquiriesList = () => {
                     nextFollowup: latestFollowup ? latestFollowup.next_followup_date : enquiry.nextFollowup
                 };
             });
-            
+
             setEnquiries(enrichedData);
             setFilteredEnquiries(enrichedData);
 
@@ -273,181 +273,159 @@ const StudentEnquiriesList = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
-                <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
-                    {/* Header */}
-                    <div className="mb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div>
-                            <h2 className="text-4xl font-bold text-gray-900 mb-2 md:mb-4 text-left md:text-left">
-                                Enquiries
-                            </h2>
-                            <div className="inline-flex items-center gap-3 bg-blue-50/80 border border-blue-100 rounded-xl px-5 py-2 shadow-sm text-base font-medium text-blue-900">
-                                <span className="text-blue-500">
-                                    <Users className="h-5 w-5" />
-                                </span>
-                                <span>
-                                    <span className="font-semibold">Total:</span> {enquiries.length}
-                                </span>
-                                <span className="text-gray-400">|</span>
-                                <span>
-                                    <span className="font-semibold">Showing:</span> {filteredEnquiries.length}
-                                </span>
+            <div className="max-w-5xl mx-auto">
+                {/* Header */}
+                <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20 mb-6">
+                    <div className="text-center">
+                        <h1 className="text-4xl font-bold text-gray-900 mb-3">Enquiries List</h1>
+                        <p className="text-gray-600 text-lg">View, search, and manage student enquiries and follow-ups</p>
+                    </div>
+                </div>
+
+                {/* Action Bar */}
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div className="flex flex-1 gap-3">
+                            <div className="relative w-full max-w-xs">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Search className="h-5 w-5 text-gray-500" />
+                                </div>
+                                <input
+                                    type="text"
+                                    id="search"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    placeholder="Search by name, mobile, course, or ID..."
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                />
                             </div>
+                            <select
+                                id="statusFilter"
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
+                                className="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                            >
+                                <option value="ALL">All Status</option>
+                                <option value="PENDING">Pending</option>
+                                <option value="INTERESTED">Interested</option>
+                                <option value="NOT_INTERESTED">Not Interested</option>
+                                <option value="ADMITTED">Admitted</option>
+                            </select>
                         </div>
                         <div className="flex items-center gap-3">
+                            <div className="inline-flex items-center gap-2 bg-blue-50/80 border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-blue-900 h-12">
+                                <Users className="w-4 h-4 text-blue-500" />
+                                <span>Total: <span className="font-semibold">{enquiries.length}</span></span>
+                            </div>
                             <Link
                                 to="/enquiry"
-                                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out"
+                                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out h-12"
                             >
                                 <Plus className="w-5 h-5" />
                                 New Enquiry
                             </Link>
                             <button
                                 onClick={handleRefresh}
-                                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out"
+                                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out h-12"
                             >
                                 <RefreshCw className="w-5 h-5" />
                                 Refresh Data
                             </button>
                         </div>
                     </div>
+                </div>
 
-                    {/* Search and Filter Section */}
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Search Enquiries
-                                </label>
-                                <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <Search className="h-5 w-5 text-gray-500" />
-                                    </div>
-                                    <input
-                                        type="text"
-                                        id="search"
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                        placeholder="Search by name, mobile, course, or ID..."
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white"
-                                    />
-                                </div>
-                            </div>
-                            <div>
-                                <label htmlFor="statusFilter" className="block text-sm font-medium text-gray-700 mb-2">
-                                    Filter by Status
-                                </label>
-                                <select
-                                    id="statusFilter"
-                                    value={statusFilter}
-                                    onChange={(e) => setStatusFilter(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white"
-                                >
-                                    <option value="ALL">All Status</option>
-                                    <option value="PENDING">Pending</option>
-                                    <option value="INTERESTED">Interested</option>
-                                    <option value="NOT_INTERESTED">Not Interested</option>
-                                    <option value="ADMITTED">Admitted</option>
-                                </select>
-                            </div>
-                        </div>
+                {/* Enquiries List */}
+                {filteredEnquiries.length === 0 ? (
+                    <div className="text-center py-12">
+                        <div className="text-gray-400 text-6xl mb-4">📋</div>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">No Enquiries Found</h3>
+                        <p className="text-gray-600">
+                            {searchTerm || statusFilter !== "ALL" ? "Try adjusting your search or filter criteria." : "No student enquiries found in database."}
+                        </p>
                     </div>
+                ) : (
+                    <div className="space-y-6">
+                        {filteredEnquiries.map((enquiry) => {
+                            const daysOverdue = getDaysOverdue(enquiry.nextFollowup);
+                            const isOverdue = daysOverdue > 0;
 
-                    {/* Enquiries List */}
-                    {filteredEnquiries.length === 0 ? (
-                        <div className="text-center py-12">
-                            <div className="text-gray-400 text-6xl mb-4">📋</div>
-                            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Enquiries Found</h3>
-                            <p className="text-gray-600">
-                                {searchTerm || statusFilter !== "ALL" ? "Try adjusting your search or filter criteria." : "No student enquiries found in database."}
-                            </p>
-                        </div>
-                    ) : (
-                        <div className="space-y-6">
-                            {filteredEnquiries.map((enquiry) => {
-                                const daysOverdue = getDaysOverdue(enquiry.nextFollowup);
-                                const isOverdue = daysOverdue > 0;
-
-                                return (
-                                    <div
-                                        key={enquiry.id}
-                                        className={`flex flex-col md:flex-row md:items-center justify-between bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-sm transition-all duration-200 p-6 gap-4 md:gap-0`}
-                                        style={{ minHeight: '120px' }}
-                                    >
-                                        {/* Left: Main Info */}
-                                        <div className="flex-1 flex flex-col gap-2">
-                                            <div className="flex flex-wrap items-center gap-3 mb-1">
-                                                <span className="text-lg md:text-xl font-bold text-gray-900 tracking-wide uppercase">
-                                                    {enquiry.firstName} {enquiry.middleName} {enquiry.lastName}
-                                                </span>
-                                                <span className={`flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(enquiry.currentStatus)}`}
-                                                >
-                                                    {getStatusIcon(enquiry.currentStatus)}
-                                                    <span className="ml-1">{enquiry.currentStatus?.replace('_', ' ') || 'PENDING'}</span>
-                                                </span>
-                                            </div>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                {/* Left Column: Mobile and Course */}
-                                                <div className="space-y-2">
-                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                                        <Phone className="w-4 h-4" />
-                                                        <span>+91 {enquiry.mobileNumber}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                                        <BookOpen className="w-4 h-4" />
-                                                        <span>{enquiry.courseName?.replace('-', ' ')}</span>
-                                                    </div>
+                            return (
+                                <div
+                                    key={enquiry.id}
+                                    className={`flex flex-col md:flex-row md:items-center justify-between bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-sm transition-all duration-200 p-6 gap-4 md:gap-0`}
+                                    style={{ minHeight: '120px' }}
+                                >
+                                    {/* Left: Main Info */}
+                                    <div className="flex-1 flex flex-col gap-2">
+                                        <div className="flex flex-wrap items-center gap-3 mb-1">
+                                            <span className="text-lg md:text-xl font-bold text-gray-900 tracking-wide uppercase">
+                                                {enquiry.firstName} {enquiry.middleName} {enquiry.lastName}
+                                            </span>
+                                            <span className={`flex items-center px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(enquiry.currentStatus)}`}
+                                            >
+                                                {getStatusIcon(enquiry.currentStatus)}
+                                                <span className="ml-1">{enquiry.currentStatus?.replace('_', ' ') || 'PENDING'}</span>
+                                            </span>
+                                        </div>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            {/* Left Column: Mobile and Course */}
+                                            <div className="space-y-2">
+                                                <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                    <Phone className="w-4 h-4" />
+                                                    <span>+91 {enquiry.mobileNumber}</span>
                                                 </div>
-                                                
-                                                {/* Right Column: Dates */}
-                                                <div className="space-y-2">
-                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                                        <Calendar className="w-4 h-4" />
-                                                        <span>{enquiry.enquiryDate ? `Enquiry: ${enquiry.enquiryDate}` : `Submitted: ${formatDate(enquiry.createdAt)}`}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                                                        <Clock className="w-4 h-4" />
-                                                        <span>{enquiry.nextFollowup ? (<><span>Next: {enquiry.nextFollowup}</span>{isOverdue && <span className="text-red-600 font-semibold ml-1">({daysOverdue} days overdue)</span>}</>) : 'No next follow-up scheduled'}</span>
-                                                    </div>
+                                                <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                    <BookOpen className="w-4 h-4" />
+                                                    <span>{enquiry.courseName?.replace('-', ' ')}</span>
                                                 </div>
                                             </div>
-                                            <div className="flex flex-wrap items-center gap-6 text-xs text-gray-400 mt-1">
-                                                <span>Follow-ups: <span className="font-semibold text-gray-700">{enquiry.followupCount || 0}</span></span>
-                                                {enquiry.lastFollowup && (
-                                                    <span>Last: <span className="font-semibold text-gray-700">{enquiry.lastFollowup}</span></span>
-                                                )}
-                                                {enquiry.latestNotes && (
-                                                    <span className="italic text-gray-500">{enquiry.latestNotes}</span>
-                                                )}
+                                            {/* Right Column: Dates */}
+                                            <div className="space-y-2">
+                                                <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                    <Calendar className="w-4 h-4" />
+                                                    <span>{enquiry.enquiryDate ? `Enquiry: ${enquiry.enquiryDate}` : `Submitted: ${formatDate(enquiry.createdAt)}`}</span>
+                                                </div>
+                                                <div className="flex items-center gap-2 text-gray-500 text-sm">
+                                                    <Clock className="w-4 h-4" />
+                                                    <span>{enquiry.nextFollowup ? (<><span>Next: {enquiry.nextFollowup}</span>{isOverdue && <span className="text-red-600 font-semibold ml-1">({daysOverdue} days overdue)</span>}</>) : 'No next follow-up scheduled'}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        {/* Right: Actions */}
-                                        <div className="flex flex-col md:items-end gap-2 md:gap-3 min-w-[160px] md:pl-6">
-                                            <button
-                                                onClick={() => handleViewDetails(enquiry.id)}
-                                                className="bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-medium border border-gray-200 flex items-center gap-2 shadow-sm transition-all duration-150"
-                                            >
-                                                <Eye className="w-4 h-4" />
-                                                View
-                                            </button>
-                                            {enquiry.currentStatus !== 'ADMITTED' && (
-                                                <button
-                                                    onClick={() => handleFollowupClick(enquiry)}
-                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
-                                                >
-                                                    <Plus className="w-4 h-4" />
-                                                    Follow-up
-                                                </button>
+                                        <div className="flex flex-wrap items-center gap-6 text-xs text-gray-400 mt-1">
+                                            <span>Follow-ups: <span className="font-semibold text-gray-700">{enquiry.followupCount || 0}</span></span>
+                                            {enquiry.lastFollowup && (
+                                                <span>Last: <span className="font-semibold text-gray-700">{enquiry.lastFollowup}</span></span>
+                                            )}
+                                            {enquiry.latestNotes && (
+                                                <span className="italic text-gray-500">{enquiry.latestNotes}</span>
                                             )}
                                         </div>
                                     </div>
-                                );
-                            })}
-                        </div>
-                    )}
-
-
-                </div>
+                                    {/* Right: Actions */}
+                                    <div className="flex flex-col md:items-end gap-2 md:gap-3 min-w-[160px] md:pl-6">
+                                        <button
+                                            onClick={() => handleViewDetails(enquiry.id)}
+                                            className="bg-gray-50 hover:bg-gray-100 text-gray-700 px-5 py-2 rounded-lg font-medium border border-gray-200 flex items-center gap-2 shadow-sm transition-all duration-150"
+                                        >
+                                            <Eye className="w-4 h-4" />
+                                            View
+                                        </button>
+                                        {enquiry.currentStatus !== 'ADMITTED' && (
+                                            <button
+                                                onClick={() => handleFollowupClick(enquiry)}
+                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
+                                            >
+                                                <Plus className="w-4 h-4" />
+                                                Follow-up
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
 
                 {/* Modal for Detailed View */}
                 <EnquiryDetailsModal
