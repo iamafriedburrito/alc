@@ -207,63 +207,40 @@ const StudentAdmissionsList = () => {
                         </p>
                     </div>
                 ) : (
-                    <div className="space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                         {filteredAdmissions.map((admission) => (
                             <div
                                 key={admission.id}
-                                className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm"
+                                className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center transition-all duration-200 h-full hover:shadow-md"
                             >
-                                <div className="flex flex-col md:flex-row md:items-center justify-between">
-                                    <div className="flex-1">
-                                        <div className="flex items-center mb-2">
-                                            <span className="bg-blue-100 text-blue-600 font-bold rounded-lg px-3 py-1.5 mr-3 text-base min-w-[48px] text-center inline-block align-middle">
-                                                {admission.id}
-                                            </span>
-                                            <h3 className="text-xl font-semibold text-gray-900">
-                                                {admission.firstName} {admission.middleName}{" "}
-                                                {admission.lastName}
-                                            </h3>
-                                        </div>
-
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                            <div>
-                                                <span className="text-sm text-gray-500">Course:</span>
-                                                <p className="font-medium text-gray-900 capitalize">
-                                                    {admission.courseName.replace("-", " ")}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <span className="text-sm text-gray-500">Mobile:</span>
-                                                <p className="font-medium text-gray-900">
-                                                    +91 {admission.mobileNumber}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <span className="text-sm text-gray-500">
-                                                    Admission Date:
-                                                </span>
-                                                <p className="font-medium text-gray-900">
-                                                    {formatDate(admission.createdAt)}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 md:mt-0 md:ml-6 flex gap-2">
-                                        <button
-                                            onClick={() => handleViewDetails(admission.id)}
-                                            className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-105 shadow-sm hover:shadow-sm flex items-center gap-2"
-                                        >
-                                            <Eye className="w-4 h-4" />
-                                            View Details
-                                        </button>
-                                        <Link
-                                            to={`/admissions/edit/${admission.id}`}
-                                            className="bg-yellow-500 text-white px-6 py-2 rounded-xl font-medium hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2"
-                                        >
-                                            ✏️ Edit
-                                        </Link>
-                                    </div>
+                                <img
+                                    src={`${API_BASE.replace('/api', '')}/uploads/${admission.photoFilename}`}
+                                    alt={admission.firstName + ' ' + admission.lastName}
+                                    className="w-20 h-20 rounded-full object-cover mb-3 border-2 border-white shadow-sm"
+                                    onError={(e) => {
+                                        e.target.src = 'https://via.placeholder.com/80x80?text=No+Photo';
+                                    }}
+                                />
+                                <div className="text-lg font-semibold text-gray-900 text-center mb-1 min-h-[3rem] flex items-center justify-center">
+                                    {admission.firstName} {admission.middleName || ''} {admission.lastName}
+                                </div>
+                                <div className="text-sm text-gray-600 mb-2 text-center capitalize">{admission.courseName.replace('-', ' ')}</div>
+                                <div className="text-sm text-gray-500 mb-2 text-center">+91 {admission.mobileNumber}</div>
+                                <div className="text-xs text-gray-400 mb-4 text-center">Admission: {formatDate(admission.createdAt)}</div>
+                                <div className="mt-auto w-full flex flex-col gap-2">
+                                    <button
+                                        onClick={() => handleViewDetails(admission.id)}
+                                        className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 justify-center"
+                                    >
+                                        <Eye className="w-4 h-4" />
+                                        View Details
+                                    </button>
+                                    <Link
+                                        to={`/admissions/edit/${admission.id}`}
+                                        className="bg-yellow-500 text-white px-4 py-2 rounded-xl font-medium hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 justify-center"
+                                    >
+                                        ✏️ Edit
+                                    </Link>
                                 </div>
                             </div>
                         ))}
