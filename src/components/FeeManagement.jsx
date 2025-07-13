@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { Search, Plus, DollarSign, AlertTriangle, CheckCircle, Clock, User, X, Eye } from "lucide-react"
+import { Search, Plus, DollarSign, CheckCircle, Clock, X, Eye } from "lucide-react"
 import { toast } from "react-toastify"
 import ErrorFallback from './ErrorFallback'
 import FeeReceipt from './FeeReceipt'
@@ -10,7 +10,6 @@ import { formatDate, formatCurrency, getStatusColor, getStatusIcon } from "./uti
 const FeeManagement = () => {
     const [students, setStudents] = useState([])
     const [feeRecords, setFeeRecords] = useState([])
-    const [filteredRecords, setFilteredRecords] = useState([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
     const [searchTerm, setSearchTerm] = useState("")
@@ -22,7 +21,6 @@ const FeeManagement = () => {
     const [selectedStudent, setSelectedStudent] = useState(null)
     const [paymentHistory, setPaymentHistory] = useState([])
     const [loadingHistory, setLoadingHistory] = useState(false)
-    const [selectedRecord, setSelectedRecord] = useState(null)
     const [paymentData, setPaymentData] = useState({
         student_id: "",
         amount: "",
@@ -51,7 +49,6 @@ const FeeManagement = () => {
                 setError("Failed to load fee data. Please check your connection.");
                 setStudents([])
                 setFeeRecords([])
-                setFilteredRecords([])
                 return;
             }
 
@@ -63,17 +60,14 @@ const FeeManagement = () => {
             if (feesResponse.ok) {
                 const feesData = await feesResponse.json()
                 setFeeRecords(feesData.fees || [])
-                setFilteredRecords(feesData.fees || [])
             } else {
                 setFeeRecords([])
-                setFilteredRecords([])
             }
         } catch (err) {
             console.error("Error fetching data:", err)
             setError("Failed to load fee data. Please check your connection.")
             setStudents([])
             setFeeRecords([])
-            setFilteredRecords([])
         } finally {
             setLoading(false)
         }
@@ -122,7 +116,6 @@ const FeeManagement = () => {
             filtered = filtered.filter((record) => record.courseName === courseFilter)
         }
 
-        setFilteredRecords(filtered)
     }, [searchTerm, statusFilter, courseFilter, feeRecords])
 
     // Calculate payment status using fee summary data
