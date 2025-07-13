@@ -11,10 +11,8 @@ const CoursesManagement = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState('');
-    const [stats, setStats] = useState(null);
     const [courseToDelete, setCourseToDelete] = useState(null);
     const [isDeleting, setIsDeleting] = useState(false);
-    const [isRefreshing, setIsRefreshing] = useState(false);
     const [totalCourses, setTotalCourses] = useState(0);
 
     // API base URL from environment
@@ -66,7 +64,6 @@ const CoursesManagement = () => {
             const response = await fetch(`${API_BASE}/courses/stats/overview`);
             if (response.ok) {
                 const data = await response.json();
-                setStats(data.data);
             }
         } catch (error) {
             console.error('Error fetching stats:', error);
