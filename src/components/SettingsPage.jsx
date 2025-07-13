@@ -295,236 +295,234 @@ const SettingsPage = () => {
     return error ? (
         <ErrorFallback onRetry={fetchSettings} />
     ) : (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto space-y-8">
-                {/* Header */}
-                <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
-                    <div className="text-center">
-                        <h1 className="text-4xl font-bold text-gray-900 mb-3">System Settings</h1>
-                        <p className="text-gray-600 text-lg">Configure your institute settings and manage database</p>
-                    </div>
+        <div className="max-w-5xl mx-auto space-y-8">
+            {/* Header */}
+            <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
+                <div className="text-center">
+                    <h1 className="text-4xl font-bold text-gray-900 mb-3">System Settings</h1>
+                    <p className="text-gray-600 text-lg">Configure your institute settings and manage database</p>
                 </div>
-
-
-                {/* Tab Navigation */}
-                <div className="bg-white rounded-2xl shadow-sm border border-white/20">
-                    <div className="flex space-x-1 p-1">
-                        <button
-                            onClick={() => setActiveTab('institute')}
-                            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'institute'
-                                ? 'bg-blue-500 text-white shadow-sm'
-                                : 'text-gray-600 hover:bg-gray-100'
-                                }`}
-                        >
-                            <Building2 className="w-5 h-5" />
-                            <span>Institute Settings</span>
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('database')}
-                            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'database'
-                                ? 'bg-blue-500 text-white shadow-sm'
-                                : 'text-gray-600 hover:bg-gray-100'
-                                }`}
-                        >
-                            <Database className="w-5 h-5" />
-                            <span>Database Management</span>
-                        </button>
-                        <button
-                            onClick={() => setActiveTab('export')}
-                            className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'export'
-                                ? 'bg-blue-500 text-white shadow-sm'
-                                : 'text-gray-600 hover:bg-gray-100'
-                                }`}
-                        >
-                            <Download className="w-5 h-5" />
-                            <span>Export Data</span>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Institute Settings Tab */}
-                {activeTab === 'institute' && (
-                    <div className="bg-white rounded-2xl shadow-sm p-8 border border-white/20">
-                        <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
-                            <Building2 className="w-6 h-6 mr-3 text-blue-600" />
-                            Institute Information
-                        </h2>
-
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            {/* Left Column - Form Fields */}
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Institute Name *
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={instituteSettings.name}
-                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, name: e.target.value }))}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Enter institute name"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Center Code
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={instituteSettings.centerCode}
-                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, centerCode: e.target.value }))}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Enter center code"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Address
-                                    </label>
-                                    <textarea
-                                        value={instituteSettings.address}
-                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, address: e.target.value }))}
-                                        rows={3}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="Enter institute address"
-                                    />
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Phone Number
-                                        </label>
-                                        <input
-                                            type="tel"
-                                            value={instituteSettings.phone}
-                                            onChange={(e) => setInstituteSettings(prev => ({ ...prev, phone: e.target.value }))}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Phone number"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                                            Email Address
-                                        </label>
-                                        <input
-                                            type="email"
-                                            value={instituteSettings.email}
-                                            onChange={(e) => setInstituteSettings(prev => ({ ...prev, email: e.target.value }))}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            placeholder="Email address"
-                                        />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Website
-                                    </label>
-                                    <input
-                                        type="url"
-                                        value={instituteSettings.website}
-                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, website: e.target.value }))}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        placeholder="https://yourwebsite.com"
-                                    />
-                                </div>
-                            </div>
-
-                            {/* Right Column - Logo Upload */}
-                            <div className="space-y-6">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-4">
-                                        Institute Logo
-                                    </label>
-
-                                    <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
-                                        {instituteSettings.logoPreview ? (
-                                            <div className="relative">
-                                                <img
-                                                    src={instituteSettings.logoPreview}
-                                                    alt="Institute Logo"
-                                                    className="max-w-full max-h-48 mx-auto rounded-lg shadow-sm"
-                                                />
-                                                <button
-                                                    onClick={removeLogo}
-                                                    className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
-                                                >
-                                                    <X className="w-4 h-4" />
-                                                </button>
-                                            </div>
-                                        ) : (
-                                            <div className="space-y-4">
-                                                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                                                    <Image className="w-8 h-8 text-gray-400" />
-                                                </div>
-                                                <div>
-                                                    <p className="text-gray-600">Click to upload logo</p>
-                                                    <p className="text-sm text-gray-400">PNG, JPG up to 5MB</p>
-                                                </div>
-                                            </div>
-                                        )}
-
-                                        <input
-                                            type="file"
-                                            ref={fileInputRef}
-                                            onChange={handleLogoChange}
-                                            accept="image/*"
-                                            className="hidden"
-                                        />
-
-                                        <button
-                                            onClick={() => fileInputRef.current?.click()}
-                                            className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2 mx-auto"
-                                        >
-                                            <Camera className="w-4 h-4" />
-                                            <span>{instituteSettings.logoPreview ? 'Change Logo' : 'Upload Logo'}</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Save Button */}
-                        <div className="mt-8 flex justify-end">
-                            <button
-                                onClick={saveInstituteSettings}
-                                disabled={saving || !instituteSettings.name.trim()}
-                                className="px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
-                            >
-                                {saving ? (
-                                    <Loader2 className="w-5 h-5 animate-spin" />
-                                ) : (
-                                    <Save className="w-5 h-5" />
-                                )}
-                                <span>{saving ? 'Saving...' : 'Save Settings'}</span>
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* Database Management Tab */}
-                {activeTab === 'database' && (
-                    <DatabaseManagement
-                        dbStats={dbStats}
-                        formatFileSize={formatFileSize}
-                        formatDate={formatDate}
-                        createBackup={createBackup}
-                        backupInProgress={backupInProgress}
-                        restoreInProgress={restoreInProgress}
-                        backupFileInputRef={backupFileInputRef}
-                        handleBackupFileChange={handleBackupFileChange}
-                    />
-                )}
-
-                {/* Export Data Tab */}
-                {activeTab === 'export' && (
-                    <ExportData />
-                )}
             </div>
+
+
+            {/* Tab Navigation */}
+            <div className="bg-white rounded-2xl shadow-sm border border-white/20">
+                <div className="flex space-x-1 p-1">
+                    <button
+                        onClick={() => setActiveTab('institute')}
+                        className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'institute'
+                            ? 'bg-blue-500 text-white shadow-sm'
+                            : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                    >
+                        <Building2 className="w-5 h-5" />
+                        <span>Institute Settings</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('database')}
+                        className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'database'
+                            ? 'bg-blue-500 text-white shadow-sm'
+                            : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                    >
+                        <Database className="w-5 h-5" />
+                        <span>Database Management</span>
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('export')}
+                        className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center space-x-2 ${activeTab === 'export'
+                            ? 'bg-blue-500 text-white shadow-sm'
+                            : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                    >
+                        <Download className="w-5 h-5" />
+                        <span>Export Data</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Institute Settings Tab */}
+            {activeTab === 'institute' && (
+                <div className="bg-white rounded-2xl shadow-sm p-8 border border-white/20">
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
+                        <Building2 className="w-6 h-6 mr-3 text-blue-600" />
+                        Institute Information
+                    </h2>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        {/* Left Column - Form Fields */}
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Institute Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    value={instituteSettings.name}
+                                    onChange={(e) => setInstituteSettings(prev => ({ ...prev, name: e.target.value }))}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter institute name"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Center Code
+                                </label>
+                                <input
+                                    type="text"
+                                    value={instituteSettings.centerCode}
+                                    onChange={(e) => setInstituteSettings(prev => ({ ...prev, centerCode: e.target.value }))}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter center code"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Address
+                                </label>
+                                <textarea
+                                    value={instituteSettings.address}
+                                    onChange={(e) => setInstituteSettings(prev => ({ ...prev, address: e.target.value }))}
+                                    rows={3}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter institute address"
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Phone Number
+                                    </label>
+                                    <input
+                                        type="tel"
+                                        value={instituteSettings.phone}
+                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, phone: e.target.value }))}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Phone number"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                                        Email Address
+                                    </label>
+                                    <input
+                                        type="email"
+                                        value={instituteSettings.email}
+                                        onChange={(e) => setInstituteSettings(prev => ({ ...prev, email: e.target.value }))}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Email address"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                    Website
+                                </label>
+                                <input
+                                    type="url"
+                                    value={instituteSettings.website}
+                                    onChange={(e) => setInstituteSettings(prev => ({ ...prev, website: e.target.value }))}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="https://yourwebsite.com"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Right Column - Logo Upload */}
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-4">
+                                    Institute Logo
+                                </label>
+
+                                <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-blue-400 transition-colors">
+                                    {instituteSettings.logoPreview ? (
+                                        <div className="relative">
+                                            <img
+                                                src={instituteSettings.logoPreview}
+                                                alt="Institute Logo"
+                                                className="max-w-full max-h-48 mx-auto rounded-lg shadow-sm"
+                                            />
+                                            <button
+                                                onClick={removeLogo}
+                                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                                            >
+                                                <X className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+                                                <Image className="w-8 h-8 text-gray-400" />
+                                            </div>
+                                            <div>
+                                                <p className="text-gray-600">Click to upload logo</p>
+                                                <p className="text-sm text-gray-400">PNG, JPG up to 5MB</p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    <input
+                                        type="file"
+                                        ref={fileInputRef}
+                                        onChange={handleLogoChange}
+                                        accept="image/*"
+                                        className="hidden"
+                                    />
+
+                                    <button
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center space-x-2 mx-auto"
+                                    >
+                                        <Camera className="w-4 h-4" />
+                                        <span>{instituteSettings.logoPreview ? 'Change Logo' : 'Upload Logo'}</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="mt-8 flex justify-end">
+                        <button
+                            onClick={saveInstituteSettings}
+                            disabled={saving || !instituteSettings.name.trim()}
+                            className="px-6 py-3 bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
+                        >
+                            {saving ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                            ) : (
+                                <Save className="w-5 h-5" />
+                            )}
+                            <span>{saving ? 'Saving...' : 'Save Settings'}</span>
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Database Management Tab */}
+            {activeTab === 'database' && (
+                <DatabaseManagement
+                    dbStats={dbStats}
+                    formatFileSize={formatFileSize}
+                    formatDate={formatDate}
+                    createBackup={createBackup}
+                    backupInProgress={backupInProgress}
+                    restoreInProgress={restoreInProgress}
+                    backupFileInputRef={backupFileInputRef}
+                    handleBackupFileChange={handleBackupFileChange}
+                />
+            )}
+
+            {/* Export Data Tab */}
+            {activeTab === 'export' && (
+                <ExportData />
+            )}
         </div>
     )
 }
