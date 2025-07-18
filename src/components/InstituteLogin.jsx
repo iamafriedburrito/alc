@@ -11,7 +11,6 @@ const InstituteLogin = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [instituteSettings, setInstituteSettings] = useState(null);
   const [loadingSettings, setLoadingSettings] = useState(true);
@@ -39,7 +38,6 @@ const InstituteLogin = () => {
   }, [API_BASE]);
 
   const onSubmit = async (data) => {
-    setError("");
     try {
       const formData = new URLSearchParams();
       formData.append("username", data.username);
@@ -51,7 +49,7 @@ const InstituteLogin = () => {
       });
       if (!res.ok) {
         const result = await res.json();
-        setError(result.detail || "Login failed");
+        toast.error(result.detail || "Login failed");
         return;
       }
       const result = await res.json();
@@ -59,7 +57,7 @@ const InstituteLogin = () => {
       toast.success("Login successful! Welcome to the dashboard.");
       navigate("/");
     } catch (err) {
-      setError("Login failed. Please try again.");
+      toast.error("Login failed. Please try again.");
     }
   };
 
@@ -176,13 +174,6 @@ const InstituteLogin = () => {
                 </p>
               )}
             </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3">
-                <p className="text-sm text-red-600 text-center">{error}</p>
-              </div>
-            )}
 
             {/* Login Button */}
             <button
