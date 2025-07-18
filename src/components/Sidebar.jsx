@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { Link, useLocation } from "react-router"
+import { useState, useRef, useEffect } from "react"
+import { Link, useLocation, useNavigate } from "react-router"
 import { Tooltip } from "react-tooltip"
 import {
     ChevronLeft,
@@ -13,11 +13,15 @@ import {
     DollarSign,
     ClipboardList,
     FileText,
+    LogOut
 } from "lucide-react"
 
 const Sidebar = () => {
+    const navigate = useNavigate();
     const [isCollapsed, setIsCollapsed] = useState(false)
     const location = useLocation()
+    const [showMenu, setShowMenu] = useState(false);
+    const adminRef = useRef(null);
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: Home, path: "/" },
@@ -29,6 +33,24 @@ const Sidebar = () => {
         { id: "documents", label: "Document Upload", icon: FileText, path: "/documents" },
         { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
     ]
+
+    const handleLogout = () => {
+        localStorage.removeItem('access_token');
+        navigate('/login');
+    }
+    const handleAdminClick = () => {
+        setShowMenu((prev) => !prev);
+    }
+    useEffect(() => {
+        if (!showMenu) return;
+        function handleClickOutside(event) {
+            if (adminRef.current && !adminRef.current.contains(event.target)) {
+                setShowMenu(false);
+            }
+        }
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, [showMenu]);
 
     return (
         <div
@@ -107,16 +129,32 @@ const Sidebar = () => {
                         </div>
                     </div>
                 ) : (
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-100 transition-all duration-500 ease-in-out">
-                        <div className="flex items-center space-x-3">
-                            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <span className="text-white font-semibold text-sm">AD</span>
-                            </div>
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
-                                <p className="text-xs text-gray-500 truncate">admin@institute.com</p>
+                    <div ref={adminRef} className="relative">
+                        <div
+                            className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-100 transition-all duration-500 ease-in-out cursor-pointer select-none"
+                            onClick={handleAdminClick}
+                        >
+                            <div className="flex items-center space-x-3">
+                                <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <span className="text-white font-semibold text-sm">AD</span>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                    <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
+                                    <p className="text-xs text-gray-500 truncate">admin@institute.com</p>
+                                </div>
                             </div>
                         </div>
+                        {showMenu && (
+                            <div className="absolute bottom-20 left-0 w-full z-50 bg-white border border-gray-200 rounded-xl shadow-xl py-2 animate-fade-in">
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors duration-150"
+                                >
+                                    <LogOut className="w-5 h-5 text-gray-400 group-hover:text-blue-700 transition-colors duration-150" />
+                                    <span className="font-medium">Logout</span>
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
