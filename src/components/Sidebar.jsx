@@ -21,6 +21,8 @@ const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false)
     const location = useLocation()
     const [showMenu, setShowMenu] = useState(false);
+    const [user, setUser] = useState(null);
+    const [userLoading, setUserLoading] = useState(true);
     const adminRef = useRef(null);
 
     const menuItems = [
@@ -41,6 +43,36 @@ const Sidebar = () => {
     const handleAdminClick = () => {
         setShowMenu((prev) => !prev);
     }
+    useEffect(() => {
+        const fetchUser = async () => {
+            setUserLoading(true);
+            try {
+                const token = localStorage.getItem('access_token');
+                if (!token) {
+                    setUser(null);
+                    setUserLoading(false);
+                    return;
+                }
+                const API_BASE = import.meta.env.VITE_API_URL;
+                const res = await fetch(`${API_BASE.replace('/api', '')}/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setUser(data);
+                } else {
+                    setUser(null);
+                }
+            } catch {
+                setUser(null);
+            } finally {
+                setUserLoading(false);
+            }
+        };
+        fetchUser();
+    }, []);
     useEffect(() => {
         if (!showMenu) return;
         function handleClickOutside(event) {
@@ -136,11 +168,27 @@ const Sidebar = () => {
                         >
                             <div className="flex items-center space-x-3">
                                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
-                                    <span className="text-white font-semibold text-sm">AD</span>
+                                    <span className="text-white font-semibold text-sm">
+                                        {user && user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                                    </span>
                                 </div>
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-gray-900 truncate">Admin User</p>
-                                    <p className="text-xs text-gray-500 truncate">admin@institute.com</p>
+                                    {userLoading ? (
+                                        <>
+                                            <p className="text-sm font-medium text-gray-400 truncate animate-pulse">Loading...</p>
+                                            <p className="text-xs text-gray-300 truncate animate-pulse">&nbsp;</p>
+                                        </>
+                                    ) : user ? (
+                                        <>
+                                            <p className="text-sm font-medium text-gray-900 truncate">{user.username}</p>
+                                            <p className="text-xs text-gray-500 truncate capitalize">{user.role}</p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p className="text-sm font-medium text-gray-400 truncate">Unknown User</p>
+                                            <p className="text-xs text-gray-300 truncate">&nbsp;</p>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                         </div>
