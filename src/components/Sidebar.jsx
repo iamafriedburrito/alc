@@ -17,6 +17,7 @@ import {
     KeyRound
 } from "lucide-react"
 import ChangePasswordModal from "./ChangePasswordModal";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
     const navigate = useNavigate();
@@ -41,6 +42,7 @@ const Sidebar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem('access_token');
+        toast.success('Logged out successfully.');
         navigate('/login');
     }
     const handleAdminClick = () => {
