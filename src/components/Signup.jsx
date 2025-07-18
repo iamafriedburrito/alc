@@ -12,7 +12,6 @@ const Signup = ({ onSignup }) => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [instituteSettings, setInstituteSettings] = useState(null);
   const [loadingSettings, setLoadingSettings] = useState(true);
@@ -40,10 +39,8 @@ const Signup = ({ onSignup }) => {
   }, [API_BASE]);
 
   const onSubmit = async (data) => {
-    setError("");
     try {
       const headers = { "Content-Type": "application/json" };
-      // If JWT exists, add Authorization header
       const token = localStorage.getItem("access_token");
       if (token) {
         headers["Authorization"] = `Bearer ${token}`;
@@ -56,21 +53,22 @@ const Signup = ({ onSignup }) => {
       if (!res.ok) {
         const result = await res.json();
         if (res.status === 403) {
-          setError("You are not authorized to register a new user. Please login as an admin.");
+          toast.error("You are not authorized to register a new user. Please login as an admin.");
           return;
         }
         if (result.detail && result.detail.toLowerCase().includes('admin')) {
-          setError("Registration is closed. Please contact an admin.");
+          toast.error("Registration is closed. Please contact an admin.");
           return;
         }
-        throw new Error(result.detail || "Registration failed");
+        toast.error(result.detail || "Registration failed");
+        return;
       }
       const result = await res.json();
       toast.success("Registration successful! Logging you in...");
       if (onSignup) onSignup(result.access_token);
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message);
     }
   };
 
@@ -193,13 +191,6 @@ const Signup = ({ onSignup }) => {
                 <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
               )}
             </div>
-
-            {/* Error Message */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-3">
-                <p className="text-sm text-red-600 text-center">{error}</p>
-              </div>
-            )}
 
             {/* Signup Button */}
             <button
