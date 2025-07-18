@@ -68,7 +68,6 @@ export function getStatusIcon(status) {
     // Documents
     case 'UPLOADED': return <CheckCircle className="w-4 h-4" />;
     case 'REJECTED': return <AlertCircle className="w-4 h-4" />;
-    case 'PENDING': return <Clock className="w-4 h-4" />;
     default: return <FileText className="w-4 h-4" />;
   }
 } 
