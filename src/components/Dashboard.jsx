@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { Users, GraduationCap, BookOpen, TrendingUp, Phone, UserPlus, User, Lightbulb } from "lucide-react"
+import { Users, GraduationCap, BookOpen, TrendingUp, Phone, FileText, UserPlus, AlertCircle, CheckCircle, User, Lightbulb } from "lucide-react"
 import ErrorFallback from './ErrorFallback'
+import { formatDate } from "./utils.jsx";
 
 const Dashboard = () => {
     const navigate = useNavigate()
@@ -15,6 +16,7 @@ const Dashboard = () => {
 
     const [recentEnquiries, setRecentEnquiries] = useState([])
     const [recentAdmissions, setRecentAdmissions] = useState([])
+    const [followupStats, setFollowupStats] = useState({})
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
 
@@ -43,6 +45,7 @@ const Dashboard = () => {
                 fetch(`${API_BASE}/stats`).catch(() => ({ ok: false })),
                 fetch(`${API_BASE}/enquiries`).catch(() => ({ ok: false })),
                 fetch(`${API_BASE}/admissions`).catch(() => ({ ok: false })),
+                fetch(`${API_BASE}/followups/stats`).catch(() => ({ ok: false })),
                 fetch(`${API_BASE}/courses`).catch(() => ({ ok: false }))
             ])
 
@@ -51,6 +54,7 @@ const Dashboard = () => {
                 !statsResponse.ok ||
                 !enquiriesResponse.ok ||
                 !admissionsResponse.ok ||
+                !followupStatsResponse.ok ||
                 !coursesResponse.ok
             ) {
                 setError('Failed to load dashboard data. Please check your connection.');
@@ -92,6 +96,7 @@ const Dashboard = () => {
 
             // Process followup stats
             const followupData = await followupStatsResponse.json()
+            setFollowupStats(followupData)
             setStats(prev => ({ 
                 ...prev, 
                 pendingFollowups: followupData.pending_followups || 0 
