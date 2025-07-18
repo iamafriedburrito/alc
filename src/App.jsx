@@ -15,6 +15,12 @@ import Dashboard from "./components/Dashboard"
 import NotFound from "./components/NotFound"
 import Signup from "./components/Signup"
 import { useNavigate } from "react-router"
+import { Navigate } from "react-router";
+
+function PrivateRoute({ children }) {
+    const token = localStorage.getItem('access_token');
+    return token ? children : <Navigate to="/login" replace />;
+}
 
 function App() {
     const navigate = useNavigate();
@@ -27,7 +33,7 @@ function App() {
             <ToastContainer />
 
             <Routes>
-                <Route path="/" element={<AppLayout />}>
+                <Route path="/" element={<PrivateRoute><AppLayout /></PrivateRoute>}>
                     <Route index element={<Dashboard />} />
                     <Route path="enquiry" element={<EnquiryForm />} />
                     <Route path="admission" element={<AdmissionForm />} />
