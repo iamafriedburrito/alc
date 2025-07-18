@@ -16,7 +16,7 @@ import {
     LogOut,
     KeyRound
 } from "lucide-react"
-import ChangePasswordModal from "./ChangePasswordModal";
+import ChangePasswordModal from "./modals/ChangePasswordModal";
 import { toast } from "react-toastify";
 
 const Sidebar = () => {

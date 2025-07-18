@@ -3,8 +3,8 @@ import { Search, Phone, Calendar, BookOpen, Clock, CheckCircle, AlertCircle, XCi
 import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
 import { Link, useNavigate } from "react-router";
-import EnquiryDetailsModal from "./EnquiryDetailsModal";
-import FollowupModal from "./FollowupModal";
+import EnquiryDetailsModal from "./modals/EnquiryDetailsModal";
+import FollowupModal from "./modals/FollowupModal";
 import { formatDate, getStatusColor, getStatusIcon } from "./utils.jsx";
 
 const StudentEnquiriesList = () => {

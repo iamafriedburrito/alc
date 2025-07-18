@@ -3,8 +3,8 @@ import { Search, Plus, DollarSign, CheckCircle, Clock, X, Eye } from "lucide-rea
 import { toast } from "react-toastify"
 import ErrorFallback from './ErrorFallback'
 import FeeReceipt from './FeeReceipt'
-import RecordPaymentModal from "./RecordPaymentModal";
-import FeeDetailsModal from "./FeeDetailsModal";
+import RecordPaymentModal from "./modals/RecordPaymentModal";
+import FeeDetailsModal from "./modals/FeeDetailsModal";
 import { formatDate, formatCurrency, getStatusColor, getStatusIcon } from "./utils.jsx";
 
 const FeeManagement = () => {
