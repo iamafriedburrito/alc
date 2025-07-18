@@ -13,8 +13,15 @@ import DocumentUpload from "./components/DocumentUpload"
 import AppLayout from "./components/AppLayout"
 import Dashboard from "./components/Dashboard"
 import NotFound from "./components/NotFound"
+import Signup from "./components/Signup"
+import { useNavigate } from "react-router"
 
 function App() {
+    const navigate = useNavigate();
+    const handleSignup = (token) => {
+        localStorage.setItem("access_token", token);
+        navigate("/");
+    };
     return (
         <div>
             <ToastContainer />
@@ -35,6 +42,7 @@ function App() {
                 </Route>
 
                 <Route path="/login" element={<InstituteLogin />} />
+                <Route path="/signup" element={<Signup onSignup={handleSignup} />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>

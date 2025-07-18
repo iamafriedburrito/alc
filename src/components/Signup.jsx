@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, Lock, User } from "lucide-react";
 import { useNavigate } from "react-router";
 
-const InstituteLogin = () => {
+const Signup = ({ onSignup }) => {
   const {
     register,
     handleSubmit,
@@ -13,100 +13,62 @@ const InstituteLogin = () => {
 
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [instituteSettings, setInstituteSettings] = useState(null);
-  const [loadingSettings, setLoadingSettings] = useState(true);
   const API_BASE = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchInstituteSettings = async () => {
-      try {
-        setLoadingSettings(true);
-        const response = await fetch(`${API_BASE}/settings/institute`);
-        if (response.ok) {
-          const data = await response.json();
-          setInstituteSettings(data);
-        } else {
-          setInstituteSettings(null);
-        }
-      } catch (error) {
-        setInstituteSettings(null);
-      } finally {
-        setLoadingSettings(false);
-      }
-    };
-    fetchInstituteSettings();
-  }, [API_BASE]);
 
   const onSubmit = async (data) => {
     setError("");
     try {
-      const formData = new URLSearchParams();
-      formData.append("username", data.username);
-      formData.append("password", data.password);
-      const res = await fetch(`${API_BASE.replace('/api', '')}/login`, {
+      const headers = { "Content-Type": "application/json" };
+      // If JWT exists, add Authorization header
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      const res = await fetch(`${API_BASE.replace('/api', '')}/register`, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString(),
+        headers,
+        body: JSON.stringify(data),
       });
       if (!res.ok) {
         const result = await res.json();
-        setError(result.detail || "Login failed");
-        return;
+        if (res.status === 403) {
+          setError("You are not authorized to register a new user. Please login as an admin.");
+          return;
+        }
+        if (result.detail && result.detail.toLowerCase().includes('admin')) {
+          setError("Registration is closed. Please contact an admin.");
+          return;
+        }
+        throw new Error(result.detail || "Registration failed");
       }
       const result = await res.json();
-      localStorage.setItem("access_token", result.access_token);
-      toast.success("Login successful! Welcome to the dashboard.");
+      toast.success("Registration successful! Logging you in...");
+      if (onSignup) onSignup(result.access_token);
       navigate("/");
     } catch (err) {
-      setError("Login failed. Please try again.");
+      setError(err.message);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
-        {/* Logo/Header Section */}
+        {/* Header Section */}
         <div className="text-center mb-8">
-          {loadingSettings ? (
-            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm animate-pulse" />
-          ) : instituteSettings && (instituteSettings.logo || instituteSettings.name) ? (
-            <>
-              {instituteSettings.logo ? (
-                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border">
-                  <img
-                    src={`${API_BASE.replace('/api', '')}/uploads/${instituteSettings.logo}`}
-                    alt="Institute Logo"
-                    className="w-16 h-16 object-contain"
-                  />
-                </div>
-              ) : null}
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {instituteSettings.name}
-              </h1>
-            </>
-          ) : (
-            <>
-              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-                <Lock className="w-10 h-10 text-white" />
-              </div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                Institute Portal
-              </h1>
-            </>
-          )}
-          <p className="text-gray-600">Sign in to access your dashboard</p>
+          <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+            <Lock className="w-10 h-10 text-white" />
+          </div>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign Up</h1>
+          <p className="text-gray-600">Create your account</p>
         </div>
 
-        {/* Login Form */}
+        {/* Signup Form */}
         <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Username Field */}
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
                 Username
               </label>
               <div className="relative">
@@ -115,9 +77,7 @@ const InstituteLogin = () => {
                 </div>
                 <input
                   id="username"
-                  {...register("username", {
-                    required: "Username is required",
-                  })}
+                  {...register("username", { required: "Username is required" })}
                   className={`w-full pl-10 pr-4 py-3 rounded-xl border transition-all duration-200 ease-in-out ${
                     errors.username
                       ? "border-red-300 focus:ring-red-500 focus:border-red-500"
@@ -127,18 +87,13 @@ const InstituteLogin = () => {
                 />
               </div>
               {errors.username && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.username.message}
-                </p>
+                <p className="mt-1 text-sm text-red-600">{errors.username.message}</p>
               )}
             </div>
 
             {/* Password Field */}
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <div className="relative">
@@ -148,9 +103,7 @@ const InstituteLogin = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
+                  {...register("password", { required: "Password is required" })}
                   className={`w-full pl-10 pr-12 py-3 rounded-xl border transition-all duration-200 ease-in-out ${
                     errors.password
                       ? "border-red-300 focus:ring-red-500 focus:border-red-500"
@@ -171,9 +124,29 @@ const InstituteLogin = () => {
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-600">
-                  {errors.password.message}
-                </p>
+                <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
+              )}
+            </div>
+
+            {/* Role Field */}
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+                Role
+              </label>
+              <select
+                id="role"
+                {...register("role", { required: "Role is required" })}
+                className={`w-full pl-3 pr-4 py-3 rounded-xl border transition-all duration-200 ease-in-out ${
+                  errors.role
+                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                }`}
+              >
+                <option value="admin">Admin</option>
+                <option value="staff">Staff</option>
+              </select>
+              {errors.role && (
+                <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
               )}
             </div>
 
@@ -184,7 +157,7 @@ const InstituteLogin = () => {
               </div>
             )}
 
-            {/* Login Button */}
+            {/* Signup Button */}
             <button
               type="submit"
               disabled={isSubmitting}
@@ -193,10 +166,10 @@ const InstituteLogin = () => {
               {isSubmitting ? (
                 <div className="flex items-center justify-center">
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Signing in...
+                  Signing up...
                 </div>
               ) : (
-                "Sign In"
+                "Sign Up"
               )}
             </button>
           </form>
@@ -204,14 +177,11 @@ const InstituteLogin = () => {
 
         {/* Footer */}
         <div className="text-center mt-8">
-          <p className="text-sm text-gray-500">
-            © 2025 blacklytning. All rights reserved.
-          </p>
+          <p className="text-sm text-gray-500">© 2025 blacklytning. All rights reserved.</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default InstituteLogin;
-
+export default Signup; 
