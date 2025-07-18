@@ -1,19 +1,16 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { KeyRound } from "lucide-react";
 
 const ChangePasswordModal = ({ open, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
   const API_BASE = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
-    setError("");
     try {
       const token = localStorage.getItem("access_token");
       const res = await fetch(`${API_BASE.replace('/api', '')}/change-password`, {
@@ -26,14 +23,14 @@ const ChangePasswordModal = ({ open, onClose }) => {
       });
       const data = await res.json();
       if (res.ok && data.detail === "Password changed successfully") {
-        setMessage("Password changed successfully.");
+        toast.success("Password changed successfully.");
         setOldPassword("");
         setNewPassword("");
       } else {
-        setError(data.detail || "Failed to change password.");
+        toast.error(data.detail || "Failed to change password.");
       }
     } catch {
-      setError("Failed to change password. Please try again.");
+      toast.error("Failed to change password. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -54,8 +51,6 @@ const ChangePasswordModal = ({ open, onClose }) => {
             <label className="block text-sm font-medium mb-1">New Password</label>
             <input type="password" className="w-full border rounded-lg px-3 py-2" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
           </div>
-          {error && <div className="text-red-600 text-sm text-center">{error}</div>}
-          {message && <div className="text-green-600 text-sm text-center">{message}</div>}
           <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-4 rounded-lg font-medium mt-2 disabled:opacity-50">
             {loading ? "Changing..." : "Change Password"}
           </button>
