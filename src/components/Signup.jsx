@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Eye, EyeOff, Lock, User } from "lucide-react";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const Signup = ({ onSignup }) => {
   const {
@@ -13,8 +14,30 @@ const Signup = ({ onSignup }) => {
 
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [instituteSettings, setInstituteSettings] = useState(null);
+  const [loadingSettings, setLoadingSettings] = useState(true);
   const API_BASE = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchInstituteSettings = async () => {
+      try {
+        setLoadingSettings(true);
+        const response = await fetch(`${API_BASE}/settings/institute`);
+        if (response.ok) {
+          const data = await response.json();
+          setInstituteSettings(data);
+        } else {
+          setInstituteSettings(null);
+        }
+      } catch (error) {
+        setInstituteSettings(null);
+      } finally {
+        setLoadingSettings(false);
+      }
+    };
+    fetchInstituteSettings();
+  }, [API_BASE]);
 
   const onSubmit = async (data) => {
     setError("");
@@ -56,10 +79,31 @@ const Signup = ({ onSignup }) => {
       <div className="max-w-md w-full">
         {/* Header Section */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
-            <Lock className="w-10 h-10 text-white" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign Up</h1>
+          {loadingSettings ? (
+            <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm animate-pulse" />
+          ) : instituteSettings && (instituteSettings.logo || instituteSettings.name) ? (
+            <>
+              {instituteSettings.logo ? (
+                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border">
+                  <img
+                    src={`${API_BASE.replace('/api', '')}/uploads/${instituteSettings.logo}`}
+                    alt="Institute Logo"
+                    className="w-16 h-16 object-contain"
+                  />
+                </div>
+              ) : null}
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                {instituteSettings.name}
+              </h1>
+            </>
+          ) : (
+            <>
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm">
+                <Lock className="w-10 h-10 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Sign Up</h1>
+            </>
+          )}
           <p className="text-gray-600">Create your account</p>
         </div>
 
