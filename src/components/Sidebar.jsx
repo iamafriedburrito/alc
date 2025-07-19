@@ -156,7 +156,7 @@ const Sidebar = () => {
                 {isCollapsed ? (
                     <div className="flex justify-center">
                         {/* Tooltip for collapsed state */}
-                        <Tooltip id="admin-tooltip" />
+                        <Tooltip id="admin-tooltip" place="right" />
                         <div
                             data-tooltip-id="admin-tooltip"
                             data-tooltip-content={user && user.username ? user.username : 'User'}
