@@ -1,6 +1,6 @@
 import React from "react";
 import { X, Calendar } from "lucide-react";
-import { formatDate, formatCurrency } from "./utils.jsx";
+import { formatDate, formatCurrency } from "../utils.jsx";
 
 const FeeDetailsModal = ({
     open,
