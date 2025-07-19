@@ -15,6 +15,7 @@ import {
 } from "lucide-react"
 import ErrorFallback from "./ErrorFallback"
 import { formatDate, getStatusColor, getStatusIcon } from "./utils.jsx";
+import DocumentPreviewModal from "./modals/DocumentPreviewModal";
 
 // Searchable Student Selector Component
 const StudentSelector = ({ students, selectedStudent, onStudentSelect, error }) => {
@@ -675,25 +676,11 @@ const DocumentUpload = () => {
             </div>
 
             {/* PDF Preview Modal */}
-            {showPreview && previewFile?.type === "pdf" && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl shadow-sm max-w-4xl w-full max-h-[90vh] overflow-hidden">
-                        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-gray-900">Document Preview</h3>
-                            <button onClick={() => setShowPreview(false)} className="text-gray-400 hover:text-gray-600">
-                                <X className="w-6 h-6" />
-                            </button>
-                        </div>
-                        <div className="p-4">
-                            <iframe
-                                src={previewFile.url}
-                                className="w-full h-96 border border-gray-200 rounded-lg"
-                                title="Document Preview"
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
+            <DocumentPreviewModal 
+                showPreview={showPreview}
+                previewFile={previewFile}
+                onClose={() => setShowPreview(false)}
+            />
         </div>
     )
 }
