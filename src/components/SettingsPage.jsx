@@ -14,6 +14,7 @@ import ErrorFallback from './ErrorFallback'
 import DatabaseManagement from "./DatabaseManagement"
 import ExportData from "./ExportData"
 import { formatDate } from "./utils.jsx";
+import ConfirmDeleteModal from "./modals/ConfirmDeleteModal";
 
 const SettingsPage = () => {
     const fileInputRef = useRef(null)
@@ -23,6 +24,8 @@ const SettingsPage = () => {
     const [saving, setSaving] = useState(false)
     const [backupInProgress, setBackupInProgress] = useState(false)
     const [restoreInProgress, setRestoreInProgress] = useState(false)
+    const [showRestoreConfirm, setShowRestoreConfirm] = useState(false);
+    const [backupFileToRestore, setBackupFileToRestore] = useState(null);
 
     // Institute Settings State
     const [instituteSettings, setInstituteSettings] = useState({
@@ -252,15 +255,21 @@ const SettingsPage = () => {
 
     // Handle backup file selection
     const handleBackupFileChange = (event) => {
-        const file = event.target.files[0]
+        const file = event.target.files[0];
         if (file) {
-            if (confirm('Are you sure you want to restore this backup? This will replace all current data.')) {
-                restoreBackup(file)
-            }
+            setBackupFileToRestore(file);
+            setShowRestoreConfirm(true);
         }
-        // Reset file input
-        event.target.value = ''
-    }
+        event.target.value = '';
+    };
+
+    const confirmRestoreBackup = () => {
+        if (backupFileToRestore) {
+            restoreBackup(backupFileToRestore);
+            setShowRestoreConfirm(false);
+            setBackupFileToRestore(null);
+        }
+    };
 
     const formatFileSize = (bytes) => {
         if (bytes === 0) return '0 Bytes'
@@ -512,6 +521,19 @@ const SettingsPage = () => {
             {activeTab === 'export' && (
                 <ExportData />
             )}
+
+            {/* Restore Backup Confirmation Modal */}
+            <ConfirmDeleteModal
+                isOpen={showRestoreConfirm}
+                onConfirm={confirmRestoreBackup}
+                onCancel={() => {
+                    setShowRestoreConfirm(false);
+                    setBackupFileToRestore(null);
+                }}
+                title="Restore Backup"
+                message="Are you sure you want to restore this backup? This will replace all current data. This action cannot be undone."
+                itemName="backup"
+            />
         </div>
     )
 }
