@@ -129,7 +129,7 @@ const Sidebar = () => {
                                 data-tooltip-hidden={!isCollapsed}
                                 className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 ease-in-out group relative overflow-hidden ${isActive
                                         ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm transform scale-[1.02]"
-                                        : "text-gray-700 hover:bg-gray-100/80 hover:text-gray-900 hover:transform hover:scale-[1.01]"
+                                        : "text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:transform hover:scale-[1.01]"
                                     } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                             >
                                 <Icon
