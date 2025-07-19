@@ -16,6 +16,7 @@ import {
 import ErrorFallback from "./ErrorFallback"
 import { formatDate, getStatusColor, getStatusIcon } from "./utils.jsx";
 import DocumentPreviewModal from "./modals/DocumentPreviewModal";
+import ConfirmDeleteModal from "./modals/ConfirmDeleteModal";
 
 // Searchable Student Selector Component
 const StudentSelector = ({ students, selectedStudent, onStudentSelect, error }) => {
@@ -194,6 +195,8 @@ const DocumentUpload = () => {
     const [statusFilter, setStatusFilter] = useState("ALL")
     const [previewFile, setPreviewFile] = useState(null)
     const [showPreview, setShowPreview] = useState(false)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+    const [documentToDelete, setDocumentToDelete] = useState(null)
     const fileInputRef = useRef(null)
 
     const API_BASE = import.meta.env.VITE_API_URL
@@ -356,13 +359,16 @@ const DocumentUpload = () => {
     }
 
     // Handle document deletion
-    const handleDeleteDocument = async (documentId) => {
-        if (!confirm("Are you sure you want to delete this document?")) {
-            return
-        }
+    const handleDeleteDocument = (documentId) => {
+        setDocumentToDelete(documentId)
+        setShowDeleteConfirm(true)
+    }
+
+    const confirmDeleteDocument = async () => {
+        if (!documentToDelete) return
 
         try {
-            const response = await fetch(`${API_BASE}/documents/${documentId}`, {
+            const response = await fetch(`${API_BASE}/documents/${documentToDelete}`, {
                 method: "DELETE",
             })
 
@@ -376,6 +382,9 @@ const DocumentUpload = () => {
         } catch (error) {
             console.error("Error deleting document:", error)
             toast.error("Failed to delete document")
+        } finally {
+            setShowDeleteConfirm(false)
+            setDocumentToDelete(null)
         }
     }
 
@@ -680,6 +689,19 @@ const DocumentUpload = () => {
                 showPreview={showPreview}
                 previewFile={previewFile}
                 onClose={() => setShowPreview(false)}
+            />
+
+            {/* Delete Confirmation Modal */}
+            <ConfirmDeleteModal
+                isOpen={showDeleteConfirm}
+                onConfirm={confirmDeleteDocument}
+                onCancel={() => {
+                    setShowDeleteConfirm(false)
+                    setDocumentToDelete(null)
+                }}
+                title="Delete Document"
+                message="Are you sure you want to delete this document? This action cannot be undone."
+                itemName="document"
             />
         </div>
     )
