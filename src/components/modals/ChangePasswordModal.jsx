@@ -5,11 +5,16 @@ import { KeyRound } from "lucide-react";
 const ChangePasswordModal = ({ open, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const API_BASE = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password do not match.");
+      return;
+    }
     setLoading(true);
     try {
       const token = localStorage.getItem("access_token");
@@ -26,6 +31,7 @@ const ChangePasswordModal = ({ open, onClose }) => {
         toast.success("Password changed successfully.");
         setOldPassword("");
         setNewPassword("");
+        setConfirmPassword("");
       } else {
         toast.error(data.detail || "Failed to change password.");
       }
@@ -50,6 +56,10 @@ const ChangePasswordModal = ({ open, onClose }) => {
           <div>
             <label className="block text-sm font-medium mb-1">New Password</label>
             <input type="password" className="w-full border rounded-lg px-3 py-2" value={newPassword} onChange={e => setNewPassword(e.target.value)} required />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Confirm New Password</label>
+            <input type="password" className="w-full border rounded-lg px-3 py-2" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} required />
           </div>
           <button type="submit" disabled={loading} className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-2 px-4 rounded-lg font-medium mt-2 disabled:opacity-50">
             {loading ? "Changing..." : "Change Password"}
