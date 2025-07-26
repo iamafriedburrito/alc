@@ -50,7 +50,10 @@ const RecordPaymentModal = ({
                                     type="number"
                                     value={paymentData.amount}
                                     onChange={(e) => {
-                                        let value = e.target.value;
+                                        let value = e.target.value.replace(
+                                            /[^0-9]/g,
+                                            "",
+                                        );
                                         if (
                                             Number(value) >
                                             paymentStatus.balance
@@ -69,9 +72,13 @@ const RecordPaymentModal = ({
                                     required
                                     min="0"
                                     max={paymentStatus.balance}
-                                    step="0.01"
-                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    step="1"
+                                    className="no-spinner w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Enter amount"
+                                    onKeyDown={(e) => {
+                                        if (e.key === "." || e.key === ",")
+                                            e.preventDefault();
+                                    }}
                                 />
                             </div>
 
