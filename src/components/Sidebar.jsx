@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react"
-import { Link, useLocation, useNavigate } from "react-router"
-import { Tooltip } from "react-tooltip"
+import { useState, useRef, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
+import { Tooltip } from "react-tooltip";
 import {
     ChevronLeft,
     ChevronRight,
@@ -14,15 +14,15 @@ import {
     ClipboardList,
     FileText,
     LogOut,
-    KeyRound
-} from "lucide-react"
+    KeyRound,
+} from "lucide-react";
 import ChangePasswordModal from "./modals/ChangePasswordModal";
 import { toast } from "react-toastify";
 
 const Sidebar = () => {
     const navigate = useNavigate();
-    const [isCollapsed, setIsCollapsed] = useState(false)
-    const location = useLocation()
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const location = useLocation();
     const [showMenu, setShowMenu] = useState(false);
     const [user, setUser] = useState(null);
     const [userLoading, setUserLoading] = useState(true);
@@ -31,38 +31,73 @@ const Sidebar = () => {
 
     const menuItems = [
         { id: "dashboard", label: "Dashboard", icon: Home, path: "/" },
-        { id: "enquiries", label: "Enquiries List", icon: Users, path: "/enquiries" },
-        { id: "admissions", label: "Students List", icon: UserCheck, path: "/admissions" },
-        { id: "attendance", label: "Attendance Management", icon: ClipboardList, path: "/attendance" },
-        { id: "courses", label: "Course Management", icon: BookOpen, path: "/courses" },
-        { id: "fees", label: "Fee Management", icon: DollarSign, path: "/fees" },
-        { id: "documents", label: "Document Upload", icon: FileText, path: "/documents" },
-        { id: "settings", label: "Settings", icon: Settings, path: "/settings" },
-    ]
+        {
+            id: "enquiries",
+            label: "Enquiries List",
+            icon: Users,
+            path: "/enquiries",
+        },
+        {
+            id: "admissions",
+            label: "Students List",
+            icon: UserCheck,
+            path: "/admissions",
+        },
+        {
+            id: "attendance",
+            label: "Attendance Management",
+            icon: ClipboardList,
+            path: "/attendance",
+        },
+        {
+            id: "courses",
+            label: "Course Management",
+            icon: BookOpen,
+            path: "/courses",
+        },
+        {
+            id: "fees",
+            label: "Fee Management",
+            icon: DollarSign,
+            path: "/fees",
+        },
+        {
+            id: "documents",
+            label: "Document Upload",
+            icon: FileText,
+            path: "/documents",
+        },
+        {
+            id: "settings",
+            label: "Settings",
+            icon: Settings,
+            path: "/settings",
+        },
+    ];
 
     const handleLogout = () => {
-        localStorage.removeItem('access_token');
-        toast.success('Logged out successfully.');
-        navigate('/login');
-    }
+        localStorage.removeItem("access_token");
+        toast.success("Logged out successfully.");
+        navigate("/login");
+    };
     const handleAdminClick = () => {
         setShowMenu((prev) => !prev);
-    }
+    };
     useEffect(() => {
         const fetchUser = async () => {
             setUserLoading(true);
             try {
-                const token = localStorage.getItem('access_token');
+                const token = localStorage.getItem("access_token");
                 if (!token) {
                     setUser(null);
                     setUserLoading(false);
                     return;
                 }
                 const API_BASE = import.meta.env.VITE_API_URL;
-                const res = await fetch(`${API_BASE.replace('/api', '')}/me`, {
+                const res = await fetch(`${API_BASE.replace("/api", "")}/me`, {
                     headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                        Authorization: `Bearer ${token}`,
+                    },
                 });
                 if (res.ok) {
                     const data = await res.json();
@@ -85,8 +120,9 @@ const Sidebar = () => {
                 setShowMenu(false);
             }
         }
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
     }, [showMenu]);
 
     return (
@@ -101,13 +137,18 @@ const Sidebar = () => {
                             <GraduationCap className="h-6 w-6 text-white" />
                         </div>
                         <div
-                            className={`flex-1 min-w-0 transition-all duration-500 ease-in-out overflow-hidden ${isCollapsed
+                            className={`flex-1 min-w-0 transition-all duration-500 ease-in-out overflow-hidden ${
+                                isCollapsed
                                     ? "opacity-0 transform translate-x-4 pointer-events-none w-0"
                                     : "opacity-100 transform translate-x-0"
-                                }`}
+                            }`}
                         >
-                            <h1 className="text-xl font-bold text-gray-900 whitespace-nowrap">EduManage</h1>
-                            <p className="text-sm text-gray-500 whitespace-nowrap">Institute Management</p>
+                            <h1 className="text-xl font-bold text-gray-900 whitespace-nowrap">
+                                EduManage
+                            </h1>
+                            <p className="text-sm text-gray-500 whitespace-nowrap">
+                                Institute Management
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -116,8 +157,8 @@ const Sidebar = () => {
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
                 {menuItems.map((item) => {
-                    const Icon = item.icon
-                    const isActive = location.pathname === item.path
+                    const Icon = item.icon;
+                    const isActive = location.pathname === item.path;
 
                     return (
                         <div key={item.id}>
@@ -127,27 +168,32 @@ const Sidebar = () => {
                                 data-tooltip-id="sidebar-tip"
                                 data-tooltip-content={item.label}
                                 data-tooltip-hidden={!isCollapsed}
-                                className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 ease-in-out group relative overflow-hidden ${isActive
+                                className={`w-full flex items-center px-4 py-3 rounded-xl transition-all duration-300 ease-in-out group relative overflow-hidden ${
+                                    isActive
                                         ? "bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-sm transform scale-[1.02]"
                                         : "text-gray-700 hover:bg-blue-50 hover:text-blue-700 hover:transform hover:scale-[1.01]"
-                                    } ${isCollapsed ? "justify-center" : "space-x-3"}`}
+                                } ${isCollapsed ? "justify-center" : "space-x-3"}`}
                             >
                                 <Icon
-                                    className={`h-5 w-5 flex-shrink-0 transition-all duration-300 ease-in-out ${isActive ? "text-white" : "text-gray-500 group-hover:text-gray-700"
-                                        }`}
+                                    className={`h-5 w-5 flex-shrink-0 transition-all duration-300 ease-in-out ${
+                                        isActive
+                                            ? "text-white"
+                                            : "text-gray-500 group-hover:text-gray-700"
+                                    }`}
                                 />
 
                                 <span
-                                    className={`font-medium text-sm whitespace-nowrap transition-all duration-500 ease-in-out ${isCollapsed
+                                    className={`font-medium text-sm whitespace-nowrap transition-all duration-500 ease-in-out ${
+                                        isCollapsed
                                             ? "opacity-0 transform translate-x-4 pointer-events-none w-0"
                                             : "opacity-100 transform translate-x-0 w-auto"
-                                        }`}
+                                    }`}
                                 >
                                     {item.label}
                                 </span>
                             </Link>
                         </div>
-                    )
+                    );
                 })}
             </nav>
 
@@ -159,11 +205,17 @@ const Sidebar = () => {
                         <Tooltip id="admin-tooltip" place="right" />
                         <div
                             data-tooltip-id="admin-tooltip"
-                            data-tooltip-content={user && user.username ? user.username : 'User'}
+                            data-tooltip-content={
+                                user && user.username ? user.username : "User"
+                            }
                             className="z-20 w-12 h-12 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center group relative transition-all duration-300 ease-in-out"
                         >
                             <span className="text-white font-semibold text-sm">
-                                {userLoading ? 'U' : (user && user.username ? user.username.charAt(0).toUpperCase() : 'U')}
+                                {userLoading
+                                    ? "U"
+                                    : user && user.username
+                                      ? user.username.charAt(0).toUpperCase()
+                                      : "U"}
                             </span>
                         </div>
                     </div>
@@ -176,24 +228,40 @@ const Sidebar = () => {
                             <div className="flex items-center space-x-3">
                                 <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center flex-shrink-0">
                                     <span className="text-white font-semibold text-sm">
-                                        {user && user.username ? user.username.charAt(0).toUpperCase() : 'U'}
+                                        {user && user.username
+                                            ? user.username
+                                                  .charAt(0)
+                                                  .toUpperCase()
+                                            : "U"}
                                     </span>
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     {userLoading ? (
                                         <>
-                                            <p className="text-sm font-medium text-gray-400 truncate animate-pulse">Loading...</p>
-                                            <p className="text-xs text-gray-300 truncate animate-pulse">&nbsp;</p>
+                                            <p className="text-sm font-medium text-gray-400 truncate animate-pulse">
+                                                Loading...
+                                            </p>
+                                            <p className="text-xs text-gray-300 truncate animate-pulse">
+                                                &nbsp;
+                                            </p>
                                         </>
                                     ) : user ? (
                                         <>
-                                            <p className="text-sm font-medium text-gray-900 truncate">{user.username}</p>
-                                            <p className="text-xs text-gray-500 truncate capitalize">{user.role}</p>
+                                            <p className="text-sm font-medium text-gray-900 truncate">
+                                                {user.username}
+                                            </p>
+                                            <p className="text-xs text-gray-500 truncate capitalize">
+                                                {user.role}
+                                            </p>
                                         </>
                                     ) : (
                                         <>
-                                            <p className="text-sm font-medium text-gray-400 truncate">Unknown User</p>
-                                            <p className="text-xs text-gray-300 truncate">&nbsp;</p>
+                                            <p className="text-sm font-medium text-gray-400 truncate">
+                                                Unknown User
+                                            </p>
+                                            <p className="text-xs text-gray-300 truncate">
+                                                &nbsp;
+                                            </p>
                                         </>
                                     )}
                                 </div>
@@ -202,11 +270,16 @@ const Sidebar = () => {
                         {showMenu && (
                             <div className="absolute bottom-20 left-0 w-full z-50 bg-white border border-gray-200 rounded-xl shadow-xl py-2 animate-fade-in">
                                 <button
-                                    onClick={() => { setShowChangePassword(true); setShowMenu(false); }}
+                                    onClick={() => {
+                                        setShowChangePassword(true);
+                                        setShowMenu(false);
+                                    }}
                                     className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors duration-150"
                                 >
                                     <KeyRound className="w-5 h-5 text-gray-400 group-hover:text-blue-700 transition-colors duration-150" />
-                                    <span className="font-medium">Change Password</span>
+                                    <span className="font-medium">
+                                        Change Password
+                                    </span>
                                 </button>
                                 <button
                                     onClick={handleLogout}
@@ -234,9 +307,12 @@ const Sidebar = () => {
                     )}
                 </div>
             </button>
-            <ChangePasswordModal open={showChangePassword} onClose={() => setShowChangePassword(false)} />
+            <ChangePasswordModal
+                open={showChangePassword}
+                onClose={() => setShowChangePassword(false)}
+            />
         </div>
-    )
-}
+    );
+};
 
 export default Sidebar;

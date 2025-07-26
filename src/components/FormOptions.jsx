@@ -33,8 +33,8 @@ export const DISTRICTS = [
     { value: "SOLAPUR", label: "SOLAPUR" },
     { value: "THANE", label: "THANE" },
     { value: "WARDHA", label: "WARDHA" },
-    { value: "WASHIM", label: "WASHIM", },
-    { value: "YAVATMAL", label: "YAVATMAL", },
+    { value: "WASHIM", label: "WASHIM" },
+    { value: "YAVATMAL", label: "YAVATMAL" },
 ];
 
 export const LANGUAGES = [
@@ -75,7 +75,7 @@ export const CATEGORY = [
     { value: "SENIOR CITIZEN", label: "SENIOR CITIZEN" },
     { value: "TRADER", label: "TRADER" },
     { value: "OTHER", label: "OTHER" },
-]
+];
 
 export const EDUCATIONAL_QUALIFICATION = [
     { value: "1st-4th STD", label: "1st-4th STD." },

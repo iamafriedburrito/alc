@@ -1,7 +1,12 @@
 import React, { useEffect } from "react";
 import { formatAadhar, formatDate } from "../utils.jsx";
 
-const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) => {
+const EnquiryDetailsModal = ({
+    open,
+    onClose,
+    enquiry,
+    onConvertToAdmission,
+}) => {
     // Close modal on Escape key press
     useEffect(() => {
         const handleKey = (e) => {
@@ -43,30 +48,53 @@ const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) =
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <span className="text-sm text-gray-500">Full Name:</span>
+                                    <span className="text-sm text-gray-500">
+                                        Full Name:
+                                    </span>
                                     <p className="font-medium text-gray-900">
-                                        {enquiry.firstName} {enquiry.middleName} {enquiry.lastName}
+                                        {enquiry.firstName} {enquiry.middleName}{" "}
+                                        {enquiry.lastName}
                                     </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Date of Birth:</span>
-                                    <p className="font-medium text-gray-900">{enquiry.dateOfBirth}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Date of Birth:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        {enquiry.dateOfBirth}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Gender:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.gender}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Gender:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.gender}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Marital Status:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.maritalStatus}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Marital Status:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.maritalStatus}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Mother Tongue:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.motherTongue}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Mother Tongue:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.motherTongue}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Aadhar Number:</span>
-                                    <p className="font-medium text-gray-900">{formatAadhar(enquiry.aadharNumber)}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Aadhar Number:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        {formatAadhar(enquiry.aadharNumber)}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -81,20 +109,36 @@ const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) =
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
-                                    <span className="text-sm text-gray-500">Address:</span>
-                                    <p className="font-medium text-gray-900">{enquiry.correspondenceAddress}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Address:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        {enquiry.correspondenceAddress}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">City:</span>
-                                    <p className="font-medium text-gray-900">{enquiry.city}</p>
+                                    <span className="text-sm text-gray-500">
+                                        City:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        {enquiry.city}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">District:</span>
-                                    <p className="font-medium text-gray-900">{enquiry.district}</p>
+                                    <span className="text-sm text-gray-500">
+                                        District:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        {enquiry.district}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">State:</span>
-                                    <p className="font-medium text-gray-900">{enquiry.state}</p>
+                                    <span className="text-sm text-gray-500">
+                                        State:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        {enquiry.state}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -109,13 +153,21 @@ const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) =
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <span className="text-sm text-gray-500">Mobile Number:</span>
-                                    <p className="font-medium text-gray-900">+91 {enquiry.mobileNumber}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Mobile Number:
+                                    </span>
+                                    <p className="font-medium text-gray-900">
+                                        +91 {enquiry.mobileNumber}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Alternate Mobile:</span>
+                                    <span className="text-sm text-gray-500">
+                                        Alternate Mobile:
+                                    </span>
                                     <p className="font-medium text-gray-900">
-                                        {enquiry.alternateMobileNumber ? `+91 ${enquiry.alternateMobileNumber}` : 'Not provided'}
+                                        {enquiry.alternateMobileNumber
+                                            ? `+91 ${enquiry.alternateMobileNumber}`
+                                            : "Not provided"}
                                     </p>
                                 </div>
                             </div>
@@ -131,30 +183,52 @@ const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) =
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <span className="text-sm text-gray-500">Category:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.category?.replace('-', ' ')}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Category:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.category?.replace("-", " ")}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Educational Qualification:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.educationalQualification}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Educational Qualification:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.educationalQualification}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Course Name:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.courseName?.replace('-', ' ')}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Course Name:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.courseName?.replace("-", " ")}
+                                    </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">Preferred Timing:</span>
-                                    <p className="font-medium text-gray-900 capitalize">{enquiry.timing}</p>
+                                    <span className="text-sm text-gray-500">
+                                        Preferred Timing:
+                                    </span>
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {enquiry.timing}
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
                         {/* Submission Details */}
                         <div className="bg-gray-50 p-6 rounded-2xl">
-                            <h3 className="text-xl font-semibold text-gray-900 mb-4">Submission Details</h3>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                                Submission Details
+                            </h3>
                             <div>
-                                <span className="text-sm text-gray-500">Submitted On:</span>
-                                <p className="font-medium text-gray-900">{formatDate(enquiry.createdAt)}</p>
+                                <span className="text-sm text-gray-500">
+                                    Submitted On:
+                                </span>
+                                <p className="font-medium text-gray-900">
+                                    {formatDate(enquiry.createdAt)}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -179,4 +253,4 @@ const EnquiryDetailsModal = ({ open, onClose, enquiry, onConvertToAdmission }) =
     );
 };
 
-export default EnquiryDetailsModal; 
+export default EnquiryDetailsModal;

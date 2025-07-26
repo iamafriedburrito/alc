@@ -1,29 +1,39 @@
 // Admission Form HTML Template
-export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, signaturePreview, instituteSettings, API_BASE) => {
+export const generateAdmissionFormHTML = (
+    formData,
+    admissionId,
+    photoPreview,
+    signaturePreview,
+    instituteSettings,
+    API_BASE,
+) => {
     // Helper functions for institute details
     const getInstituteLogo = () => {
         if (instituteSettings?.logo) {
-            return `${API_BASE.replace('/api', '')}/uploads/${instituteSettings.logo}`;
+            return `${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`;
         }
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
     };
 
     const getInstituteName = () => {
-        return instituteSettings?.name || 'TechSkill Training Institute';
+        return instituteSettings?.name || "TechSkill Training Institute";
     };
 
     const getInstituteAddress = () => {
-        return instituteSettings?.address || '123 Knowledge Park, Karvenagar, Pune - 411052';
+        return (
+            instituteSettings?.address ||
+            "123 Knowledge Park, Karvenagar, Pune - 411052"
+        );
     };
 
     const getInstituteContact = () => {
-        const phone = instituteSettings?.phone || '+91 98765 43210';
-        const email = instituteSettings?.email || 'info@techskill.edu.in';
+        const phone = instituteSettings?.phone || "+91 98765 43210";
+        const email = instituteSettings?.email || "info@techskill.edu.in";
         return `Phone: ${phone} | Email: ${email}`;
     };
 
     const getCenterCode = () => {
-        return instituteSettings?.centerCode || 'C001';
+        return instituteSettings?.centerCode || "C001";
     };
 
     return `
@@ -112,10 +122,10 @@ export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, s
               <!-- RIGHT: PHOTO + SIGN -->
               <div style="width:38mm; display:flex; flex-direction:column; justify-content:flex-start; gap:1mm;">
                 <div class="photo">
-                  ${photoPreview ? `<img src="${photoPreview}" alt="Photo">` : '<span>Photo</span>'}
+                  ${photoPreview ? `<img src="${photoPreview}" alt="Photo">` : "<span>Photo</span>"}
                 </div>
                 <div class="signature">
-                  ${signaturePreview ? `<img src="${signaturePreview}" alt="Signature">` : '<span>Signature</span>'}
+                  ${signaturePreview ? `<img src="${signaturePreview}" alt="Signature">` : "<span>Signature</span>"}
                 </div>
               </div>
             </div>
@@ -170,4 +180,4 @@ export const generateAdmissionFormHTML = (formData, admissionId, photoPreview, s
         </body>
         </html>
     `;
-}; 
+};

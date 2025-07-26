@@ -9,7 +9,7 @@ import {
     Upload,
     AlertCircle,
     HardDrive,
-    RefreshCw
+    RefreshCw,
 } from "lucide-react";
 import { formatDate } from "./utils.jsx";
 
@@ -20,7 +20,7 @@ const DatabaseManagement = ({
     backupInProgress,
     restoreInProgress,
     backupFileInputRef,
-    handleBackupFileChange
+    handleBackupFileChange,
 }) => {
     return (
         <div className="space-y-8">
@@ -35,8 +35,12 @@ const DatabaseManagement = ({
                     <div className="bg-blue-50 rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-blue-600">Database Size</p>
-                                <p className="text-2xl font-bold text-blue-700">{formatFileSize(dbStats.databaseSize)}</p>
+                                <p className="text-sm font-medium text-blue-600">
+                                    Database Size
+                                </p>
+                                <p className="text-2xl font-bold text-blue-700">
+                                    {formatFileSize(dbStats.databaseSize)}
+                                </p>
                             </div>
                             <Database className="w-8 h-8 text-blue-600" />
                         </div>
@@ -45,8 +49,12 @@ const DatabaseManagement = ({
                     <div className="bg-green-50 rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-green-600">Total Records</p>
-                                <p className="text-2xl font-bold text-green-700">{dbStats.totalRecords}</p>
+                                <p className="text-sm font-medium text-green-600">
+                                    Total Records
+                                </p>
+                                <p className="text-2xl font-bold text-green-700">
+                                    {dbStats.totalRecords}
+                                </p>
                             </div>
                             <FileText className="w-8 h-8 text-green-600" />
                         </div>
@@ -55,8 +63,12 @@ const DatabaseManagement = ({
                     <div className="bg-orange-50 rounded-xl p-4">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-sm font-medium text-orange-600">Last Backup</p>
-                                <p className="text-sm font-bold text-orange-700">{formatDate(dbStats.lastBackup)}</p>
+                                <p className="text-sm font-medium text-orange-600">
+                                    Last Backup
+                                </p>
+                                <p className="text-sm font-bold text-orange-700">
+                                    {formatDate(dbStats.lastBackup)}
+                                </p>
                             </div>
                             <Clock className="w-8 h-8 text-orange-600" />
                         </div>
@@ -74,9 +86,12 @@ const DatabaseManagement = ({
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {/* Create Backup */}
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gray-800">Create Backup</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                            Create Backup
+                        </h3>
                         <p className="text-gray-600">
-                            Create a complete backup of your database including all student records, admissions, and settings.
+                            Create a complete backup of your database including
+                            all student records, admissions, and settings.
                         </p>
 
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
@@ -86,8 +101,13 @@ const DatabaseManagement = ({
                                     <p className="font-medium">Important:</p>
                                     <ul className="mt-1 list-disc list-inside space-y-1">
                                         <li>Regular backups are recommended</li>
-                                        <li>Store backups in a secure location</li>
-                                        <li>Backup process may take a few minutes</li>
+                                        <li>
+                                            Store backups in a secure location
+                                        </li>
+                                        <li>
+                                            Backup process may take a few
+                                            minutes
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -103,15 +123,22 @@ const DatabaseManagement = ({
                             ) : (
                                 <Download className="w-5 h-5" />
                             )}
-                            <span>{backupInProgress ? 'Creating Backup...' : 'Create Backup'}</span>
+                            <span>
+                                {backupInProgress
+                                    ? "Creating Backup..."
+                                    : "Create Backup"}
+                            </span>
                         </button>
                     </div>
 
                     {/* Restore Backup */}
                     <div className="space-y-4">
-                        <h3 className="text-lg font-semibold text-gray-800">Restore Backup</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">
+                            Restore Backup
+                        </h3>
                         <p className="text-gray-600">
-                            Restore your database from a previously created backup file.
+                            Restore your database from a previously created
+                            backup file.
                         </p>
 
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-10">
@@ -120,8 +147,12 @@ const DatabaseManagement = ({
                                 <div className="text-sm text-red-700">
                                     <p className="font-medium">Warning:</p>
                                     <ul className="mt-1 list-disc list-inside space-y-1">
-                                        <li>This will replace ALL current data</li>
-                                        <li>Create a backup before restoring</li>
+                                        <li>
+                                            This will replace ALL current data
+                                        </li>
+                                        <li>
+                                            Create a backup before restoring
+                                        </li>
                                         <li>Process cannot be undone</li>
                                     </ul>
                                 </div>
@@ -146,7 +177,11 @@ const DatabaseManagement = ({
                             ) : (
                                 <Upload className="w-5 h-5" />
                             )}
-                            <span>{restoreInProgress ? 'Restoring...' : 'Restore Backup'}</span>
+                            <span>
+                                {restoreInProgress
+                                    ? "Restoring..."
+                                    : "Restore Backup"}
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -162,21 +197,32 @@ const DatabaseManagement = ({
 
                     <div className="space-y-3">
                         {dbStats.backupHistory.map((backup, index) => (
-                            <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                            <div
+                                key={index}
+                                className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
+                            >
                                 <div className="flex items-center space-x-3">
                                     <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                                         <Database className="w-5 h-5 text-blue-600" />
                                     </div>
                                     <div>
-                                        <p className="font-medium text-gray-900">{backup.filename}</p>
-                                        <p className="text-sm text-gray-500">{formatDate(backup.created)} • {formatFileSize(backup.size)}</p>
+                                        <p className="font-medium text-gray-900">
+                                            {backup.filename}
+                                        </p>
+                                        <p className="text-sm text-gray-500">
+                                            {formatDate(backup.created)} •{" "}
+                                            {formatFileSize(backup.size)}
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${backup.status === 'completed'
-                                        ? 'bg-green-100 text-green-700'
-                                        : 'bg-yellow-100 text-yellow-700'
-                                        }`}>
+                                    <span
+                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                            backup.status === "completed"
+                                                ? "bg-green-100 text-green-700"
+                                                : "bg-yellow-100 text-yellow-700"
+                                        }`}
+                                    >
                                         {backup.status}
                                     </span>
                                 </div>
@@ -189,4 +235,4 @@ const DatabaseManagement = ({
     );
 };
 
-export default DatabaseManagement; 
+export default DatabaseManagement;

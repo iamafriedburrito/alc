@@ -1,7 +1,14 @@
 import React from "react";
 import { AlertTriangle, Trash2 } from "lucide-react";
 
-const ConfirmDeleteModal = ({ isOpen, onConfirm, onCancel, title, message, itemName }) => {
+const ConfirmDeleteModal = ({
+    isOpen,
+    onConfirm,
+    onCancel,
+    title,
+    message,
+    itemName,
+}) => {
     if (!isOpen) return null;
 
     return (
@@ -13,14 +20,19 @@ const ConfirmDeleteModal = ({ isOpen, onConfirm, onCancel, title, message, itemN
                             <AlertTriangle className="w-6 h-6 text-red-600" />
                         </div>
                         <div>
-                            <h3 className="text-lg font-semibold text-gray-900">{title || "Confirm Deletion"}</h3>
-                            <p className="text-sm text-gray-500">This action cannot be undone</p>
+                            <h3 className="text-lg font-semibold text-gray-900">
+                                {title || "Confirm Deletion"}
+                            </h3>
+                            <p className="text-sm text-gray-500">
+                                This action cannot be undone
+                            </p>
                         </div>
                     </div>
 
                     <div className="mb-6">
                         <p className="text-gray-700">
-                            {message || `Are you sure you want to delete this ${itemName || "item"}?`}
+                            {message ||
+                                `Are you sure you want to delete this ${itemName || "item"}?`}
                         </p>
                     </div>
 
@@ -45,4 +57,4 @@ const ConfirmDeleteModal = ({ isOpen, onConfirm, onCancel, title, message, itemN
     );
 };
 
-export default ConfirmDeleteModal; 
+export default ConfirmDeleteModal;

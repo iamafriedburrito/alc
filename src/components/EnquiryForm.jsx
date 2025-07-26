@@ -1,11 +1,23 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { LANGUAGES, CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, TIMINGS } from "./FormOptions";
-import { FormInput, AadharInput, FormSelect, AddressSection, MobileNumberSection } from "./FormComponents";
-import { toast } from 'react-toastify';
-import ErrorFallback from './ErrorFallback';
-import { useState, useEffect } from 'react';
+import {
+    LANGUAGES,
+    CATEGORY,
+    COURSES,
+    EDUCATIONAL_QUALIFICATION,
+    TIMINGS,
+} from "./FormOptions";
+import {
+    FormInput,
+    AadharInput,
+    FormSelect,
+    AddressSection,
+    MobileNumberSection,
+} from "./FormComponents";
+import { toast } from "react-toastify";
+import ErrorFallback from "./ErrorFallback";
+import { useState, useEffect } from "react";
 
 const StudentEnquiryForm = () => {
     const navigate = useNavigate();
@@ -39,7 +51,7 @@ const StudentEnquiryForm = () => {
         mode: "onBlur", // Validate on blur for better UX
     });
 
-    const API_BASE = import.meta.env.VITE_API_URL
+    const API_BASE = import.meta.env.VITE_API_URL;
 
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -49,12 +61,14 @@ const StudentEnquiryForm = () => {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await fetch(`${API_BASE}/enquiries`, { method: 'GET' });
+                const response = await fetch(`${API_BASE}/enquiries`, {
+                    method: "GET",
+                });
                 if (!response.ok) {
-                    throw new Error('Server unavailable');
+                    throw new Error("Server unavailable");
                 }
             } catch (err) {
-                setError('Cannot connect to server. Please try again later.');
+                setError("Cannot connect to server. Please try again later.");
             } finally {
                 setLoading(false);
             }
@@ -78,12 +92,17 @@ const StudentEnquiryForm = () => {
             }
 
             const result = await response.json();
-            toast.success(`Enquiry submitted successfully! Enquiry ID: ${result.enquiry_id}`);
+            toast.success(
+                `Enquiry submitted successfully! Enquiry ID: ${result.enquiry_id}`,
+            );
             reset(); // Reset form after successful submission
-            navigate('/enquiries'); // Redirect immediately
+            navigate("/enquiries"); // Redirect immediately
         } catch (error) {
             console.error("Error submitting enquiry:", error);
-            setError(error.message || 'An unexpected error occurred. Please try again.');
+            setError(
+                error.message ||
+                "An unexpected error occurred. Please try again.",
+            );
         }
     };
 
@@ -98,7 +117,12 @@ const StudentEnquiryForm = () => {
         );
     }
     if (error) {
-        return <ErrorFallback error={error} onRetry={() => window.location.reload()} />;
+        return (
+            <ErrorFallback
+                error={error}
+                onRetry={() => window.location.reload()}
+            />
+        );
     }
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 px-4 sm:px-6 lg:px-8">
@@ -109,7 +133,8 @@ const StudentEnquiryForm = () => {
                             Enquiry Form
                         </h2>
                         <p className="text-gray-600">
-                            Please fill in the applicant's details to proceed with your enquiry.
+                            Please fill in the applicant's details to proceed
+                            with your enquiry.
                         </p>
                     </div>
 
@@ -168,7 +193,10 @@ const StudentEnquiryForm = () => {
                                     options={[
                                         { value: "MALE", label: "MALE" },
                                         { value: "FEMALE", label: "FEMALE" },
-                                        { value: "TRANSGENDER", label: "TRANSGENDER" },
+                                        {
+                                            value: "TRANSGENDER",
+                                            label: "TRANSGENDER",
+                                        },
                                     ]}
                                     required
                                     register={register}
@@ -203,20 +231,26 @@ const StudentEnquiryForm = () => {
 
                                 <div className="flex-1">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Aadhaar Number <span className="text-red-500">*</span>
+                                        Aadhaar Number{" "}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <Controller
                                         name="aadharNumber"
                                         control={control}
                                         rules={{
-                                            required: "Aadhaar number is required",
+                                            required:
+                                                "Aadhaar number is required",
                                             pattern: {
                                                 value: /^\d{12}$/,
-                                                message: "Please enter a valid 12-digit Aadhaar number",
+                                                message:
+                                                    "Please enter a valid 12-digit Aadhaar number",
                                             },
                                         }}
                                         render={({ field, fieldState }) => (
-                                            <AadharInput field={field} fieldState={fieldState} />
+                                            <AadharInput
+                                                field={field}
+                                                fieldState={fieldState}
+                                            />
                                         )}
                                     />
                                 </div>
@@ -224,7 +258,11 @@ const StudentEnquiryForm = () => {
                         </div>
 
                         <AddressSection register={register} errors={errors} />
-                        <MobileNumberSection register={register} errors={errors} sectionNumber={3} />
+                        <MobileNumberSection
+                            register={register}
+                            errors={errors}
+                            sectionNumber={3}
+                        />
 
                         {/* Educational Information Section */}
                         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
@@ -278,7 +316,6 @@ const StudentEnquiryForm = () => {
                             </div>
                         </div>
 
-
                         {/* Institute Use Section */}
                         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
@@ -298,7 +335,6 @@ const StudentEnquiryForm = () => {
                                 />
                             </div>
                         </div>
-
 
                         <button
                             type="button"

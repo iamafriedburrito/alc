@@ -8,8 +8,13 @@ const DocumentPreviewModal = ({ showPreview, previewFile, onClose }) => {
         <div className="fixed inset-0 bg-black/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-2xl shadow-sm max-w-4xl w-full max-h-[90vh] overflow-hidden">
                 <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-                    <h3 className="text-lg font-semibold text-gray-900">Document Preview</h3>
-                    <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                    <h3 className="text-lg font-semibold text-gray-900">
+                        Document Preview
+                    </h3>
+                    <button
+                        onClick={onClose}
+                        className="text-gray-400 hover:text-gray-600"
+                    >
                         <X className="w-6 h-6" />
                     </button>
                 </div>
@@ -25,4 +30,4 @@ const DocumentPreviewModal = ({ showPreview, previewFile, onClose }) => {
     );
 };
 
-export default DocumentPreviewModal; 
+export default DocumentPreviewModal;

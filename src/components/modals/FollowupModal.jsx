@@ -8,7 +8,7 @@ const FollowupModal = ({
     followupData,
     setFollowupData,
     onSubmit,
-    submitting
+    submitting,
 }) => {
     // Close modal on Escape key press
     useEffect(() => {
@@ -33,7 +33,8 @@ const FollowupModal = ({
                             Add Follow-up
                         </h3>
                         <p className="text-gray-600">
-                            {enquiry?.firstName} {enquiry?.lastName} (ID: {enquiry?.id})
+                            {enquiry?.firstName} {enquiry?.lastName} (ID:{" "}
+                            {enquiry?.id})
                         </p>
                     </div>
 
@@ -45,13 +46,18 @@ const FollowupModal = ({
                             <input
                                 type="date"
                                 value={followupData.followup_date}
-                                onChange={(e) => setFollowupData({ ...followupData, followup_date: e.target.value })}
+                                onChange={(e) =>
+                                    setFollowupData({
+                                        ...followupData,
+                                        followup_date: e.target.value,
+                                    })
+                                }
                                 required
                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                             />
                         </div>
 
-                        {followupData.status !== 'ADMITTED' ? (
+                        {followupData.status !== "ADMITTED" ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -59,14 +65,25 @@ const FollowupModal = ({
                                     </label>
                                     <select
                                         value={followupData.status}
-                                        onChange={(e) => setFollowupData({ ...followupData, status: e.target.value })}
+                                        onChange={(e) =>
+                                            setFollowupData({
+                                                ...followupData,
+                                                status: e.target.value,
+                                            })
+                                        }
                                         required
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                     >
                                         <option value="PENDING">Pending</option>
-                                        <option value="INTERESTED">Interested</option>
-                                        <option value="NOT_INTERESTED">Not Interested</option>
-                                        <option value="ADMITTED">Admitted</option>
+                                        <option value="INTERESTED">
+                                            Interested
+                                        </option>
+                                        <option value="NOT_INTERESTED">
+                                            Not Interested
+                                        </option>
+                                        <option value="ADMITTED">
+                                            Admitted
+                                        </option>
                                     </select>
                                 </div>
                                 <div>
@@ -76,7 +93,13 @@ const FollowupModal = ({
                                     <input
                                         type="date"
                                         value={followupData.next_followup_date}
-                                        onChange={(e) => setFollowupData({ ...followupData, next_followup_date: e.target.value })}
+                                        onChange={(e) =>
+                                            setFollowupData({
+                                                ...followupData,
+                                                next_followup_date:
+                                                    e.target.value,
+                                            })
+                                        }
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                     />
                                 </div>
@@ -88,18 +111,27 @@ const FollowupModal = ({
                                 </label>
                                 <select
                                     value={followupData.status}
-                                    onChange={(e) => setFollowupData({ ...followupData, status: e.target.value })}
+                                    onChange={(e) =>
+                                        setFollowupData({
+                                            ...followupData,
+                                            status: e.target.value,
+                                        })
+                                    }
                                     required
                                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                 >
                                     <option value="PENDING">Pending</option>
-                                    <option value="INTERESTED">Interested</option>
-                                    <option value="NOT_INTERESTED">Not Interested</option>
+                                    <option value="INTERESTED">
+                                        Interested
+                                    </option>
+                                    <option value="NOT_INTERESTED">
+                                        Not Interested
+                                    </option>
                                     <option value="ADMITTED">Admitted</option>
                                 </select>
                             </div>
                         )}
-                        {followupData.status !== 'ADMITTED' && (
+                        {followupData.status !== "ADMITTED" && (
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Notes
@@ -107,7 +139,12 @@ const FollowupModal = ({
                                 <input
                                     type="text"
                                     value={followupData.notes}
-                                    onChange={(e) => setFollowupData({ ...followupData, notes: e.target.value })}
+                                    onChange={(e) =>
+                                        setFollowupData({
+                                            ...followupData,
+                                            notes: e.target.value,
+                                        })
+                                    }
                                     placeholder="Add notes about the follow-up..."
                                     className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                                 />
@@ -121,7 +158,12 @@ const FollowupModal = ({
                             <input
                                 type="text"
                                 value={followupData.handled_by}
-                                onChange={(e) => setFollowupData({ ...followupData, handled_by: e.target.value })}
+                                onChange={(e) =>
+                                    setFollowupData({
+                                        ...followupData,
+                                        handled_by: e.target.value,
+                                    })
+                                }
                                 required
                                 placeholder="Enter your name"
                                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
@@ -135,7 +177,7 @@ const FollowupModal = ({
                                 className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
                                 <Save className="w-5 h-5" />
-                                {submitting ? 'Saving...' : 'Save Follow-up'}
+                                {submitting ? "Saving..." : "Save Follow-up"}
                             </button>
                             <button
                                 type="button"
@@ -153,4 +195,4 @@ const FollowupModal = ({
     );
 };
 
-export default FollowupModal; 
+export default FollowupModal;

@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 import ErrorFallback from "./ErrorFallback";
-import { GraduationCap, Plus, RefreshCw, Search, Eye, Edit2 } from "lucide-react";
-import { formatAadhar, formatDate } from "./utils.jsx";
+import {
+    GraduationCap,
+    Plus,
+    RefreshCw,
+    Search,
+    Eye,
+    Edit2,
+} from "lucide-react";
+import { formatDate } from "./utils.jsx";
 import { Link } from "react-router";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import StudentDetailsModal from "./modals/StudentDetailsModal";
 
 const StudentAdmissionsList = () => {
@@ -16,7 +23,7 @@ const StudentAdmissionsList = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const studentsPerPage = 12;
 
-    const API_BASE = import.meta.env.VITE_API_URL
+    const API_BASE = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         const fetchAdmissions = async () => {
@@ -66,10 +73,16 @@ const StudentAdmissionsList = () => {
     // Filter admissions based on search term and course
     const filteredAdmissions = admissions.filter((admission) => {
         const matchesSearch =
-            admission.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            admission.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            admission.firstName
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
+            admission.lastName
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
             admission.mobileNumber.includes(searchTerm) ||
-            admission.courseName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            admission.courseName
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase()) ||
             admission.certificateName
                 .toLowerCase()
                 .includes(searchTerm.toLowerCase());
@@ -84,7 +97,7 @@ const StudentAdmissionsList = () => {
     const totalPages = Math.ceil(filteredAdmissions.length / studentsPerPage);
     const paginatedAdmissions = filteredAdmissions.slice(
         (currentPage - 1) * studentsPerPage,
-        currentPage * studentsPerPage
+        currentPage * studentsPerPage,
     );
 
     // Reset to page 1 when search/filter changes
@@ -95,7 +108,7 @@ const StudentAdmissionsList = () => {
     const handleRefresh = async () => {
         if (window._fetchAdmissions) {
             await window._fetchAdmissions();
-            toast.success('Student list refreshed!');
+            toast.success("Student list refreshed!");
         }
     };
 
@@ -118,7 +131,9 @@ const StudentAdmissionsList = () => {
                     <div className="bg-white/80 backdrop-blur-xs rounded-3xl shadow-sm p-8 border border-white/20">
                         <div className="text-center">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                            <p className="text-gray-600">Loading admissions...</p>
+                            <p className="text-gray-600">
+                                Loading admissions...
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -136,8 +151,12 @@ const StudentAdmissionsList = () => {
                 {/* Header */}
                 <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20 mb-6">
                     <div className="text-center">
-                        <h1 className="text-4xl font-bold text-gray-900 mb-3">Students List</h1>
-                        <p className="text-gray-600 text-lg">View, search, and manage student admissions</p>
+                        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+                            Students List
+                        </h1>
+                        <p className="text-gray-600 text-lg">
+                            View, search, and manage student admissions
+                        </p>
                     </div>
                 </div>
 
@@ -153,7 +172,9 @@ const StudentAdmissionsList = () => {
                                     type="text"
                                     id="search"
                                     value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                    }
                                     placeholder="Search by name, mobile, course, or certificate..."
                                     className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
                                 />
@@ -161,11 +182,19 @@ const StudentAdmissionsList = () => {
                             <select
                                 id="courseFilter"
                                 value={filterCourse}
-                                onChange={(e) => setFilterCourse(e.target.value)}
+                                onChange={(e) =>
+                                    setFilterCourse(e.target.value)
+                                }
                                 className="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
                             >
                                 <option value="">All Courses</option>
-                                {[...new Set(admissions.map((admission) => admission.courseName))].map((course) => (
+                                {[
+                                    ...new Set(
+                                        admissions.map(
+                                            (admission) => admission.courseName,
+                                        ),
+                                    ),
+                                ].map((course) => (
                                     <option key={course} value={course}>
                                         {course.replace("-", " ")}
                                     </option>
@@ -175,7 +204,12 @@ const StudentAdmissionsList = () => {
                         <div className="flex items-center gap-3">
                             <div className="inline-flex items-center gap-2 bg-blue-50/80 border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-blue-900 h-12">
                                 <GraduationCap className="w-4 h-4 text-blue-500" />
-                                <span>Total: <span className="font-semibold">{admissions.length}</span></span>
+                                <span>
+                                    Total:{" "}
+                                    <span className="font-semibold">
+                                        {admissions.length}
+                                    </span>
+                                </span>
                             </div>
                             <Link
                                 to="/admission"
@@ -216,22 +250,37 @@ const StudentAdmissionsList = () => {
                                 className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col items-center transition-all duration-200 h-full hover:shadow-md"
                             >
                                 <img
-                                    src={`${API_BASE.replace('/api', '')}/uploads/${admission.photoFilename}`}
-                                    alt={admission.firstName + ' ' + admission.lastName}
+                                    src={`${API_BASE.replace("/api", "")}/uploads/${admission.photoFilename}`}
+                                    alt={
+                                        admission.firstName +
+                                        " " +
+                                        admission.lastName
+                                    }
                                     className="w-20 h-20 rounded-full object-cover mb-3 border-2 border-white shadow-sm"
                                     onError={(e) => {
-                                        e.target.src = 'https://via.placeholder.com/80x80?text=No+Photo';
+                                        e.target.src =
+                                            "https://via.placeholder.com/80x80?text=No+Photo";
                                     }}
                                 />
                                 <div className="text-lg font-semibold text-gray-900 text-center mb-1 min-h-[3rem] flex items-center justify-center">
-                                    {admission.firstName} {admission.middleName || ''} {admission.lastName}
+                                    {admission.firstName}{" "}
+                                    {admission.middleName || ""}{" "}
+                                    {admission.lastName}
                                 </div>
-                                <div className="text-sm text-gray-600 mb-2 text-center capitalize">{admission.courseName.replace('-', ' ')}</div>
-                                <div className="text-sm text-gray-500 mb-2 text-center">+91 {admission.mobileNumber}</div>
-                                <div className="text-xs text-gray-400 mb-4 text-center">Admission: {formatDate(admission.createdAt)}</div>
+                                <div className="text-sm text-gray-600 mb-2 text-center capitalize">
+                                    {admission.courseName.replace("-", " ")}
+                                </div>
+                                <div className="text-sm text-gray-500 mb-2 text-center">
+                                    +91 {admission.mobileNumber}
+                                </div>
+                                <div className="text-xs text-gray-400 mb-4 text-center">
+                                    Admission: {formatDate(admission.createdAt)}
+                                </div>
                                 <div className="mt-auto w-full flex flex-col gap-2">
                                     <button
-                                        onClick={() => handleViewDetails(admission.id)}
+                                        onClick={() =>
+                                            handleViewDetails(admission.id)
+                                        }
                                         className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-4 py-2 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 flex items-center gap-2 justify-center"
                                     >
                                         <Eye className="w-4 h-4" />
@@ -254,7 +303,9 @@ const StudentAdmissionsList = () => {
                     <div className="flex justify-center mt-8">
                         <nav className="inline-flex rounded-xl shadow-sm overflow-hidden border border-gray-200 bg-white">
                             <button
-                                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                onClick={() =>
+                                    setCurrentPage((p) => Math.max(1, p - 1))
+                                }
                                 disabled={currentPage === 1}
                                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
@@ -264,13 +315,17 @@ const StudentAdmissionsList = () => {
                                 <button
                                     key={idx + 1}
                                     onClick={() => setCurrentPage(idx + 1)}
-                                    className={`px-4 py-2 text-sm font-medium ${currentPage === idx + 1 ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-blue-50'}`}
+                                    className={`px-4 py-2 text-sm font-medium ${currentPage === idx + 1 ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-blue-50"}`}
                                 >
                                     {idx + 1}
                                 </button>
                             ))}
                             <button
-                                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                onClick={() =>
+                                    setCurrentPage((p) =>
+                                        Math.min(totalPages, p + 1),
+                                    )
+                                }
                                 disabled={currentPage === totalPages}
                                 className="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
@@ -279,12 +334,10 @@ const StudentAdmissionsList = () => {
                         </nav>
                     </div>
                 )}
-
-
             </div>
 
             {/* Modal for Detailed View */}
-            <StudentDetailsModal 
+            <StudentDetailsModal
                 selectedAdmission={selectedAdmission}
                 onClose={() => setSelectedAdmission(null)}
                 API_BASE={API_BASE}

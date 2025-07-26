@@ -7,8 +7,13 @@ const ErrorFallback = ({ onRetry }) => {
                 <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20">
                     <div className="text-center">
                         <div className="text-red-500 text-6xl mb-4">⚠️</div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Data</h2>
-                        <p className="text-gray-600 mb-4">Failed to fetch data. Please check if the server is running.</p>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                            Error Loading Data
+                        </h2>
+                        <p className="text-gray-600 mb-4">
+                            Failed to fetch data. Please check if the server is
+                            running.
+                        </p>
                         <button
                             onClick={onRetry}
                             className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
@@ -23,4 +28,3 @@ const ErrorFallback = ({ onRetry }) => {
 };
 
 export default ErrorFallback;
-

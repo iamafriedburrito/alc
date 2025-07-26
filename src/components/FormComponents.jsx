@@ -19,13 +19,16 @@ export const AadharInput = ({ field, fieldState }) => {
                 value={formatAadhar(field.value)}
                 placeholder="1234 5678 9012"
                 maxLength="14" // 12 digits + 2 spaces
-                className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs font-mono tracking-wider ${fieldState.error
-                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    }`}
+                className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs font-mono tracking-wider ${
+                    fieldState.error
+                        ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                        : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                }`}
             />
             {fieldState.error && (
-                <p className="mt-1 text-sm text-red-600">{fieldState.error.message}</p>
+                <p className="mt-1 text-sm text-red-600">
+                    {fieldState.error.message}
+                </p>
             )}
         </div>
     );
@@ -71,10 +74,11 @@ export const FormInput = ({
                     },
                 }),
             })}
-            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors[name]
-                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                }`}
+            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${
+                errors[name]
+                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            }`}
             {...props}
         />
         {errors[name] && (
@@ -108,10 +112,11 @@ export const FormSelect = ({
             {...register(name, {
                 required: required ? `${label} is required` : false,
             })}
-            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors[name]
-                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                }`}
+            className={`w-full px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${
+                errors[name]
+                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            }`}
         >
             <option value="">{placeholder}</option>
             {options.map((option) => (
@@ -184,7 +189,11 @@ export const AddressSection = ({ register, errors }) => {
 };
 
 // Reusable Mobile Number Section Component
-export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => {
+export const MobileNumberSection = ({
+    register,
+    errors,
+    sectionNumber = 3,
+}) => {
     // Handler to only allow numeric input
     const handleNumericInput = (e) => {
         const value = e.target.value.replace(/\D/g, ""); // Remove non-digits
@@ -206,7 +215,8 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                         htmlFor="mobileNumber"
                         className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                        Mobile Number (Self) <span className="text-red-500">*</span>
+                        Mobile Number (Self){" "}
+                        <span className="text-red-500">*</span>
                     </label>
                     <div className="flex">
                         <span className="inline-flex items-center px-3 py-3 rounded-l-xl border border-r-0 border-gray-200 bg-gray-100 text-gray-600 text-sm">
@@ -226,10 +236,11 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                                         "Please enter a valid 10-digit mobile number",
                                 },
                             })}
-                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors.mobileNumber
-                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                }`}
+                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${
+                                errors.mobileNumber
+                                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                    : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            }`}
                         />
                     </div>
                     {errors.mobileNumber && (
@@ -263,10 +274,11 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
                                         "Please enter a valid 10-digit mobile number",
                                 },
                             })}
-                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${errors.alternateMobileNumber
-                                ? "border-red-300 focus:ring-red-500 focus:border-red-500"
-                                : "border-gray-200 focus:ring-blue-500 focus:border-blue-500"
-                                }`}
+                            className={`flex-1 px-4 py-3 rounded-r-xl border transition-all duration-200 ease-in-out bg-white/50 backdrop-blur-xs ${
+                                errors.alternateMobileNumber
+                                    ? "border-red-300 focus:ring-red-500 focus:border-red-500"
+                                    : "border-gray-200 focus:ring-blue-500 focus:border-blue-500"
+                            }`}
                         />
                     </div>
                     {errors.alternateMobileNumber && (
@@ -279,4 +291,3 @@ export const MobileNumberSection = ({ register, errors, sectionNumber = 3 }) => 
         </div>
     );
 };
-

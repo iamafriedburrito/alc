@@ -77,7 +77,9 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                         Aadhar Number:
                                     </span>
                                     <p className="font-medium text-gray-900">
-                                        {formatAadhar(selectedAdmission.aadharNumber)}
+                                        {formatAadhar(
+                                            selectedAdmission.aadharNumber,
+                                        )}
                                     </p>
                                 </div>
                             </div>
@@ -93,10 +95,12 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <span className="text-sm text-gray-500">Photo:</span>
+                                    <span className="text-sm text-gray-500">
+                                        Photo:
+                                    </span>
                                     <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden w-40 h-40">
                                         <img
-                                            src={`${API_BASE.replace('/api', '')}/uploads/${selectedAdmission.photoFilename}`}
+                                            src={`${API_BASE.replace("/api", "")}/uploads/${selectedAdmission.photoFilename}`}
                                             alt="Student Photo"
                                             className="object-cover w-full h-full"
                                         />
@@ -108,7 +112,7 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                     </span>
                                     <div className="mt-2 border border-gray-200 rounded-xl overflow-hidden w-40 h-20">
                                         <img
-                                            src={`${API_BASE.replace('/api', '')}/uploads/${selectedAdmission.signatureFilename}`}
+                                            src={`${API_BASE.replace("/api", "")}/uploads/${selectedAdmission.signatureFilename}`}
                                             alt="Signature"
                                             className="object-contain w-full h-full"
                                         />
@@ -127,25 +131,35 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                             </h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div className="md:col-span-2">
-                                    <span className="text-sm text-gray-500">Address:</span>
+                                    <span className="text-sm text-gray-500">
+                                        Address:
+                                    </span>
                                     <p className="font-medium text-gray-900">
-                                        {selectedAdmission.correspondenceAddress}
+                                        {
+                                            selectedAdmission.correspondenceAddress
+                                        }
                                     </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">City:</span>
+                                    <span className="text-sm text-gray-500">
+                                        City:
+                                    </span>
                                     <p className="font-medium text-gray-900">
                                         {selectedAdmission.city}
                                     </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">District:</span>
+                                    <span className="text-sm text-gray-500">
+                                        District:
+                                    </span>
                                     <p className="font-medium text-gray-900">
                                         {selectedAdmission.district}
                                     </p>
                                 </div>
                                 <div>
-                                    <span className="text-sm text-gray-500">State:</span>
+                                    <span className="text-sm text-gray-500">
+                                        State:
+                                    </span>
                                     <p className="font-medium text-gray-900">
                                         {selectedAdmission.state}
                                     </p>
@@ -185,7 +199,9 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                         Joined WhatsApp:
                                     </span>
                                     <p className="font-medium text-gray-900">
-                                        {selectedAdmission.joinedWhatsApp ? "Yes" : "No"}
+                                        {selectedAdmission.joinedWhatsApp
+                                            ? "Yes"
+                                            : "No"}
                                     </p>
                                 </div>
                             </div>
@@ -203,8 +219,12 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                 <div>
                                     <span className="text-sm text-gray-500">
                                         Course Name:
-                                    </span> <p className="font-medium text-gray-900 capitalize">
-                                        {selectedAdmission.courseName?.replace("-", " ")}
+                                    </span>{" "}
+                                    <p className="font-medium text-gray-900 capitalize">
+                                        {selectedAdmission.courseName?.replace(
+                                            "-",
+                                            " ",
+                                        )}
                                     </p>
                                 </div>
                                 <div>
@@ -228,7 +248,9 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                         Educational Qualification:
                                     </span>
                                     <p className="font-medium text-gray-900 capitalize">
-                                        {selectedAdmission.educationalQualification}
+                                        {
+                                            selectedAdmission.educationalQualification
+                                        }
                                     </p>
                                 </div>
                                 <div>
@@ -244,7 +266,8 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                         Referred By:
                                     </span>
                                     <p className="font-medium text-gray-900">
-                                        {selectedAdmission.referredBy || "Not provided"}
+                                        {selectedAdmission.referredBy ||
+                                            "Not provided"}
                                     </p>
                                 </div>
                             </div>
@@ -261,7 +284,9 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
                                         Admission Date:
                                     </span>
                                     <p className="font-medium text-gray-900">
-                                        {formatDate(selectedAdmission.createdAt)}
+                                        {formatDate(
+                                            selectedAdmission.createdAt,
+                                        )}
                                     </p>
                                 </div>
                             </div>
@@ -282,4 +307,4 @@ const StudentDetailsModal = ({ selectedAdmission, onClose, API_BASE }) => {
     );
 };
 
-export default StudentDetailsModal; 
+export default StudentDetailsModal;

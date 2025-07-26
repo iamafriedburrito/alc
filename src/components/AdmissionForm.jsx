@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { CATEGORY, COURSES, EDUCATIONAL_QUALIFICATION, LANGUAGES, TIMINGS } from './FormOptions';
-import { FormSelect, AadharInput, FormInput, AddressSection, MobileNumberSection } from './FormComponents';
-import { toast } from 'react-toastify';
-import ErrorFallback from './ErrorFallback';
-import { generateAdmissionFormHTML } from './AdmissionFormTemplate';
-import { useLocation, useParams, useNavigate } from 'react-router';
+import {
+    CATEGORY,
+    COURSES,
+    EDUCATIONAL_QUALIFICATION,
+    LANGUAGES,
+    TIMINGS,
+} from "./FormOptions";
+import {
+    FormSelect,
+    AadharInput,
+    FormInput,
+    AddressSection,
+    MobileNumberSection,
+} from "./FormComponents";
+import { toast } from "react-toastify";
+import ErrorFallback from "./ErrorFallback";
+import { generateAdmissionFormHTML } from "./AdmissionFormTemplate";
+import { useLocation, useParams, useNavigate } from "react-router";
 
 const StudentAdmissionForm = ({ student: propStudent }) => {
     const { id } = useParams();
@@ -14,7 +26,7 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
     const [photoPreview, setPhotoPreview] = useState(null);
     const [signaturePreview, setSignaturePreview] = useState(null);
     const [instituteSettings, setInstituteSettings] = useState(null);
-    const API_BASE = import.meta.env.VITE_API_URL
+    const API_BASE = import.meta.env.VITE_API_URL;
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const location = useLocation();
@@ -58,31 +70,31 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
     const fetchInstituteSettings = async () => {
         try {
             const response = await fetch(`${API_BASE}/settings/institute`);
-            
+
             if (response.ok) {
                 const data = await response.json();
                 setInstituteSettings(data);
             } else {
                 // If settings not found, use default values
                 setInstituteSettings({
-                    name: 'TechSkill Training Institute',
-                    address: '123 Knowledge Park, Karvenagar, Pune - 411052',
-                    phone: '+91 98765 43210',
-                    email: 'info@techskill.edu.in',
-                    website: 'www.techskill.edu.in',
-                    logo: null
+                    name: "TechSkill Training Institute",
+                    address: "123 Knowledge Park, Karvenagar, Pune - 411052",
+                    phone: "+91 98765 43210",
+                    email: "info@techskill.edu.in",
+                    website: "www.techskill.edu.in",
+                    logo: null,
                 });
             }
         } catch (error) {
-            console.error('Error fetching institute settings:', error);
+            console.error("Error fetching institute settings:", error);
             // Use default values on error
             setInstituteSettings({
-                name: 'TechSkill Training Institute',
-                address: '123 Knowledge Park, Karvenagar, Pune - 411052',
-                phone: '+91 98765 43210',
-                email: 'info@techskill.edu.in',
-                website: 'www.techskill.edu.in',
-                logo: null
+                name: "TechSkill Training Institute",
+                address: "123 Knowledge Park, Karvenagar, Pune - 411052",
+                phone: "+91 98765 43210",
+                email: "info@techskill.edu.in",
+                website: "www.techskill.edu.in",
+                logo: null,
             });
         }
     };
@@ -118,14 +130,16 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
             try {
                 setLoading(true);
                 setError(null);
-                const response = await fetch(`${API_BASE}/admissions`, { method: 'GET' });
+                const response = await fetch(`${API_BASE}/admissions`, {
+                    method: "GET",
+                });
                 if (!response.ok) {
-                    throw new Error('Server unavailable');
+                    throw new Error("Server unavailable");
                 }
                 // Fetch institute settings after server check
                 await fetchInstituteSettings();
             } catch (err) {
-                setError('Cannot connect to server. Please try again later.');
+                setError("Cannot connect to server. Please try again later.");
             } finally {
                 setLoading(false);
             }
@@ -137,8 +151,8 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
         if (id && !propStudent) {
             // Fetch student by ID for editing
             fetch(`${API_BASE}/admission/${id}`)
-                .then(res => res.json())
-                .then(data => setStudent(data))
+                .then((res) => res.json())
+                .then((data) => setStudent(data))
                 .catch(() => setStudent(null));
         }
     }, [id, propStudent, API_BASE]);
@@ -146,47 +160,59 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
     useEffect(() => {
         if (student) {
             // Prefill fields from student
-            setValue('firstName', student.firstName || '');
-            setValue('middleName', student.middleName || '');
-            setValue('lastName', student.lastName || '');
-            setValue('dateOfBirth', student.dateOfBirth || '');
-            setValue('gender', student.gender || '');
-            setValue('maritalStatus', student.maritalStatus || '');
-            setValue('motherTongue', student.motherTongue || '');
-            setValue('aadharNumber', student.aadharNumber || '');
-            setValue('correspondenceAddress', student.correspondenceAddress || '');
-            setValue('city', student.city || '');
-            setValue('state', student.state || 'MAHARASHTRA');
-            setValue('district', student.district || '');
-            setValue('mobileNumber', student.mobileNumber || '');
-            setValue('alternateMobileNumber', student.alternateMobileNumber || '');
-            setValue('category', student.category || '');
-            setValue('educationalQualification', student.educationalQualification || '');
-            setValue('courseName', student.courseName || '');
-            setValue('timing', student.timing || '');
-            setValue('referredBy', student.referredBy || '');
+            setValue("firstName", student.firstName || "");
+            setValue("middleName", student.middleName || "");
+            setValue("lastName", student.lastName || "");
+            setValue("dateOfBirth", student.dateOfBirth || "");
+            setValue("gender", student.gender || "");
+            setValue("maritalStatus", student.maritalStatus || "");
+            setValue("motherTongue", student.motherTongue || "");
+            setValue("aadharNumber", student.aadharNumber || "");
+            setValue(
+                "correspondenceAddress",
+                student.correspondenceAddress || "",
+            );
+            setValue("city", student.city || "");
+            setValue("state", student.state || "MAHARASHTRA");
+            setValue("district", student.district || "");
+            setValue("mobileNumber", student.mobileNumber || "");
+            setValue(
+                "alternateMobileNumber",
+                student.alternateMobileNumber || "",
+            );
+            setValue("category", student.category || "");
+            setValue(
+                "educationalQualification",
+                student.educationalQualification || "",
+            );
+            setValue("courseName", student.courseName || "");
+            setValue("timing", student.timing || "");
+            setValue("referredBy", student.referredBy || "");
         }
     }, [student, setValue]);
 
     // Helper functions for preview (these are also in the template)
     const getInstituteLogo = () => {
         if (instituteSettings?.logo) {
-            return `${API_BASE.replace('/api', '')}/uploads/${instituteSettings.logo}`;
+            return `${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`;
         }
         return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
     };
 
     const getInstituteName = () => {
-        return instituteSettings?.name || 'TechSkill Training Institute';
+        return instituteSettings?.name || "TechSkill Training Institute";
     };
 
     const getInstituteAddress = () => {
-        return instituteSettings?.address || '123 Knowledge Park, Karvenagar, Pune - 411052';
+        return (
+            instituteSettings?.address ||
+            "123 Knowledge Park, Karvenagar, Pune - 411052"
+        );
     };
 
     const getInstituteContact = () => {
-        const phone = instituteSettings?.phone || '+91 98765 43210';
-        const email = instituteSettings?.email || 'info@techskill.edu.in';
+        const phone = instituteSettings?.phone || "+91 98765 43210";
+        const email = instituteSettings?.email || "info@techskill.edu.in";
         return `Phone: ${phone} | Email: ${email}`;
     };
 
@@ -253,44 +279,71 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
 
             if (student || id) {
                 // Update existing student
-                const response = await fetch(`${API_BASE}/admission/${id || student.id}`, {
-                    method: 'PUT',
-                    body: formData,
-                });
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                toast.success('Student updated successfully!');
-                navigate('/admissions');
+                const response = await fetch(
+                    `${API_BASE}/admission/${id || student.id}`,
+                    {
+                        method: "PUT",
+                        body: formData,
+                    },
+                );
+                if (!response.ok)
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                toast.success("Student updated successfully!");
+                navigate("/admissions");
             } else {
                 // Create new admission (existing code)
                 const response = await fetch(`${API_BASE}/admission`, {
                     method: "POST",
                     body: formData,
                 });
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                if (!response.ok)
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 const result = await response.json();
-                toast.success(`Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`);
-                generateAdmitForm(textFields, result.admission_id || result.id, photoPreview, signaturePreview);
+                toast.success(
+                    `Admission submitted successfully! Admission ID: ${result.admission_id || result.id}`,
+                );
+                generateAdmitForm(
+                    textFields,
+                    result.admission_id || result.id,
+                    photoPreview,
+                    signaturePreview,
+                );
                 reset();
                 setPhotoPreview(null);
                 setSignaturePreview(null);
             }
         } catch (error) {
             console.error("Error submitting admission:", error);
-            setError(error.message || 'An unexpected error occurred. Please try again.');
+            setError(
+                error.message ||
+                    "An unexpected error occurred. Please try again.",
+            );
         }
     };
 
-    const generateAdmitForm = (formData, admissionId, photoPreview, signaturePreview) => {
+    const generateAdmitForm = (
+        formData,
+        admissionId,
+        photoPreview,
+        signaturePreview,
+    ) => {
         // Generate HTML using the template
-        const admitFormHTML = generateAdmissionFormHTML(formData, admissionId, photoPreview, signaturePreview, instituteSettings, API_BASE);
+        const admitFormHTML = generateAdmissionFormHTML(
+            formData,
+            admissionId,
+            photoPreview,
+            signaturePreview,
+            instituteSettings,
+            API_BASE,
+        );
 
         // Create blob and open in new tab (modern approach)
-        const blob = new Blob([admitFormHTML], { type: 'text/html' });
+        const blob = new Blob([admitFormHTML], { type: "text/html" });
         const url = URL.createObjectURL(blob);
-        const newTab = window.open(url, '_blank');
+        const newTab = window.open(url, "_blank");
 
         // Auto-download the form as HTML
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
         a.download = `admission_form_${formData.firstName}_${formData.lastName}_${admissionId}.html`;
         document.body.appendChild(a);
@@ -314,7 +367,12 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
         );
     }
     if (error) {
-        return <ErrorFallback error={error} onRetry={() => window.location.reload()} />;
+        return (
+            <ErrorFallback
+                error={error}
+                onRetry={() => window.location.reload()}
+            />
+        );
     }
 
     return (
@@ -326,13 +384,15 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                             Admission Form
                         </h2>
                         <p className="text-gray-600">
-                            Please fill in the applicant's details to complete the admission process.
+                            Please fill in the applicant's details to complete
+                            the admission process.
                         </p>
-                        
-
                     </div>
 
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="space-y-8"
+                    >
                         {/* Personal Information Section */}
                         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
                             <h3 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center">
@@ -399,7 +459,10 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                                     options={[
                                         { value: "MALE", label: "MALE" },
                                         { value: "FEMALE", label: "FEMALE" },
-                                        { value: "TRANSGENDER", label: "TRANSGENDER" },
+                                        {
+                                            value: "TRANSGENDER",
+                                            label: "TRANSGENDER",
+                                        },
                                     ]}
                                     required
                                     register={register}
@@ -434,20 +497,26 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
 
                                 <div className="flex-1">
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                                        Aadhaar Number <span className="text-red-500">*</span>
+                                        Aadhaar Number{" "}
+                                        <span className="text-red-500">*</span>
                                     </label>
                                     <Controller
                                         name="aadharNumber"
                                         control={control}
                                         rules={{
-                                            required: "Aadhaar number is required",
+                                            required:
+                                                "Aadhaar number is required",
                                             pattern: {
                                                 value: /^\d{12}$/,
-                                                message: "Please enter a valid 12-digit Aadhaar number",
+                                                message:
+                                                    "Please enter a valid 12-digit Aadhaar number",
                                             },
                                         }}
                                         render={({ field, fieldState }) => (
-                                            <AadharInput field={field} fieldState={fieldState} />
+                                            <AadharInput
+                                                field={field}
+                                                fieldState={fieldState}
+                                            />
                                         )}
                                     />
                                 </div>
@@ -455,7 +524,11 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                         </div>
 
                         <AddressSection register={register} errors={errors} />
-                        <MobileNumberSection register={register} errors={errors} sectionNumber={3} />
+                        <MobileNumberSection
+                            register={register}
+                            errors={errors}
+                            sectionNumber={3}
+                        />
 
                         {/* Educational & Course Information Section */}
                         <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-sm">
@@ -531,13 +604,23 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                                         htmlFor="photo"
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     >
-                                        Passport Size Photo {(!student && !id) && <span className="text-red-500">*</span>}
+                                        Passport Size Photo{" "}
+                                        {!student && !id && (
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        )}
                                     </label>
                                     <input
                                         type="file"
                                         id="photo"
                                         accept="image/*"
-                                        {...register("photo", { required: (!student && !id) ? "Photo is required" : false })}
+                                        {...register("photo", {
+                                            required:
+                                                !student && !id
+                                                    ? "Photo is required"
+                                                    : false,
+                                        })}
                                         onChange={(e) => {
                                             register("photo").onChange(e);
                                             handlePhotoChange(e);
@@ -545,25 +628,33 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white"
                                     />
                                     {errors.photo && (
-                                        <p className="mt-1 text-sm text-red-600">{errors.photo.message}</p>
+                                        <p className="mt-1 text-sm text-red-600">
+                                            {errors.photo.message}
+                                        </p>
                                     )}
                                     {/* Show current photo if editing and no new photo uploaded */}
-                                    {((student || id) && !photoPreview && student?.photoFilename) && (
-                                        <div className="mt-4">
-                                            <p className="text-sm font-medium text-gray-700 mb-2">Current Photo:</p>
-                                            <div className="w-32 h-40 border-2 border-gray-200 rounded-lg overflow-hidden">
-                                                <img
-                                                    src={`${API_BASE.replace('/api', '')}/uploads/${student.photoFilename}`}
-                                                    alt="Current Photo"
-                                                    className="w-full h-full object-cover"
-                                                />
+                                    {(student || id) &&
+                                        !photoPreview &&
+                                        student?.photoFilename && (
+                                            <div className="mt-4">
+                                                <p className="text-sm font-medium text-gray-700 mb-2">
+                                                    Current Photo:
+                                                </p>
+                                                <div className="w-32 h-40 border-2 border-gray-200 rounded-lg overflow-hidden">
+                                                    <img
+                                                        src={`${API_BASE.replace("/api", "")}/uploads/${student.photoFilename}`}
+                                                        alt="Current Photo"
+                                                        className="w-full h-full object-cover"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
                                     {/* Photo Preview */}
                                     {photoPreview && (
                                         <div className="mt-4">
-                                            <p className="text-sm font-medium text-gray-700 mb-2">Photo Preview:</p>
+                                            <p className="text-sm font-medium text-gray-700 mb-2">
+                                                Photo Preview:
+                                            </p>
                                             <div className="w-32 h-40 border-2 border-gray-200 rounded-lg overflow-hidden">
                                                 <img
                                                     src={photoPreview}
@@ -579,13 +670,23 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                                         htmlFor="signature"
                                         className="block text-sm font-medium text-gray-700 mb-2"
                                     >
-                                        Signature {(!student && !id) && <span className="text-red-500">*</span>}
+                                        Signature{" "}
+                                        {!student && !id && (
+                                            <span className="text-red-500">
+                                                *
+                                            </span>
+                                        )}
                                     </label>
                                     <input
                                         type="file"
                                         id="signature"
                                         accept="image/*"
-                                        {...register("signature", { required: (!student && !id) ? "Signature is required" : false })}
+                                        {...register("signature", {
+                                            required:
+                                                !student && !id
+                                                    ? "Signature is required"
+                                                    : false,
+                                        })}
                                         onChange={(e) => {
                                             register("signature").onChange(e);
                                             handleSignatureChange(e);
@@ -593,25 +694,33 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                                         className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white"
                                     />
                                     {errors.signature && (
-                                        <p className="mt-1 text-sm text-red-600">{errors.signature.message}</p>
+                                        <p className="mt-1 text-sm text-red-600">
+                                            {errors.signature.message}
+                                        </p>
                                     )}
                                     {/* Show current signature if editing and no new signature uploaded */}
-                                    {((student || id) && !signaturePreview && student?.signatureFilename) && (
-                                        <div className="mt-4">
-                                            <p className="text-sm font-medium text-gray-700 mb-2">Current Signature:</p>
-                                            <div className="w-32 h-20 border-2 border-gray-200 rounded-lg overflow-hidden bg-white">
-                                                <img
-                                                    src={`${API_BASE.replace('/api', '')}/uploads/${student.signatureFilename}`}
-                                                    alt="Current Signature"
-                                                    className="w-full h-full object-contain"
-                                                />
+                                    {(student || id) &&
+                                        !signaturePreview &&
+                                        student?.signatureFilename && (
+                                            <div className="mt-4">
+                                                <p className="text-sm font-medium text-gray-700 mb-2">
+                                                    Current Signature:
+                                                </p>
+                                                <div className="w-32 h-20 border-2 border-gray-200 rounded-lg overflow-hidden bg-white">
+                                                    <img
+                                                        src={`${API_BASE.replace("/api", "")}/uploads/${student.signatureFilename}`}
+                                                        alt="Current Signature"
+                                                        className="w-full h-full object-contain"
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
-                                    )}
+                                        )}
                                     {/* Signature Preview */}
                                     {signaturePreview && (
                                         <div className="mt-4">
-                                            <p className="text-sm font-medium text-gray-700 mb-2">Signature Preview:</p>
+                                            <p className="text-sm font-medium text-gray-700 mb-2">
+                                                Signature Preview:
+                                            </p>
                                             <div className="w-32 h-20 border-2 border-gray-200 rounded-lg overflow-hidden bg-white">
                                                 <img
                                                     src={signaturePreview}
@@ -630,7 +739,11 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                             disabled={isSubmitting}
                             className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-6 rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out transform hover:scale-[1.02] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                         >
-                            {student || id ? 'Update Student' : isSubmitting ? "Submitting..." : "Submit Admission Form"}
+                            {student || id
+                                ? "Update Student"
+                                : isSubmitting
+                                  ? "Submitting..."
+                                  : "Submit Admission Form"}
                         </button>
                     </form>
                 </div>
