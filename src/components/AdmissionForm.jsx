@@ -191,31 +191,6 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
         }
     }, [student, setValue]);
 
-    // Helper functions for preview (these are also in the template)
-    const getInstituteLogo = () => {
-        if (instituteSettings?.logo) {
-            return `${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`;
-        }
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
-    };
-
-    const getInstituteName = () => {
-        return instituteSettings?.name || "TechSkill Training Institute";
-    };
-
-    const getInstituteAddress = () => {
-        return (
-            instituteSettings?.address ||
-            "123 Knowledge Park, Karvenagar, Pune - 411052"
-        );
-    };
-
-    const getInstituteContact = () => {
-        const phone = instituteSettings?.phone || "+91 98765 43210";
-        const email = instituteSettings?.email || "info@techskill.edu.in";
-        return `Phone: ${phone} | Email: ${email}`;
-    };
-
     // Handle photo file change and preview
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
