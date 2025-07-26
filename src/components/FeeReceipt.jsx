@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Printer, Download, X } from "lucide-react";
-import { formatDate, formatCurrency } from "./utils.jsx";
+import {
+    formatDate,
+    formatCurrency,
+    getInstituteLogo,
+    getInstituteName,
+    getInstituteAddress,
+    getInstituteContact,
+    getCenterCode,
+    generateReceiptNumber,
+} from "./utils.jsx";
 
 const FeeReceipt = ({ paymentData, student, onClose }) => {
     const [instituteSettings, setInstituteSettings] = useState(null);
@@ -58,43 +67,6 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [loading, instituteSettings]);
 
-    const generateReceiptNumber = () => {
-        return Math.floor(Math.random() * 90000000) + 10000000; // 8-digit number
-    };
-
-    // Get institute logo URL or placeholder
-    const getInstituteLogo = () => {
-        if (instituteSettings?.logo) {
-            return `${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`;
-        }
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
-    };
-
-    // Get institute name or default
-    const getInstituteName = () => {
-        return instituteSettings?.name || "TechSkill Training Institute";
-    };
-
-    // Get institute address or default
-    const getInstituteAddress = () => {
-        return (
-            instituteSettings?.address ||
-            "123 Knowledge Park, Karvenagar, Pune - 411052"
-        );
-    };
-
-    // Get institute contact info or default
-    const getInstituteContact = () => {
-        const phone = instituteSettings?.phone || "+91 98765 43210";
-        const email = instituteSettings?.email || "info@techskill.edu.in";
-        return `Phone: ${phone} | Email: ${email}`;
-    };
-
-    // Get center code or default
-    const getCenterCode = () => {
-        return instituteSettings?.centerCode || "C001";
-    };
-
     const handlePrint = () => {
         const printWindow = window.open("", "_blank");
         printWindow.document.write(`
@@ -133,14 +105,14 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                 <div class="container">
                     <div class="header">
                         <div class="info">
-                            <h1>${getInstituteName()}</h1>
+                            <h1>${getInstituteName(instituteSettings)}</h1>
                             <div class="subtext">
-                                Center Code: ${getCenterCode()}<br>
-                                ${getInstituteAddress()}<br>
-                                ${getInstituteContact()}
+                                Center Code: ${getCenterCode(instituteSettings)}<br>
+                                ${getInstituteAddress(instituteSettings)}<br>
+                                ${getInstituteContact(instituteSettings)}
                             </div>
                         </div>
-                        <img src="${getInstituteLogo()}" alt="Institute Logo">
+                        <img src="${getInstituteLogo(instituteSettings, API_BASE)}" alt="Institute Logo">
                     </div>
 
                     <h2 class="title">Fee Receipt</h2>
@@ -251,14 +223,14 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                 <div class="container">
                     <div class="header">
                         <div class="info">
-                            <h1>${getInstituteName()}</h1>
+                            <h1>${getInstituteName(instituteSettings)}</h1>
                             <div class="subtext">
-                                Center Code: ${getCenterCode()}<br>
-                                ${getInstituteAddress()}<br>
-                                ${getInstituteContact()}
+                                Center Code: ${getCenterCode(instituteSettings)}<br>
+                                ${getInstituteAddress(instituteSettings)}<br>
+                                ${getInstituteContact(instituteSettings)}
                             </div>
                         </div>
-                        <img src="${getInstituteLogo()}" alt="Institute Logo">
+                        <img src="${getInstituteLogo(instituteSettings, API_BASE)}" alt="Institute Logo">
                     </div>
 
                     <h2 class="title">Fee Receipt</h2>
@@ -380,21 +352,31 @@ const FeeReceipt = ({ paymentData, student, onClose }) => {
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h4 className="font-semibold text-gray-900">
-                                            {getInstituteName()}
+                                            {getInstituteName(
+                                                instituteSettings,
+                                            )}
                                         </h4>
                                         <p className="text-sm text-gray-600">
-                                            Center Code: {getCenterCode()}
+                                            Center Code:{" "}
+                                            {getCenterCode(instituteSettings)}
                                         </p>
                                         <p className="text-sm text-gray-600">
-                                            {getInstituteAddress()}
+                                            {getInstituteAddress(
+                                                instituteSettings,
+                                            )}
                                         </p>
                                         <p className="text-sm text-gray-600">
-                                            {getInstituteContact()}
+                                            {getInstituteContact(
+                                                instituteSettings,
+                                            )}
                                         </p>
                                     </div>
                                     <div className="w-24 h-24 bg-gray-100 rounded-lg flex items-center justify-center">
                                         <img
-                                            src={getInstituteLogo()}
+                                            src={getInstituteLogo(
+                                                instituteSettings,
+                                                API_BASE,
+                                            )}
                                             alt="Institute Logo"
                                             className="w-20 h-20 object-contain"
                                         />

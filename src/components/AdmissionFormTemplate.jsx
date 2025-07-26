@@ -1,4 +1,12 @@
 // Admission Form HTML Template
+import {
+    getInstituteLogo,
+    getInstituteName,
+    getInstituteAddress,
+    getInstituteContact,
+    getCenterCode,
+} from "./utils.jsx";
+
 export const generateAdmissionFormHTML = (
     formData,
     admissionId,
@@ -7,35 +15,6 @@ export const generateAdmissionFormHTML = (
     instituteSettings,
     API_BASE,
 ) => {
-    // Helper functions for institute details
-    const getInstituteLogo = () => {
-        if (instituteSettings?.logo) {
-            return `${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`;
-        }
-        return "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Logo_TV_2015.svg/512px-Logo_TV_2015.svg.png";
-    };
-
-    const getInstituteName = () => {
-        return instituteSettings?.name || "TechSkill Training Institute";
-    };
-
-    const getInstituteAddress = () => {
-        return (
-            instituteSettings?.address ||
-            "123 Knowledge Park, Karvenagar, Pune - 411052"
-        );
-    };
-
-    const getInstituteContact = () => {
-        const phone = instituteSettings?.phone || "+91 98765 43210";
-        const email = instituteSettings?.email || "info@techskill.edu.in";
-        return `Phone: ${phone} | Email: ${email}`;
-    };
-
-    const getCenterCode = () => {
-        return instituteSettings?.centerCode || "C001";
-    };
-
     return `
         <!DOCTYPE html>
         <html lang="en">
@@ -89,14 +68,14 @@ export const generateAdmissionFormHTML = (
             <!-- ===== HEADER ===== -->
             <div class="header">
               <div class="info">
-                <h1>${getInstituteName()}</h1>
+                <h1>${getInstituteName(instituteSettings)}</h1>
                 <div class="subtext">
-                  Center Code: ${getCenterCode()}<br>
-                  ${getInstituteAddress()}<br>
-                  ${getInstituteContact()}
+                  Center Code: ${getCenterCode(instituteSettings)}<br>
+                  ${getInstituteAddress(instituteSettings)}<br>
+                  ${getInstituteContact(instituteSettings)}
                 </div>
               </div>
-              <img src="${getInstituteLogo()}" alt="Institute Logo">
+              <img src="${getInstituteLogo(instituteSettings, API_BASE)}" alt="Institute Logo">
             </div>
 
             <h2 class="title">Admission Form - ID: ${admissionId}</h2>
