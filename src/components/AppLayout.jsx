@@ -1,7 +1,9 @@
 import Sidebar from "./Sidebar";
 import { Outlet } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 const AppLayout = () => {
+    useAuth();
     return (
         <div className="flex h-screen bg-gradient-to-br from-blue-50 to-indigo-50">
             <Sidebar />
