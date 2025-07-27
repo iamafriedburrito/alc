@@ -37,7 +37,9 @@ const InstituteLogin = () => {
 
         const checkSetup = async () => {
             try {
-                const response = await fetch(`${API_BASE.replace("/api", "")}/check-setup`);
+                const response = await fetch(
+                    `${API_BASE.replace("/api", "")}/check-setup`,
+                );
                 if (response.status === 307) {
                     navigate("/signup");
                     return;
@@ -46,7 +48,7 @@ const InstituteLogin = () => {
                 // Continue to login page
             }
         };
-        
+
         checkSetup();
         fetchInstituteSettings();
     }, [API_BASE, navigate]);
@@ -215,6 +217,18 @@ const InstituteLogin = () => {
                             )}
                         </button>
                     </form>
+                    <div className="text-center mt-4">
+                        <p className="text-sm text-gray-600">
+                            Don’t have an account?{" "}
+                            <button
+                                type="button"
+                                onClick={() => navigate("/signup")}
+                                className="text-blue-600 hover:underline font-medium"
+                            >
+                                Sign Up
+                            </button>
+                        </p>
+                    </div>
                 </div>
 
                 {/* Footer */}
