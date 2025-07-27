@@ -34,8 +34,22 @@ const InstituteLogin = () => {
                 setLoadingSettings(false);
             }
         };
+
+        const checkSetup = async () => {
+            try {
+                const response = await fetch(`${API_BASE.replace("/api", "")}/check-setup`);
+                if (response.status === 307) {
+                    navigate("/signup");
+                    return;
+                }
+            } catch (error) {
+                // Continue to login page
+            }
+        };
+        
+        checkSetup();
         fetchInstituteSettings();
-    }, [API_BASE]);
+    }, [API_BASE, navigate]);
 
     const onSubmit = async (data) => {
         try {
