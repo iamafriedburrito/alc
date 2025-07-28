@@ -99,14 +99,14 @@ const Signup = ({ onSignup }) => {
                     {loadingSettings ? (
                         <div className="w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm animate-pulse" />
                     ) : instituteSettings &&
-                        (instituteSettings.logo || instituteSettings.name) ? (
+                      (instituteSettings.logo || instituteSettings.name) ? (
                         <>
                             {instituteSettings.logo ? (
-                                <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center mx-auto mb-3 shadow-sm border">
+                                <div className="flex justify-center mb-4">
                                     <img
                                         src={`${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`}
                                         alt="Institute Logo"
-                                        className="w-12 h-12 object-contain"
+                                        className="max-w-full h-auto max-h-24 object-contain rounded-lg shadow-sm"
                                     />
                                 </div>
                             ) : null}
@@ -150,10 +150,11 @@ const Signup = ({ onSignup }) => {
                                     {...register("username", {
                                         required: "Username is required",
                                     })}
-                                    className={`w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${errors.username
+                                    className={`w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${
+                                        errors.username
                                             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                             : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        }`}
+                                    }`}
                                     placeholder="Enter username"
                                 />
                             </div>
@@ -181,10 +182,11 @@ const Signup = ({ onSignup }) => {
                                     {...register("role", {
                                         required: "Role is required",
                                     })}
-                                    className={`w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${errors.role
+                                    className={`w-full pl-9 pr-3 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${
+                                        errors.role
                                             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                             : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        }`}
+                                    }`}
                                 >
                                     <option value="admin">Admin</option>
                                     <option value="staff">Staff</option>
@@ -219,10 +221,11 @@ const Signup = ({ onSignup }) => {
                                             message: "Min 6 characters",
                                         },
                                     })}
-                                    className={`w-full pl-9 pr-8 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${errors.password
+                                    className={`w-full pl-9 pr-8 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${
+                                        errors.password
                                             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                             : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        }`}
+                                    }`}
                                     placeholder="Password"
                                 />
                                 <button
@@ -271,10 +274,11 @@ const Signup = ({ onSignup }) => {
                                             value === password ||
                                             "Passwords don't match",
                                     })}
-                                    className={`w-full pl-9 pr-8 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${errors.confirmPassword
+                                    className={`w-full pl-9 pr-8 py-2.5 text-sm rounded-lg border transition-all duration-200 ease-in-out ${
+                                        errors.confirmPassword
                                             ? "border-red-300 focus:ring-red-500 focus:border-red-500"
                                             : "border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                        }`}
+                                    }`}
                                     placeholder="Confirm Password"
                                 />
                                 <button
