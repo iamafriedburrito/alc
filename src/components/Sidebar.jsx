@@ -15,6 +15,7 @@ import {
     FileText,
     LogOut,
     KeyRound,
+    UserPlus,
 } from "lucide-react";
 import ChangePasswordModal from "./modals/ChangePasswordModal";
 import { toast } from "react-toastify";
@@ -269,6 +270,18 @@ const Sidebar = () => {
                         </div>
                         {showMenu && (
                             <div className="absolute bottom-20 left-0 w-full z-50 bg-white border border-gray-200 rounded-xl shadow-xl py-2 animate-fade-in">
+                                <button
+                                    onClick={() => {
+                                        navigate("/signup");
+                                        setShowMenu(false);
+                                    }}
+                                    className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-xl transition-colors duration-150"
+                                >
+                                    <UserPlus className="w-5 h-5 text-gray-400 group-hover:text-blue-700 transition-colors duration-150" />
+                                    <span className="font-medium">
+                                        Add New User
+                                    </span>
+                                </button>
                                 <button
                                     onClick={() => {
                                         setShowChangePassword(true);
