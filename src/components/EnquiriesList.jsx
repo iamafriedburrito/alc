@@ -368,16 +368,20 @@ const StudentEnquiriesList = () => {
 
                 {/* Enquiries List */}
                 {paginatedEnquiries.length === 0 ? (
-                    <div className="text-center py-12">
-                        <div className="text-gray-400 text-6xl mb-4">📋</div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                            No Enquiries Found
-                        </h3>
-                        <p className="text-gray-600">
-                            {searchTerm || statusFilter !== "ALL"
-                                ? "Try adjusting your search or filter criteria."
-                                : "No student enquiries found in database."}
-                        </p>
+                    <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20 mb-6">
+                        <div className="text-center py-12">
+                            <div className="text-gray-400 text-6xl mb-4">
+                                📋
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                No Enquiries Found
+                            </h3>
+                            <p className="text-gray-600">
+                                {searchTerm || statusFilter !== "ALL"
+                                    ? "Try adjusting your search or filter criteria."
+                                    : "No student enquiries found in database."}
+                            </p>
+                        </div>
                     </div>
                 ) : (
                     <div className="space-y-6">
@@ -509,16 +513,16 @@ const StudentEnquiriesList = () => {
                                         </button>
                                         {enquiry.currentStatus !==
                                             "ADMITTED" && (
-                                            <button
-                                                onClick={() =>
-                                                    handleFollowupClick(enquiry)
-                                                }
-                                                className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
-                                            >
-                                                <Plus className="w-4 h-4" />
-                                                Follow-up
-                                            </button>
-                                        )}
+                                                <button
+                                                    onClick={() =>
+                                                        handleFollowupClick(enquiry)
+                                                    }
+                                                    className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-5 py-2 rounded-lg font-medium flex items-center gap-2 shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-150"
+                                                >
+                                                    <Plus className="w-4 h-4" />
+                                                    Follow-up
+                                                </button>
+                                            )}
                                     </div>
                                 </div>
                             );
