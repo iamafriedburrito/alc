@@ -90,11 +90,11 @@ const InstituteLogin = () => {
                       (instituteSettings.logo || instituteSettings.name) ? (
                         <>
                             {instituteSettings.logo ? (
-                                <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border">
+                                <div className="flex justify-center mb-4">
                                     <img
                                         src={`${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`}
                                         alt="Institute Logo"
-                                        className="w-16 h-16 object-contain"
+                                        className="max-w-full h-auto max-h-24 object-contain rounded-lg"
                                     />
                                 </div>
                             ) : null}
