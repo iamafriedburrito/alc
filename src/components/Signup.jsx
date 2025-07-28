@@ -106,7 +106,7 @@ const Signup = ({ onSignup }) => {
                                     <img
                                         src={`${API_BASE.replace("/api", "")}/uploads/${instituteSettings.logo}`}
                                         alt="Institute Logo"
-                                        className="max-w-full h-auto max-h-24 object-contain rounded-lg shadow-sm"
+                                        className="max-w-full h-auto max-h-24 object-contain rounded-lg"
                                     />
                                 </div>
                             ) : null}
