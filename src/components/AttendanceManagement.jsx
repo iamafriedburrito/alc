@@ -253,14 +253,17 @@ const AttendanceManagement = () => {
                         <p className="text-gray-600">Loading students...</p>
                     </div>
                 ) : !selectedBatch ? (
-                    <div className="text-center py-12">
-                        <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                            Select a Batch
-                        </h3>
-                        <p className="text-gray-600">
-                            Please select a batch to view and mark attendance.
-                        </p>
+                    <div className="bg-white rounded-3xl shadow-sm p-8 border border-white/20 mb-6">
+                        <div className="text-center py-12">
+                            <Filter className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                                Select a Batch
+                            </h3>
+                            <p className="text-gray-600">
+                                Please select a batch to view and mark
+                                attendance.
+                            </p>
+                        </div>
                     </div>
                 ) : students.length === 0 ? (
                     <div className="text-center py-12">
@@ -310,7 +313,7 @@ const AttendanceManagement = () => {
                                             className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 w-full max-w-[120px] justify-center ${attendance[student.id] === "ABSENT" ? "bg-red-500 text-white hover:bg-red-600" : "bg-green-500 text-white hover:bg-green-600"}`}
                                         >
                                             {attendance[student.id] ===
-                                                "ABSENT" ? (
+                                            "ABSENT" ? (
                                                 <XCircle className="w-5 h-5" />
                                             ) : (
                                                 <CheckCircle className="w-5 h-5" />
