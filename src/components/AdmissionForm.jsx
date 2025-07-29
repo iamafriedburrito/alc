@@ -110,7 +110,7 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                 const { firstName, middleName, lastName } = value;
 
                 // Create certificate name by combining names with spaces
-                const certificateName = [firstName, middleName, lastName]
+                const certificateName = [lastName, firstName, middleName]
                     .filter((name) => name && name.trim()) // Remove empty/undefined names
                     .join(" ")
                     .toUpperCase();
