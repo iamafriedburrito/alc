@@ -7,6 +7,8 @@ import {
     Search,
     Eye,
     Edit2,
+    Calendar,
+    X,
 } from "lucide-react";
 import { formatDate } from "./utils.jsx";
 import { Link } from "react-router";
@@ -20,6 +22,7 @@ const StudentAdmissionsList = () => {
     const [selectedAdmission, setSelectedAdmission] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [filterCourse, setFilterCourse] = useState("");
+    const [filterDate, setFilterDate] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const studentsPerPage = 12;
 
@@ -70,7 +73,18 @@ const StudentAdmissionsList = () => {
         }
     };
 
-    // Filter admissions based on search term and course
+    // Helper function to check if two dates are the same day
+    const isSameDay = (date1, date2) => {
+        const d1 = new Date(date1);
+        const d2 = new Date(date2);
+        return (
+            d1.getFullYear() === d2.getFullYear() &&
+            d1.getMonth() === d2.getMonth() &&
+            d1.getDate() === d2.getDate()
+        );
+    };
+
+    // Filter admissions based on search term, course, and date
     const filteredAdmissions = admissions.filter((admission) => {
         const matchesSearch =
             admission.firstName
@@ -90,7 +104,10 @@ const StudentAdmissionsList = () => {
         const matchesCourse =
             filterCourse === "" || admission.courseName === filterCourse;
 
-        return matchesSearch && matchesCourse;
+        const matchesDate =
+            filterDate === "" || isSameDay(admission.createdAt, filterDate);
+
+        return matchesSearch && matchesCourse && matchesDate;
     });
 
     // Pagination logic
@@ -103,13 +120,17 @@ const StudentAdmissionsList = () => {
     // Reset to page 1 when search/filter changes
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchTerm, filterCourse]);
+    }, [searchTerm, filterCourse, filterDate]);
 
     const handleRefresh = async () => {
         if (window._fetchAdmissions) {
             await window._fetchAdmissions();
             toast.success("Student list refreshed!");
         }
+    };
+
+    const clearDateFilter = () => {
+        setFilterDate("");
     };
 
     // Close modal on Escape key press
@@ -162,69 +183,107 @@ const StudentAdmissionsList = () => {
 
                 {/* Action Bar */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div className="flex flex-1 gap-3">
-                            <div className="relative w-full max-w-xs">
+                    <div className="flex flex-col gap-4">
+                        {/* First Row - Search and Course Filter */}
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div className="flex flex-1 gap-3">
+                                <div className="relative w-full max-w-xs">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Search className="h-5 w-5 text-gray-500" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="search"
+                                        value={searchTerm}
+                                        onChange={(e) =>
+                                            setSearchTerm(e.target.value)
+                                        }
+                                        placeholder="Search by name, mobile, course..."
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                    />
+                                </div>
+                                <select
+                                    id="courseFilter"
+                                    value={filterCourse}
+                                    onChange={(e) =>
+                                        setFilterCourse(e.target.value)
+                                    }
+                                    className="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                >
+                                    <option value="">All Courses</option>
+                                    {[
+                                        ...new Set(
+                                            admissions.map(
+                                                (admission) =>
+                                                    admission.courseName,
+                                            ),
+                                        ),
+                                    ].map((course) => (
+                                        <option key={course} value={course}>
+                                            {course.replace("-", " ")}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className="inline-flex items-center gap-2 bg-blue-50/80 border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-blue-900 h-12">
+                                    <GraduationCap className="w-4 h-4 text-blue-500" />
+                                    <span>
+                                        Total:{" "}
+                                        <span className="font-semibold">
+                                            {admissions.length}
+                                        </span>
+                                    </span>
+                                </div>
+                                <Link
+                                    to="/admission"
+                                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out h-12"
+                                >
+                                    <Plus className="w-5 h-5" />
+                                    New Admission
+                                </Link>
+                                <button
+                                    onClick={handleRefresh}
+                                    className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out h-12"
+                                >
+                                    <RefreshCw className="w-5 h-5" />
+                                    Refresh Data
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Second Row - Date Filter */}
+                        <div className="flex items-center gap-3">
+                            <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-500" />
+                                    <Calendar className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
-                                    type="text"
-                                    id="search"
-                                    value={searchTerm}
+                                    type="date"
+                                    id="dateFilter"
+                                    value={filterDate}
                                     onChange={(e) =>
-                                        setSearchTerm(e.target.value)
+                                        setFilterDate(e.target.value)
                                     }
-                                    placeholder="Search by name, mobile, course, or certificate..."
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                    className="pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
                                 />
                             </div>
-                            <select
-                                id="courseFilter"
-                                value={filterCourse}
-                                onChange={(e) =>
-                                    setFilterCourse(e.target.value)
-                                }
-                                className="w-full max-w-xs px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
-                            >
-                                <option value="">All Courses</option>
-                                {[
-                                    ...new Set(
-                                        admissions.map(
-                                            (admission) => admission.courseName,
-                                        ),
-                                    ),
-                                ].map((course) => (
-                                    <option key={course} value={course}>
-                                        {course.replace("-", " ")}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="inline-flex items-center gap-2 bg-blue-50/80 border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-blue-900 h-12">
-                                <GraduationCap className="w-4 h-4 text-blue-500" />
-                                <span>
-                                    Total:{" "}
-                                    <span className="font-semibold">
-                                        {admissions.length}
-                                    </span>
-                                </span>
-                            </div>
-                            <Link
-                                to="/admission"
-                                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out h-12"
-                            >
-                                <Plus className="w-5 h-5" />
-                                New Admission
-                            </Link>
-                            <button
-                                onClick={handleRefresh}
-                                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out h-12"
-                            >
-                                <RefreshCw className="w-5 h-5" />
-                                Refresh Data
-                            </button>
+                            {filterDate && (
+                                <button
+                                    onClick={clearDateFilter}
+                                    className="inline-flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-700 px-4 py-3 rounded-xl font-medium border border-red-200 transition-all duration-200 ease-in-out h-12"
+                                    title="Clear date filter"
+                                >
+                                    <X className="w-4 h-4" />
+                                    Clear Date
+                                </button>
+                            )}
+                            {(searchTerm || filterCourse || filterDate) && (
+                                <div className="text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+                                    Showing {filteredAdmissions.length} of{" "}
+                                    {admissions.length} admissions
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -240,10 +299,22 @@ const StudentAdmissionsList = () => {
                                 No Admissions Found
                             </h3>
                             <p className="text-gray-600">
-                                {searchTerm || filterCourse
-                                    ? "Try adjusting your search or filter criteria."
+                                {searchTerm || filterCourse || filterDate
+                                    ? "Try adjusting your search, course filter, or date filter criteria."
                                     : "No student admissions have been recorded yet."}
                             </p>
+                            {(searchTerm || filterCourse || filterDate) && (
+                                <button
+                                    onClick={() => {
+                                        setSearchTerm("");
+                                        setFilterCourse("");
+                                        setFilterDate("");
+                                    }}
+                                    className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                                >
+                                    Clear all filters
+                                </button>
+                            )}
                         </div>
                     </div>
                 ) : (
