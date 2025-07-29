@@ -9,6 +9,8 @@ import {
     Eye,
     Users,
     RefreshCw,
+    Filter,
+    X,
 } from "lucide-react";
 import { toast } from "react-toastify";
 import ErrorFallback from "./ErrorFallback";
@@ -27,6 +29,13 @@ const StudentEnquiriesList = () => {
     const [submitting, setSubmitting] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("ALL");
+
+    // Date filter states
+    const [dateFilter, setDateFilter] = useState("ALL");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [showDateFilters, setShowDateFilters] = useState(false);
+
     const [followupData, setFollowupData] = useState({
         followup_date: "",
         notes: "",
@@ -208,10 +217,23 @@ const StudentEnquiriesList = () => {
         }
     };
 
-    // Filter enquiries based on search term, category, and status
+    // Helper function to check if a date falls within the specified range
+    const isDateInRange = (dateStr, start, end) => {
+        if (!dateStr) return false;
+        const date = new Date(dateStr);
+        const startDate = start ? new Date(start) : null;
+        const endDate = end ? new Date(end) : null;
+
+        if (startDate && date < startDate) return false;
+        if (endDate && date > endDate) return false;
+        return true;
+    };
+
+    // Filter enquiries based on search term, status, and date filters
     useEffect(() => {
         let filtered = enquiries;
 
+        // Search filter
         if (searchTerm) {
             filtered = filtered.filter(
                 (enquiry) =>
@@ -229,14 +251,49 @@ const StudentEnquiriesList = () => {
             );
         }
 
+        // Status filter
         if (statusFilter !== "ALL") {
             filtered = filtered.filter(
                 (enquiry) => enquiry.currentStatus === statusFilter,
             );
         }
 
+        // Date filter
+        if (dateFilter !== "ALL" && (startDate || endDate)) {
+            filtered = filtered.filter((enquiry) => {
+                switch (dateFilter) {
+                    case "ENQUIRY_DATE":
+                        return isDateInRange(
+                            enquiry.enquiryDate || enquiry.createdAt,
+                            startDate,
+                            endDate,
+                        );
+                    case "CREATED_DATE":
+                        return isDateInRange(
+                            enquiry.createdAt,
+                            startDate,
+                            endDate,
+                        );
+                    case "LAST_FOLLOWUP":
+                        return isDateInRange(
+                            enquiry.latestFollowupDate || enquiry.lastFollowup,
+                            startDate,
+                            endDate,
+                        );
+                    case "NEXT_FOLLOWUP":
+                        return isDateInRange(
+                            enquiry.nextFollowup,
+                            startDate,
+                            endDate,
+                        );
+                    default:
+                        return true;
+                }
+            });
+        }
+
         setFilteredEnquiries(filtered);
-    }, [searchTerm, statusFilter, enquiries]);
+    }, [searchTerm, statusFilter, dateFilter, startDate, endDate, enquiries]);
 
     // Pagination logic
     const totalPages = Math.ceil(filteredEnquiries.length / enquiriesPerPage);
@@ -248,7 +305,7 @@ const StudentEnquiriesList = () => {
     // Reset to page 1 when search/filter changes
     useEffect(() => {
         setCurrentPage(1);
-    }, [searchTerm, statusFilter]);
+    }, [searchTerm, statusFilter, dateFilter, startDate, endDate]);
 
     const getDaysOverdue = (nextFollowupDate) => {
         if (!nextFollowupDate) return 0;
@@ -262,6 +319,21 @@ const StudentEnquiriesList = () => {
     const handleRefresh = async () => {
         await fetchEnquiries();
         toast.success("Enquiries list refreshed!");
+    };
+
+    const clearDateFilters = () => {
+        setDateFilter("ALL");
+        setStartDate("");
+        setEndDate("");
+        setShowDateFilters(false);
+    };
+
+    const getActiveFiltersCount = () => {
+        let count = 0;
+        if (statusFilter !== "ALL") count++;
+        if (dateFilter !== "ALL") count++;
+        if (searchTerm) count++;
+        return count;
     };
 
     if (loading) {
@@ -303,66 +375,185 @@ const StudentEnquiriesList = () => {
 
                 {/* Action Bar */}
                 <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div className="flex flex-1 gap-3">
-                            {/* Make search input wider and status filter narrower */}
-                            <div className="relative flex-[2] w-full max-w-2xl">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <Search className="h-5 w-5 text-gray-500" />
+                    <div className="flex flex-col gap-4">
+                        {/* First Row - Main Filters */}
+                        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div className="flex flex-1 gap-3">
+                                {/* Search Input */}
+                                <div className="relative flex-[2] w-full max-w-2xl">
+                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <Search className="h-5 w-5 text-gray-500" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        id="search"
+                                        value={searchTerm}
+                                        onChange={(e) =>
+                                            setSearchTerm(e.target.value)
+                                        }
+                                        placeholder="Search by name, mobile, course, or ID..."
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                    />
                                 </div>
-                                <input
-                                    type="text"
-                                    id="search"
-                                    value={searchTerm}
+
+                                {/* Status Filter */}
+                                <select
+                                    id="statusFilter"
+                                    value={statusFilter}
                                     onChange={(e) =>
-                                        setSearchTerm(e.target.value)
+                                        setStatusFilter(e.target.value)
                                     }
-                                    placeholder="Search by name, mobile, course, or ID..."
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
-                                />
+                                    className="flex-[1] w-full max-w-[180px] px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
+                                >
+                                    <option value="ALL">All Status</option>
+                                    <option value="PENDING">Pending</option>
+                                    <option value="INTERESTED">
+                                        Interested
+                                    </option>
+                                    <option value="NOT_INTERESTED">
+                                        Not Interested
+                                    </option>
+                                    <option value="ADMITTED">Admitted</option>
+                                </select>
+
+                                {/* Date Filter Toggle */}
+                                <button
+                                    onClick={() =>
+                                        setShowDateFilters(!showDateFilters)
+                                    }
+                                    className={`relative flex items-center gap-2 px-4 py-3 rounded-xl border transition-all duration-200 ease-in-out text-sm h-12 min-w-[120px] ${dateFilter !== "ALL"
+                                            ? "bg-blue-50 border-blue-200 text-blue-700"
+                                            : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+                                        }`}
+                                >
+                                    <Filter className="w-4 h-4" />
+                                    <span>Date Filter</span>
+                                    {dateFilter !== "ALL" && (
+                                        <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                                            1
+                                        </span>
+                                    )}
+                                </button>
                             </div>
-                            <select
-                                id="statusFilter"
-                                value={statusFilter}
-                                onChange={(e) =>
-                                    setStatusFilter(e.target.value)
-                                }
-                                className="flex-[1] w-full max-w-[180px] px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 ease-in-out bg-white text-sm h-12"
-                            >
-                                <option value="ALL">All Status</option>
-                                <option value="PENDING">Pending</option>
-                                <option value="INTERESTED">Interested</option>
-                                <option value="NOT_INTERESTED">
-                                    Not Interested
-                                </option>
-                                <option value="ADMITTED">Admitted</option>
-                            </select>
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className="inline-flex items-center gap-2 bg-blue-50/80 border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-blue-900 h-12">
-                                <Users className="w-4 h-4 text-blue-500" />
-                                <span>
-                                    Total:{" "}
-                                    <span className="font-semibold">
+
+                            <div className="flex items-center gap-3">
+                                {/* Active Filters Count */}
+                                {getActiveFiltersCount() > 0 && (
+                                    <div className="inline-flex items-center gap-2 bg-amber-50/80 border border-amber-100 rounded-xl px-4 py-3 text-sm font-medium text-amber-900 h-12">
+                                        <Filter className="w-4 h-4 text-amber-500" />
+                                        <span>
+                                            {getActiveFiltersCount()} filter
+                                            {getActiveFiltersCount() > 1
+                                                ? "s"
+                                                : ""}{" "}
+                                            active
+                                        </span>
+                                    </div>
+                                )}
+
+                                {/* Total Count */}
+                                <div className="inline-flex items-center gap-2 bg-blue-50/80 border border-blue-100 rounded-xl px-4 py-3 text-sm font-medium text-blue-900 h-12">
+                                    <Users className="w-4 h-4 text-blue-500" />
+                                    <span>
+                                        {filteredEnquiries.length} of{" "}
                                         {enquiries.length}
                                     </span>
-                                </span>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <Link
+                                    to="/enquiry"
+                                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out h-12"
+                                >
+                                    <Plus className="w-5 h-5" />
+                                    New Enquiry
+                                </Link>
+                                <button
+                                    onClick={handleRefresh}
+                                    className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out h-12"
+                                >
+                                    <RefreshCw className="w-5 h-5" />
+                                    Refresh Data
+                                </button>
                             </div>
-                            <Link
-                                to="/enquiry"
-                                className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-6 py-3 rounded-xl font-semibold shadow-sm hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 ease-in-out h-12"
-                            >
-                                <Plus className="w-5 h-5" />
-                                New Enquiry
-                            </Link>
-                            <button
-                                onClick={handleRefresh}
-                                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-3 rounded-xl font-semibold border border-gray-200 transition-all duration-200 ease-in-out h-12"
-                            >
-                                <RefreshCw className="w-5 h-5" />
-                                Refresh Data
-                            </button>
                         </div>
+
+                        {/* Date Filter Row - Shows when toggled */}
+                        {showDateFilters && (
+                            <div className="border-t border-gray-100 pt-4">
+                                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                                    <div className="flex flex-wrap items-center gap-3 flex-1">
+                                        <label className="text-sm font-medium text-gray-700 whitespace-nowrap">
+                                            Filter by:
+                                        </label>
+                                        <select
+                                            value={dateFilter}
+                                            onChange={(e) =>
+                                                setDateFilter(e.target.value)
+                                            }
+                                            className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm min-w-[150px]"
+                                        >
+                                            <option value="ALL">
+                                                All Dates
+                                            </option>
+                                            <option value="ENQUIRY_DATE">
+                                                Enquiry Date
+                                            </option>
+                                            <option value="CREATED_DATE">
+                                                Created Date
+                                            </option>
+                                            <option value="LAST_FOLLOWUP">
+                                                Last Follow-up
+                                            </option>
+                                            <option value="NEXT_FOLLOWUP">
+                                                Next Follow-up
+                                            </option>
+                                        </select>
+
+                                        {dateFilter !== "ALL" && (
+                                            <>
+                                                <label className="text-sm text-gray-600 whitespace-nowrap">
+                                                    From:
+                                                </label>
+                                                <input
+                                                    type="date"
+                                                    value={startDate}
+                                                    onChange={(e) =>
+                                                        setStartDate(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                                />
+                                                <label className="text-sm text-gray-600 whitespace-nowrap">
+                                                    To:
+                                                </label>
+                                                <input
+                                                    type="date"
+                                                    value={endDate}
+                                                    onChange={(e) =>
+                                                        setEndDate(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    className="px-3 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                                                />
+                                            </>
+                                        )}
+                                    </div>
+
+                                    {dateFilter !== "ALL" && (
+                                        <button
+                                            onClick={clearDateFilters}
+                                            className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-red-600 px-2 py-1 rounded-lg hover:bg-red-50 transition-colors"
+                                        >
+                                            <X className="w-4 h-4" />
+                                            Clear
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -377,7 +568,9 @@ const StudentEnquiriesList = () => {
                                 No Enquiries Found
                             </h3>
                             <p className="text-gray-600">
-                                {searchTerm || statusFilter !== "ALL"
+                                {searchTerm ||
+                                    statusFilter !== "ALL" ||
+                                    dateFilter !== "ALL"
                                     ? "Try adjusting your search or filter criteria."
                                     : "No student enquiries found in database."}
                             </p>
