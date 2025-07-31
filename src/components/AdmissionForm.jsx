@@ -191,6 +191,39 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
         }
     }, [student, setValue]);
 
+    useEffect(() => {
+        if (enquiry) {
+            setValue("firstName", enquiry.firstName || "");
+            setValue("middleName", enquiry.middleName || "");
+            setValue("lastName", enquiry.lastName || "");
+            setValue("dateOfBirth", enquiry.dateOfBirth || "");
+            setValue("gender", enquiry.gender || "");
+            setValue("maritalStatus", enquiry.maritalStatus || "");
+            setValue("motherTongue", enquiry.motherTongue || "");
+            setValue("aadharNumber", enquiry.aadharNumber || "");
+            setValue(
+                "correspondenceAddress",
+                enquiry.correspondenceAddress || "",
+            );
+            setValue("city", enquiry.city || "");
+            setValue("state", enquiry.state || "MAHARASHTRA");
+            setValue("district", enquiry.district || "");
+            setValue("mobileNumber", enquiry.mobileNumber || "");
+            setValue(
+                "alternateMobileNumber",
+                enquiry.alternateMobileNumber || "",
+            );
+            setValue("category", enquiry.category || "");
+            setValue(
+                "educationalQualification",
+                enquiry.educationalQualification || "",
+            );
+            setValue("courseName", enquiry.courseName || "");
+            setValue("timing", enquiry.timing || "");
+            setValue("referredBy", enquiry.referredBy || "");
+        }
+    }, [enquiry, setValue]);
+
     // Handle photo file change and preview
     const handlePhotoChange = (event) => {
         const file = event.target.files[0];
@@ -291,7 +324,7 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
             console.error("Error submitting admission:", error);
             setError(
                 error.message ||
-                    "An unexpected error occurred. Please try again.",
+                "An unexpected error occurred. Please try again.",
             );
         }
     };
@@ -717,8 +750,8 @@ const StudentAdmissionForm = ({ student: propStudent }) => {
                             {student || id
                                 ? "Update Student"
                                 : isSubmitting
-                                  ? "Submitting..."
-                                  : "Submit Admission Form"}
+                                    ? "Submitting..."
+                                    : "Submit Admission Form"}
                         </button>
                     </form>
                 </div>
